@@ -20,14 +20,16 @@
 //
 // Uses: 434 bytes of code, 10bytes of RAM.
 //=========================================================================================== 
+#include <Wire.h>
+#define LED_PIN PIN_PB3
 
 void setup() {
-  pinMode(3, OUTPUT);   // PB4 (physical pin 6)
+  pinMode(LED_PIN, OUTPUT);   
 }
 
 void loop() {
-  digitalWrite(4, HIGH);
+  digitalWrite(LED_PIN, HIGH);
   delay(500);
-  digitalWrite(4, LOW);
+  digitalWrite(LED_PIN, LOW);
   delay(500);
 }

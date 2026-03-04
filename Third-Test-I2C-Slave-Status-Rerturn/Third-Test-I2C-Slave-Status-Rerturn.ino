@@ -24,44 +24,48 @@
 #include <Wire.h>
 
 #define I2C_ADDRESS 0x10
-#define LED_PIN 3   // PB3 (physisch Pin 6)
+#define LED_PIN     PIN_PB3   // PB3 (physisch Pin 6)
 
 volatile uint8_t led_status = 0;
 
-void receiveEvent(int howMany)
-{
-  while (Wire.available())
-  {
-    uint8_t cmd = Wire.read();
+void receiveEvent( int howMany ) {
+  
+  while  (Wire.available( )) {
+    
+    uint8_t cmd = Wire.read( );
 
-    if (cmd == 1)
-    {
+    if ( cmd == 1 ) {
+      
       led_status = 1;
       digitalWrite(LED_PIN, HIGH);
     }
-    else if (cmd == 0)
-    {
+    else if ( cmd == 0 ) {
+      
       led_status = 0;
       digitalWrite(LED_PIN, LOW);
     }
   }
 }
 
-void requestEvent()
-{
-  Wire.write(led_status);   // Status zurücksenden
+void requestEvent( ) {
+  
+  Wire.write( led_status );   // Status zurücksenden
 }
 
-void setup()
-{
-  pinMode(LED_PIN, OUTPUT);
+void setup( ) {
+  
+  pinMode( LED_PIN, OUTPUT);
+  digitalWrite( LED_PIN, LOW);
+
+  Wire.begin( I2C_ADDRESS);       // Slave starten
+  Wire.onReceive( receiveEvent ); // Write Handler
+  Wire.onRequest( requestEvent ); // Read Handler
+}
+
+void loop( ) {
+
   digitalWrite(LED_PIN, LOW);
-
-  Wire.begin(I2C_ADDRESS);      // Slave starten
-  Wire.onReceive(receiveEvent); // Write Handler
-  Wire.onRequest(requestEvent); // Read Handler
-}
-
-void loop()
-{
+  delay( 500 );
+  digitalWrite(LED_PIN, HIGH);
+  delay( 500 );
 }
