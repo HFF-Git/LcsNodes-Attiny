@@ -23,6 +23,8 @@
 
 #include <Wire.h>
 #include <EEPROM.h>
+#include "LcsLib.h"
+
 
 struct Config {
     uint16_t field[16];
