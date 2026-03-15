@@ -101,7 +101,6 @@ uint64_t buildLcsHwUID( ) {
    return( fnv1a64( uidBuf, sizeof( uidBuf )));
 }
 
-
 //=======================================================================================
 // Watchdog support. 
 //

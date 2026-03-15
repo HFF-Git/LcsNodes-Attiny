@@ -1,91 +1,189 @@
-// Notes from chat...
+//========================================================================================
+//
+// 
+//
+//----------------------------------------------------------------------------------------
+// 
+//
+//----------------------------------------------------------------------------------------
+//
+// Layout Control System - Runtime Library internals include file
+// Copyright (C) 2020 - 2026 Helmut Fieres
+//
+// This program is free software: you can redistribute it and/or modify it under 
+// the terms of the GNU General Public License as published by the Free Software 
+// Foundation, either version 3 of the License, or any later version.
+//
+// This program is distributed in the hope that it will be useful, but WITHOUT ANY 
+// WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+// PARTICULAR PURPOSE.  See the GNU General Public License for more details. You 
+// should have received a copy of the GNU General Public License along with this 
+// program. If not, see <http://www.gnu.org/licenses/>.
+//
+//  GNU General Public License:  http://opensource.org/licenses/GPL-3.0
+//
+//========================================================================================
+#include "LcsLib.h"
+#include <stdint.h>
+#include <avr/io.h>
+#include <avr/wdt.h> 
+#include <EEPROM.h>
 
-
-//===========================================================================================
+//========================================================================================
 //
 //
 //
-//===========================================================================================
+//========================================================================================
 // The board is the only one on a bus for programming.
 // Need a way to set the I2C address.
 // have a command that will put the board in PROG mode.
 // have a command to set the I2C address.
 // RESET via watchdog ?
 // have a command that puts the board back to OP mode.
+// remember: add ".development" to the lib directory, so that it can be edited.
 
 
-
-//===========================================================================================
-//
-//
-//
-//===========================================================================================
-// ideas for I2C fields
-
-#if 0
-
-8 bytes -> UID
-
-1 byte CRC 8 of UID
-
-dev type / controller family
-
-firmware version / subversion
-
-hardware ersion / subversion
-
-status ( 16 bits ? )
-
-command
-
-config options ( 16 bits ? )
-
-reset cause ( mirror MCU reset flags )
-
-combine it all in header structure...
-
-perhaps two parts: one common to LCS, one spefific for I2C boards.
-
-size of board specific data area
-
-
-read UID and CRC twice. if mismatch -> collision detect...
-
-#endif
-
-//===========================================================================================
-//
-//
-//
-//===========================================================================================
+//=======================================================================================
 // CRC for serial number validation...
-
-uint8_t crc8(const uint8_t *data, size_t len)
-{
-    uint8_t crc = 0x00;   // Startwert
+//
+//
+//=======================================================================================
+uint8_t crc8( const uint8_t *data, size_t len ) {
+  
+    uint8_t crc = 0x00;
 
     for (size_t i = 0; i < len; i++) {
-        crc ^= data[i];
+      
+        crc ^= data[ i ];
 
-        for (int b = 0; b < 8; b++) {
-            if (crc & 0x80)
-                crc = (crc << 1) ^ 0x07;
-            else
-                crc <<= 1;
+        for ( int b = 0; b < 8; b++ ) {
+            if ( crc & 0x80 ) crc = (crc << 1) ^ 0x07;
+            else              crc <<= 1;
         }
     }
 
     return crc;
 }
 
+//=======================================================================================
+// Chip UID setup.
+//
+//
+//=======================================================================================
+uint64_t fnv1a64( uint8_t *data, uint8_t len ) {
+  
+    uint64_t hash = 0xcbf29ce484222325ULL;
+
+    for( uint8_t i=0;i<len;i++ ) {
+      
+        hash ^= data[i];
+        hash *= 0x100000001b3ULL;
+    }
+
+    return hash;
+}
+
+uint64_t buildLcsHwUID( ) {
+
+    uint8_t uidBuf[ 10 ];
+  
+    uidBuf[0]   = SIGROW.SERNUM0;
+    uidBuf[1]   = SIGROW.SERNUM1;
+    uidBuf[2]   = SIGROW.SERNUM2;
+    uidBuf[3]   = SIGROW.SERNUM3;
+    uidBuf[4]   = SIGROW.SERNUM4;
+    uidBuf[5]   = SIGROW.SERNUM5;
+    uidBuf[6]   = SIGROW.SERNUM6;
+    uidBuf[7]   = SIGROW.SERNUM7;
+    uidBuf[8]   = SIGROW.SERNUM8;
+    uidBuf[9]   = SIGROW.SERNUM9;
+
+   return( fnv1a64( uidBuf, sizeof( uidBuf )));
+}
 
 
+//=======================================================================================
+// Watchdog support. 
+//
+// WDT_PERIOD_8KCLK_gc → ca. 8 s
+// WDT_PERIOD_4KCLK_gc → ca. 4 s
+// WDT_PERIOD_2KCLK_gc → ca. 2 s
+// WDT_PERIOD_1KCLK_gc → ca. 1 s
+//
+//=======================================================================================
+void setupWatchdog( ) {
+  
+    wdt_enable( WDT_PERIOD_8KCLK_gc ); 
+    wdt_reset( );
+}
 
-//===========================================================================================
+void feedWatchdog( ) {
+  
+    wdt_reset( );
+}
+
+bool wasWatchdogReset() {
+    
+    uint8_t flags = RSTCTRL.RSTFR;
+    RSTCTRL.RSTFR = flags; 
+    return ( flags & RSTCTRL_WDRF_bm );
+}
+
+//=======================================================================================
+// EEPROM access
+//
+//=======================================================================================
+void formatEEPROM( ) {
+
+  // ??? just EEPROM.put fields...
+  // ??? at the end update MAGIC and VERSION...
+}
+
+void loadFromEEPROM( ) {
+
+  // ??? read the magic field.
+  // ??? if OK read the complete header
+  // ??? else formtEEPROM with default values.
+}
+
+uint16_t readField( uint8_t index ) {
+  
+    uint16_t value;
+    int addr = index * sizeof(uint16_t);
+    EEPROM.get(addr, value);
+    return value;
+}
+
+void updateField( uint8_t index, uint16_t value ) {
+  
+    int addr = index * sizeof( uint16_t );
+    EEPROM.put( addr, value );
+}
+
+
+//=======================================================================================
 //
 //
 //
-//===========================================================================================
+//=======================================================================================
+// ??? habe libary functions for the device firmware writer ?
+// ??? what is a good mental model ?
+
+
+
+
+
+
+
+
+
+
+
+//=======================================================================================
+//
+//
+//
+//=======================================================================================
 // 4x4 matrix scan
 
 #if 0 
@@ -185,11 +283,11 @@ int main(void) {
 #endif
 
 
-//===========================================================================================
+//=======================================================================================
 //
 //
 //
-//===========================================================================================
+//=======================================================================================
 // PWM servo stuff - version 1
 
 #if 0
@@ -325,11 +423,11 @@ ISR(TCA0_CMP0_vect)
 #endif
 
 
-//===========================================================================================
+//=======================================================================================
 //
 //
 //
-//===========================================================================================
+//=======================================================================================
 // PWM servo stuff - version 1
 
 #if 0
@@ -464,11 +562,11 @@ ISR(TCA0_CMP0_vect)
 
 #endif
 
-//===========================================================================================
+//=======================================================================================
 //
 //
 //
-//===========================================================================================
+//=======================================================================================
 // anotehr servo version 
 
 #if 0 
@@ -570,11 +668,11 @@ void loop() {
 
 #endif
 
-//===========================================================================================
+//=======================================================================================
 //
 //
 //
-//===========================================================================================
+//=======================================================================================
 // Servo improvement...
 #if 0
 
@@ -661,11 +759,11 @@ void loop()
 
 #endif
 
-//===========================================================================================
+//=======================================================================================
 //
 //
 //
-//===========================================================================================
+//=======================================================================================
 // another one ... servos do not move simulatenously... smooth no blocking delays
 // no interrupt handler needed... watch dog protects from hangs...
 
@@ -795,147 +893,11 @@ void loop()
 #endif
 
 
-
-//===========================================================================================
+//=======================================================================================
 //
 //
 //
-//===========================================================================================
-// watchdog
-
-#if 0 
-
-#include <avr/wdt.h> // megaTinyCore supports AVR WDT
-
-void setupWatchdog() {
-    // Timeout options: WDT_PER_8KCLK_gc, WDT_PER_16KCLK_gc, etc.
-    // Common: WDT_PER_1KCLK_gc ~ 16 ms, WDT_PER_8KCLK_gc ~ 130 ms
-    wdt_enable(WDT_PER_1KCLK_gc); 
-    wdt_reset(); // clear immediately
-}
-
-void feedWatchdog() {
-    wdt_reset();
-}
-
-// OR ....
-
-void watchdog_enable()
-{
-    _PROTECTED_WRITE(WDT.CTRLA, WDT_PERIOD_8KCLK_gc); // ??? too fast ?
-}
-
-void watchdog_feed()
-{
-    __asm__ __volatile__("wdr");
-}
-
-// test ...
-
-static bool wasWatchdogReset()
-{
-    bool r = (RSTCTRL.RSTFR & RSTCTRL_WDRF_bm);
-    RSTCTRL.RSTFR = RSTCTRL_WDRF_bm;   // Flag löschen
-    return r;
-}
-
-static void begin()
-{
-    // ~32 ms Timeout (guter Startwert)
-    _PROTECTED_WRITE(WDT.CTRLA, WDT_PERIOD_128CLK_gc); // 128 ms...
-}
-
-static inline void feed()
-{
-    __builtin_avr_wdr();
-}
-
-// usage example ...
-
-volatile uint8_t heartbeat;
-
-void loop()
-{
-    heartbeat++;
-
-    updateServos();
-    handleI2C();
-
-    if (heartbeat > 5)
-    {
-        heartbeat = 0;
-        Watchdog::feed();
-    }
-}
-
-
-#endif
-
-
-//===========================================================================================
-//
-//
-//
-//===========================================================================================
-// UID stuff 
-
-#if 0
-#include <avr/io.h>
-
-// ??? read serial number...
-
-void read_factory_serial(uint8_t *uid)
-{
-    uid[0] = SIGROW.SERNUM0;
-    uid[1] = SIGROW.SERNUM1;
-    uid[2] = SIGROW.SERNUM2;
-    uid[3] = SIGROW.SERNUM3;
-    uid[4] = SIGROW.SERNUM4;
-    uid[5] = SIGROW.SERNUM5;
-    uid[6] = SIGROW.SERNUM6;
-    uid[7] = SIGROW.SERNUM7;
-    uid[8] = SIGROW.SERNUM8;
-    uid[9] = SIGROW.SERNUM9;
-}
-
-#include <stdint.h>
-
-uint64_t fnv1a64(uint8_t *data, uint8_t len)
-{
-    uint64_t hash = 0xcbf29ce484222325ULL;
-
-    for(uint8_t i=0;i<len;i++)
-    {
-        hash ^= data[i];
-        hash *= 0x100000001b3ULL;
-    }
-
-    return hash;
-}
-
-
-uint8_t factory_uid[10];
-uint64_t uid64;
-
-read_factory_serial(factory_uid);
-uid64 = fnv1a64(factory_uid, 10);
-
-// or with added device type...
-
-uint8_t buffer[11];
-memcpy(buffer, factory_uid, 10);
-buffer[10] = DEVICE_TYPE;
-
-uid64 = fnv1a64(buffer, 11);
-
-
-#endif
-
-//===========================================================================================
-//
-//
-//
-//===========================================================================================
+//=======================================================================================
 // use a I2C slave library, small footprint. Later.
 // For now, stick to Arduino libraries.
 
@@ -1082,62 +1044,12 @@ int main(void) {
 }
 #endif
 
-//===========================================================================================
+
+//=======================================================================================
 //
 //
 //
-//===========================================================================================
-// cmake toolchain ?
-
-#if 0 
-
-<example>
-
-attiny414-i2c/
-├── CMakeLists.txt
-├── main.c
-└── toolchain-avr.cmake
-
-<toolchain-avr.cmake>
-
-set(CMAKE_SYSTEM_NAME Generic)
-set(CMAKE_C_COMPILER avr-gcc)
-
-set(CMAKE_C_FLAGS "-mmcu=attiny414 -Os -DF_CPU=16000000UL")
-
-set(CMAKE_EXE_LINKER_FLAGS "-mmcu=attiny414")
-
-
-<CMakeLists.txt>
-
-cmake_minimum_required(VERSION 3.13)
-project(attiny_i2c C)
-
-add_executable(attiny_i2c.elf
-    main.c
-)
-
-add_custom_target(flash
-    COMMAND avrdude -p t414 -c serialupdi -P /dev/ttyUSB0 -b 115200 -U flash:w:attiny_i2c.elf
-    DEPENDS attiny_i2c.elf
-)
-
-<usage>
-
-mkdir build
-cd build
-cmake ..
-make
-make flash
-
-#endif
-
-
-//===========================================================================================
-//
-//
-//
-//===========================================================================================
+//=======================================================================================
 // I2C 
 
 #if 0
@@ -1287,187 +1199,5 @@ i2c_read_blocking(I2C_PORT, SLAVE_ADDR, rx, 4, false);
 
 uint16_t r2 = rx[0] | (rx[1] << 8);
 uint16_t r3 = rx[2] | (rx[3] << 8);
-
-#endif
-
-
-//===========================================================================================
-//
-//
-//
-//===========================================================================================
-// EEPROM access
-
-#if 0
-
-struct Config {
-  int speed;
-  byte mode;
-};
-
-Config cfg = {120, 3};
-
-EEPROM.put(0, cfg);   // speichern
-
-Config cfg;
-EEPROM.get(0, cfg);
-
-uint16_t readField(uint8_t index)
-{
-    uint16_t value;
-    int addr = index * sizeof(uint16_t);
-    EEPROM.get(addr, value);
-    return value;
-}
-
-void updateField(uint8_t index, uint16_t value)
-{
-    int addr = index * sizeof(uint16_t);
-    EEPROM.put(addr, value);
-}
-
-// OR...
-
-void updateField(uint8_t index, uint16_t value)
-{
-    cfg.field[index] = value;
-
-    int addr = 4 + index * sizeof(uint16_t);
-    EEPROM.put(addr, value);
-}
-
-void loadConfig()
-{
-    uint16_t magic;
-    uint16_t version;
-
-    EEPROM.get(0, magic);
-    EEPROM.get(2, version);
-
-    if (magic != EEPROM_MAGIC || version != EEPROM_VERSION)
-    {
-        // EEPROM neu initialisieren
-        cfg = defaultConfig;
-
-        EEPROM.put(4, cfg);
-        EEPROM.put(0, EEPROM_MAGIC);
-        EEPROM.put(2, EEPROM_VERSION);
-    }
-    else
-    {
-        // EEPROM gültig
-        EEPROM.get(4, cfg);
-    }
-}
-
-// in hardware...
-
-while (NVMCTRL.STATUS & NVMCTRL_EEBUSY_bm);
-
-NVMCTRL.ADDR = address;
-NVMCTRL.DATA = value;
-NVMCTRL.CTRLA = NVMCTRL_CMD_EEERWR_gc;
-
-#endif
-
-
-
-//===========================================================================================
-//
-//
-//
-//===========================================================================================
-// combined environment
-
-#if 0
-// root CmakeLists.txt
-
-cmake_minimum_required(VERSION 3.22)
-project(monorepo LANGUAGES C CXX)
-
-add_subdirectory(pico)
-add_subdirectory(attiny)
-
-// attiny toolchain file: attiny/cmake/avr-toolchain.cmake
-
-set(CMAKE_SYSTEM_NAME Generic)
-set(CMAKE_SYSTEM_PROCESSOR avr)
-
-set(CMAKE_C_COMPILER avr-gcc)
-set(CMAKE_CXX_COMPILER avr-g++)
-set(CMAKE_ASM_COMPILER avr-gcc)
-
-set(CMAKE_OBJCOPY avr-objcopy)
-set(CMAKE_SIZE avr-size)
-
-set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
-
-// attiny/CMakeLists.txt file
-
-cmake_minimum_required(VERSION 3.22)
-
-project(attiny414_firmware C)
-
-set(MCU attiny414)
-set(F_CPU 20000000UL)
-
-add_executable(attiny414
-    src/main.c
-    servo/servo.c
-)
-
-target_include_directories(attiny414 PRIVATE
-    servo
-    ${CMAKE_SOURCE_DIR}/common
-)
-
-target_compile_options(attiny414 PRIVATE
-    -mmcu=${MCU}
-    -DF_CPU=${F_CPU}
-    -Os
-    -Wall
-    -std=gnu11
-)
-
-target_link_options(attiny414 PRIVATE
-    -mmcu=${MCU}
-)
-
-add_custom_command(TARGET attiny414 POST_BUILD
-    COMMAND ${CMAKE_OBJCOPY}
-        -O ihex
-        $<TARGET_FILE:attiny414>
-        attiny414.hex
-)
-
-add_custom_target(flash
-    COMMAND avrdude -p t414 -c usbtiny -U flash:w:attiny414.hex
-    DEPENDS attiny414
-)
-
-// CmakePresets.json at REPO root...
-
-{
-  "version": 5,
-  "configurePresets": [
-    {
-      "name": "pico",
-      "binaryDir": "${sourceDir}/pico/build",
-      "generator": "Ninja"
-    },
-    {
-      "name": "attiny",
-      "binaryDir": "${sourceDir}/attiny/build",
-      "generator": "Ninja",
-      "toolchainFile": "attiny/cmake/avr-toolchain.cmake"
-    }
-  ]
-}
-
-
-
-
-
-
 
 #endif
