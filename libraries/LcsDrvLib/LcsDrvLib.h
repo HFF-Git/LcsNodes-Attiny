@@ -24,20 +24,22 @@
 //  GNU General Public License:  http://opensource.org/licenses/GPL-3.0
 //
 //========================================================================================
+#pragma once
+
 #include "arduino.h"
 
 
+
 //----------------------------------------------------------------------------------------
-// The LcsBoardDesc structure defines what the board actually represents. It is 
-// also the first structure that can be found on the controller board NVM as well 
-// as the extension board controller, which acts like a NVM for that purpose. An 
-// Atmega Attiny controller board also has the nice property of a serial number. 
-// We use it for I2C bus collision detection. On the PICO, we "invent" a serial 
-// number. The header structure is 32 bytes long and matches exactly what is 
-// used in the Attiny world.
+// The BoardDesc structure defines what the board actually represents. It is also
+// the first structure that can be found on the controller board NVM as well as the 
+// extension board controller, which acts like a NVM for that purpose. An Attiny 
+// controller board also has the nice property of a serial number. We use it for I2C
+// bus collision detection. On the PICO, we "invent" a serial number. The header 
+// structure is 32 bytes long and matches exactly what is used in the Attiny world.
 //
 //----------------------------------------------------------------------------------------
-struct LcsBoardDesc {
+struct LcsDrvBoardDesc {
 
     uint32_t            boardMword;                     // magic word
     uint16_t            boardInfo;                      // type/subtype
@@ -54,4 +56,35 @@ struct LcsBoardDesc {
     uint16_t            boardNumOfRegs;                 // board registers          
     uint16_t            reserved1;                      
     uint16_t            reserved2;  
+};
+
+
+
+//----------------------------------------------------------------------------------------
+
+
+//----------------------------------------------------------------------------------------
+//
+//
+//----------------------------------------------------------------------------------------
+const int       MAX_DRV_ATTRIBUTES  = 64;
+const uint32_t  DRV_MWORD           = 0x12345678; // for now ...
+
+//----------------------------------------------------------------------------------------
+// I2C operations conceptually access a memory data structure. To the master the data
+// structure just looks like an array of 16-bit words. The words are numbered from zero
+// to header word size plus number of data words. The header is identical to the LcsNodes
+// header used in the PICO controller world. 
+//
+// Parallel to the memmory structure is the EEPROM structure. The EEPROM structure, 
+// initially created by a default formatting, is copied to the memory structure on 
+// device reset. Updates to the memory can be synced to the EEPROM, some words in the
+// memory structure are read-only.
+//
+//----------------------------------------------------------------------------------------
+struct I2cMemData {
+
+  LcsDrvBoardDesc head;                        // words  0 ... 15
+  uint16_t     data[ MAX_DRV_ATTRIBUTES ];  // words 16 ... 79
+
 };

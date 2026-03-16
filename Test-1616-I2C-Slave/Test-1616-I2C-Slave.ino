@@ -16,7 +16,7 @@
 // second 1616 test.... respond to our I2C address
 //
 //=========================================================================================== 
-
+#include "LcsLib.h"
 #include <Wire.h>
 
 #define I2C_ADDRESS 0x33      // Just an I2C number

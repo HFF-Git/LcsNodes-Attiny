@@ -28,6 +28,9 @@
 #include <avr/io.h>
 #include <avr/wdt.h> 
 #include <EEPROM.h>
+#include <Wire.h>
+
+// ??? note: we need a library.properties file in the directory to make this mess editable.
 
 //========================================================================================
 //
@@ -43,21 +46,39 @@
 // remember: add ".development" to the lib directory, so that it can be edited.
 
 
-//=======================================================================================
+//----------------------------------------------------------------------------------------
+// Local name space
+//
+//----------------------------------------------------------------------------------------
+namespace {
+
+//----------------------------------------------------------------------------------------
+//
+//
+//----------------------------------------------------------------------------------------
+uint16_t ioBuf[ 64 ];
+uint16_t regIndex;      // when the read start, this index is set and auto increments
+                        // on each word received. ( or should it rather do byte thinking ? )
+
+I2cMemData i2cData;
+
+
+                 
+//----------------------------------------------------------------------------------------
 // CRC for serial number validation...
 //
-//
-//=======================================================================================
+//----------------------------------------------------------------------------------------
 uint8_t crc8( const uint8_t *data, size_t len ) {
   
     uint8_t crc = 0x00;
 
-    for (size_t i = 0; i < len; i++) {
+    for ( size_t i = 0; i < len; i++ ) {
       
         crc ^= data[ i ];
 
         for ( int b = 0; b < 8; b++ ) {
-            if ( crc & 0x80 ) crc = (crc << 1) ^ 0x07;
+          
+            if ( crc & 0x80 ) crc = ( crc << 1 ) ^ 0x07;
             else              crc <<= 1;
         }
     }
@@ -65,16 +86,15 @@ uint8_t crc8( const uint8_t *data, size_t len ) {
     return crc;
 }
 
-//=======================================================================================
-// Chip UID setup.
+//----------------------------------------------------------------------------------------
+// Hash function for building a 64-bit value from teh buffer input.
 //
-//
-//=======================================================================================
+//----------------------------------------------------------------------------------------
 uint64_t fnv1a64( uint8_t *data, uint8_t len ) {
   
     uint64_t hash = 0xcbf29ce484222325ULL;
 
-    for( uint8_t i=0;i<len;i++ ) {
+    for ( uint8_t i=0;i<len;i++ ) {
       
         hash ^= data[i];
         hash *= 0x100000001b3ULL;
@@ -83,7 +103,12 @@ uint64_t fnv1a64( uint8_t *data, uint8_t len ) {
     return hash;
 }
 
-uint64_t buildLcsHwUID( ) {
+//----------------------------------------------------------------------------------------
+// Chip UID setup. The attiny chip has a serial number. We construct a unique 64-bit 
+// value from that data.
+//
+//----------------------------------------------------------------------------------------
+uint64_t buildHwUID( ) {
 
     uint8_t uidBuf[ 10 ];
   
@@ -101,59 +126,87 @@ uint64_t buildLcsHwUID( ) {
    return( fnv1a64( uidBuf, sizeof( uidBuf )));
 }
 
-
-//=======================================================================================
-// Watchdog support. 
+//----------------------------------------------------------------------------------------
+// Setup the whatchdog. The moment that function is called, the watchdog timer needs to
+// be resetted periodically.  
 //
 // WDT_PERIOD_8KCLK_gc → ca. 8 s
 // WDT_PERIOD_4KCLK_gc → ca. 4 s
 // WDT_PERIOD_2KCLK_gc → ca. 2 s
 // WDT_PERIOD_1KCLK_gc → ca. 1 s
 //
-//=======================================================================================
+//----------------------------------------------------------------------------------------
 void setupWatchdog( ) {
   
     wdt_enable( WDT_PERIOD_8KCLK_gc ); 
     wdt_reset( );
 }
 
-void feedWatchdog( ) {
-  
-    wdt_reset( );
-}
-
-bool wasWatchdogReset() {
-    
-    uint8_t flags = RSTCTRL.RSTFR;
-    RSTCTRL.RSTFR = flags; 
-    return ( flags & RSTCTRL_WDRF_bm );
-}
-
-//=======================================================================================
-// EEPROM access
+//----------------------------------------------------------------------------------------
+// "formatEEPROM" creates a default memory structure and stores it to the EEPROM. This 
+// function is typically called when the EEPROM is either brand new or was corrupted
+// somehow.
 //
-//=======================================================================================
-void formatEEPROM( ) {
+//----------------------------------------------------------------------------------------
+uint8_t formatEEPROM( ) {
 
-  // ??? just EEPROM.put fields...
-  // ??? at the end update MAGIC and VERSION...
+  I2cMemData tmp;
+
+  uint64_t hwUID = buildHwUID( );
+
+  tmp.head.boardMword       = DRV_MWORD;                   
+  tmp.head.boardInfo        = 0;                    
+  tmp.head.boardCtrlInfo    = 0;               
+  tmp.head.boardVersion     = 0;                 
+  tmp.head.serialNum1       = hwUID & 0xFFFF;                    
+  tmp.head.serialNum2       = ( hwUID >> 16 ) & 0xFFFF;                    
+  tmp.head.serialNum3       = ( hwUID >> 32 ) & 0xFFFF;             
+  tmp.head.serialNum4       = ( hwUID >> 48 ) & 0xFFFF;         
+  tmp.head.boardOptions     = 0;            
+  tmp.head.boardI2cAdr      = 0;           
+  tmp.head.boardStatus      = 0;      
+  tmp.head.boardCommand     = 0;         
+  tmp.head.boardNumOfRegs   = MAX_DRV_ATTRIBUTES;           
+  tmp.head.reserved1        = 0;                      
+  tmp.head.reserved2        = 0;  
+
+  for ( int i = 0; i < MAX_DRV_ATTRIBUTES; i++ ) tmp.data[ i ] = 0;
+
+  EEPROM.put( 0, tmp );
 }
 
-void loadFromEEPROM( ) {
+//----------------------------------------------------------------------------------------
+// After reset, load the memory data structure with the content from the EEPROM. We first
+// read just the header and check the magic word. If the word is valid, the EEPROM is 
+// perhaps valid as well. If not, we format the EEPROM with default content. In either
+// case, we then read the entire memory structure and return with a valid setup.
+// 
+//----------------------------------------------------------------------------------------
+uint8_t loadFromEEPROM( ) {
 
-  // ??? read the magic field.
-  // ??? if OK read the complete header
-  // ??? else formtEEPROM with default values.
+  EEPROM.get( 0, i2cData.head.boardMword );
+
+  if ( i2cData.head.boardMword != DRV_MWORD ) formatEEPROM( );
+
+  EEPROM.get( 0, i2cData );  
 }
 
+//----------------------------------------------------------------------------------------
+// Read a word from the EEPROM. We view the EEPROM as an array of 16-bit words.
+//
+//----------------------------------------------------------------------------------------
 uint16_t readField( uint8_t index ) {
   
     uint16_t value;
     int addr = index * sizeof(uint16_t);
-    EEPROM.get(addr, value);
+    EEPROM.get( addr, value) ;
     return value;
 }
 
+//----------------------------------------------------------------------------------------
+// Write a word to the EEPROM. We view the EEPROM as an array of 16-bit words.
+//
+//----------------------------------------------------------------------------------------
 void updateField( uint8_t index, uint16_t value ) {
   
     int addr = index * sizeof( uint16_t );
@@ -161,20 +214,109 @@ void updateField( uint8_t index, uint16_t value ) {
 }
 
 
+//----------------------------------------------------------------------------------------
+// The I2C channel receiver callback. We are informed that there is data. As long as we
+// have data, we read them in and ...
+//
+//----------------------------------------------------------------------------------------
+void receiveEvent( int numOfBytes ) {
+  
+  while ( Wire.available( )) {
+     
+    uint8_t cmd = Wire.read( );
+  }
+  
+}
+
+//----------------------------------------------------------------------------------------
+// The I2C channel master requests data. Serve thy master bidding.
+//
+//
+//----------------------------------------------------------------------------------------
+void requestEvent( ) {
+
+  Wire.write( 0x00 );
+}
+
+//----------------------------------------------------------------------------------------
+// Setup the I2C channel. We use the I2C address from the header structure and set up
+// the callbacks.
+//
+//----------------------------------------------------------------------------------------
+uint8_t initI2cChannel( ) {
+
+  Wire.begin( i2cData.head.boardI2cAdr );
+  delay( 10 );
+  Wire.onReceive( receiveEvent );
+  Wire.onRequest( requestEvent );
+  return( 0 );
+}
+
+ 
+
+} // namespace
+
+
 //=======================================================================================
 //
 //
 //
 //=======================================================================================
-// ??? habe libary functions for the device firmware writer ?
-// ??? what is a good mental model ?
+// library functions...
+
+//----------------------------------------------------------------------------------------
+// Routine to "feed" the watch dog monster periodically.
+//
+//----------------------------------------------------------------------------------------
+void feedWatchdog( ) {
+  
+    wdt_reset( );
+}
+
+//----------------------------------------------------------------------------------------
+// On startup, we can check if the reset was originated from the watchdog facility.
+//
+//----------------------------------------------------------------------------------------
+bool wasWatchdogReset() {
+    
+    uint8_t flags = RSTCTRL.RSTFR;
+    RSTCTRL.RSTFR = flags; 
+    return ( flags & RSTCTRL_WDRF_bm );
+}
 
 
 
+// ??? what do we need ? 
+
+// ??? should we have routines for accessing the memory strucure or just allow access
+// to it ? 
 
 
+//----------------------------------------------------------------------------------------
+// 
+//
+//
+//----------------------------------------------------------------------------------------
+uint8_t initDrvRuntime( ) {
 
+  loadFromEEPROM( );
+  initI2cChannel( );
 
+  // setupWatchdog( ); // later ...
+
+  return( 0 );
+}
+
+//----------------------------------------------------------------------------------------
+// 
+//
+//
+//----------------------------------------------------------------------------------------
+// ??? should we have a "startRuntime" and also resort to callbacks for the actual 
+// driver code ?
+
+// ??? the main loop just pools the the command word and serves the watchdog.
+// ??? on a valid command, we cold invoke the callback...
 
 
 

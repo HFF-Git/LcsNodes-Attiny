@@ -141,3 +141,5 @@ add_custom_target(flash
     }
   ]
 }
+
+#endif
