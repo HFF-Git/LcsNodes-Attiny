@@ -31,35 +31,34 @@
 
 
 //----------------------------------------------------------------------------------------
-// The BoardDesc structure defines what the board actually represents. It is also
-// the first structure that can be found on the controller board NVM as well as the 
-// extension board controller, which acts like a NVM for that purpose. An Attiny 
-// controller board also has the nice property of a serial number. We use it for I2C
-// bus collision detection. On the PICO, we "invent" a serial number. The header 
-// structure is 32 bytes long and matches exactly what is used in the Attiny world.
+// The LcsBoardDesc structure defines what the board actually represents. It is 
+// also the first structure that can be found on the controller board NVM as well 
+// as the extension board controller, which acts like a NVM for that purpose. An 
+// Atmega Attiny controller board also has the nice property of a serial number. 
+// On the PICO, we "invent" a serial number. The header structure is 32 bytes 
+// long and matches exactly what is used in the Attiny world.
 //
+// The options fields are board specific information. ??? explain what is there...
+// 
+// On the attiny, the header also hosts the current request parameters. A typical
+// sequence will be to fill in the request fields and then periodically poll the
+// status field for completion. 
+//
+// 
 //----------------------------------------------------------------------------------------
 struct LcsDrvBoardDesc {
 
-    uint32_t            boardMword;                     // magic word
-    uint16_t            boardInfo;                      // type/subtype
-    uint16_t            boardCtrlInfo;                  // family / cType
-    uint16_t            boardVersion;                   // major / sub version
-    uint16_t            serialNum1;                     // serial number part 1
-    uint16_t            serialNum2;                     // serial number part 2
-    uint16_t            serialNum3;                     // serial number part 3
-    uint16_t            serialNum4;                     // serial number part 4  
-    uint16_t            boardOptions;                   // board config options
-    uint16_t            boardI2cAdr;                    // board I2C address       
-    uint16_t            boardStatus;                    // board status bits
-    uint16_t            boardCommand;                   // board command 
-    uint16_t            boardNumOfRegs;                 // board registers          
-    uint16_t            reserved1;                      
-    uint16_t            reserved2;  
+    uint16_t            boardMword;                 // 0  - magic word
+    uint16_t            boardType;                  // 1  - family/type/subtype
+    uint16_t            boardVersion;               // 2  - major / sub version
+    uint16_t            serialNum1;                 // 3  - serial number part 1
+    uint16_t            serialNum2;                 // 4  - serial number part 2
+    uint16_t            serialNum3;                 // 5  - serial number part 3
+    uint16_t            serialNum4;                 // 6  - serial number part 4  
+    uint16_t            boardOptions;               // 7  - options, board specific
 };
 
 
-
 //----------------------------------------------------------------------------------------
 
 
@@ -67,7 +66,7 @@ struct LcsDrvBoardDesc {
 //
 //
 //----------------------------------------------------------------------------------------
-const int       MAX_DRV_ATTRIBUTES  = 64;
+const int       MAX_DRV_ATTRIBUTES  = 48;
 const uint32_t  DRV_MWORD           = 0x12345678; // for now ...
 
 //----------------------------------------------------------------------------------------

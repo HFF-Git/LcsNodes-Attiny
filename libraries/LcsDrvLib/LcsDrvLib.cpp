@@ -23,7 +23,7 @@
 //  GNU General Public License:  http://opensource.org/licenses/GPL-3.0
 //
 //========================================================================================
-#include "LcsLib.h"
+#include "LcsDrvLib.h"
 #include <stdint.h>
 #include <avr/io.h>
 #include <avr/wdt.h> 
@@ -155,24 +155,19 @@ uint8_t formatEEPROM( ) {
   uint64_t hwUID = buildHwUID( );
 
   tmp.head.boardMword       = DRV_MWORD;                   
-  tmp.head.boardInfo        = 0;                    
-  tmp.head.boardCtrlInfo    = 0;               
+  tmp.head.boardType        = 0;                                  
   tmp.head.boardVersion     = 0;                 
   tmp.head.serialNum1       = hwUID & 0xFFFF;                    
   tmp.head.serialNum2       = ( hwUID >> 16 ) & 0xFFFF;                    
   tmp.head.serialNum3       = ( hwUID >> 32 ) & 0xFFFF;             
-  tmp.head.serialNum4       = ( hwUID >> 48 ) & 0xFFFF;         
-  tmp.head.boardOptions     = 0;            
-  tmp.head.boardI2cAdr      = 0;           
-  tmp.head.boardStatus      = 0;      
-  tmp.head.boardCommand     = 0;         
-  tmp.head.boardNumOfRegs   = MAX_DRV_ATTRIBUTES;           
-  tmp.head.reserved1        = 0;                      
-  tmp.head.reserved2        = 0;  
-
+  tmp.head.serialNum4       = ( hwUID >> 48 ) & 0xFFFF;   
+  tmp.head.boardOptions     = 0;
+        
   for ( int i = 0; i < MAX_DRV_ATTRIBUTES; i++ ) tmp.data[ i ] = 0;
 
   EEPROM.put( 0, tmp );
+
+  return( 0 );
 }
 
 //----------------------------------------------------------------------------------------
@@ -189,6 +184,8 @@ uint8_t loadFromEEPROM( ) {
   if ( i2cData.head.boardMword != DRV_MWORD ) formatEEPROM( );
 
   EEPROM.get( 0, i2cData );  
+
+  return ( 0 );
 }
 
 //----------------------------------------------------------------------------------------
@@ -245,7 +242,7 @@ void requestEvent( ) {
 //----------------------------------------------------------------------------------------
 uint8_t initI2cChannel( ) {
 
-  Wire.begin( i2cData.head.boardI2cAdr );
+  Wire.begin( 0 ); // fix ....
   delay( 10 );
   Wire.onReceive( receiveEvent );
   Wire.onRequest( requestEvent );
