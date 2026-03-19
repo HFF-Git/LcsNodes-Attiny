@@ -26,73 +26,54 @@
 //========================================================================================
 #pragma once
 
-#include "arduino.h"
-
-
+//----------------------------------------------------------------------------------------
+//
+//
+//----------------------------------------------------------------------------------------
+const uint8_t   MAX_DRV_ATTRIBUTES  = 64;
 
 //----------------------------------------------------------------------------------------
-// The LcsBoardDesc structure defines what the board actually represents. It is 
-// also the first structure that can be found on the controller board NVM as well 
-// as the extension board controller, which acts like a NVM for that purpose. An 
-// Atmega Attiny controller board also has the nice property of a serial number. 
-// On the PICO, we "invent" a serial number. The header structure is 32 bytes 
-// long and matches exactly what is used in the Attiny world.
 //
-// The options fields are board specific information. ??? explain what is there...
-// 
-// On the attiny, the header also hosts the current request parameters. A typical
-// sequence will be to fill in the request fields and then periodically poll the
-// status field for completion. 
 //
-// 
 //----------------------------------------------------------------------------------------
-struct LcsDrvBoardDesc {
+enum DrvCmdItems : uint8_t {
 
-    uint16_t            boardMword;                 // 0  - magic word
-    uint16_t            boardType;                  // 1  - family/type/subtype
-    uint16_t            boardVersion;               // 2  - major / sub version
-    uint16_t            serialNum1;                 // 3  - serial number part 1
-    uint16_t            serialNum2;                 // 4  - serial number part 2
-    uint16_t            serialNum3;                 // 5  - serial number part 3
-    uint16_t            serialNum4;                 // 6  - serial number part 4  
-    uint16_t            boardOptions;               // 7  - options, board specific
+  DRV_CMD_ATTR_START  = 0,
+  DRV_CMD_ATTR_END    = MAX_DRV_ATTRIBUTES - 1,
+
+  DRV_CMD_REQ_START   = 64,
+  DRV_CMD_REQ_END     = 127,
+
+  DRV_CMD_IDLE        = 0xff
 };
 
 
 //----------------------------------------------------------------------------------------
-
-
-//----------------------------------------------------------------------------------------
 //
 //
 //----------------------------------------------------------------------------------------
-const uint16_t  DRV_MWORD           = 0xa5a5;
+enum DrvErrIds : uint8_t {
 
-const int       MAX_DRV_ATTRIBUTES  = 64;
+  DRV_NO_ERR = 0
 
-const uint8_t   DRV_CMD_ATTR_START  = 0;
-const uint8_t   DRV_CMD_ATTR_END    = MAX_DRV_ATTRIBUTES - 1;
-
-const uint8_t   DRV_CMD_REQ_START   = 64;
-const uint8_t   DRV_CMD_REQ_END     = 127;
-
-const uint8_t   DRV_CMD_IDLE        = 0xff;
-
-//----------------------------------------------------------------------------------------
-// I2C operations conceptually access a memory data structure. To the master the data
-// structure just looks like an array of 16-bit words. The words are numbered from zero
-// to header word size plus number of data words. The header is identical to the LcsNodes
-// header used in the PICO controller world. 
-//
-// Parallel to the memmory structure is the EEPROM structure. The EEPROM structure, 
-// initially created by a default formatting, is copied to the memory structure on 
-// device reset. Updates to the memory can be synced to the EEPROM, some words in the
-// memory structure are read-only.
-//
-//----------------------------------------------------------------------------------------
-struct I2cMemData {
-
-  LcsDrvBoardDesc head;                        // words  0 ... 15
-  uint16_t     data[ MAX_DRV_ATTRIBUTES ];  // words 16 ... 79
-
+  
 };
+
+//----------------------------------------------------------------------------------------
+//
+//
+//
+//----------------------------------------------------------------------------------------
+void      feedWatchdog( );
+bool      wasWatchdogReset( );
+
+int       i2cGetRequest( uint8_t *cmd, uint16_t *a0, uint16_t *a1 );
+void      i2cSetResponse( uint8_t rStat, uint16_t r0, uint16_t r1 );
+
+uint16_t  getAttr( uint8_t index );
+void      setAttr( uint8_t index, uint16_t val );
+void      refreshAttr( uint8_t index );
+void      saveAttr( uint8_t index );
+
+uint8_t   initDrvRuntime( );
+void      startDrvRuntime( );

@@ -23,28 +23,14 @@
 //  GNU General Public License:  http://opensource.org/licenses/GPL-3.0
 //
 //========================================================================================
-#include "LcsDrvLib.h"
+#include "arduino.h"
 #include <stdint.h>
 #include <avr/io.h>
 #include <avr/wdt.h> 
-#include <EEPROM.h>
 #include <Wire.h>
-
-// ??? note: we need a library.properties file in the directory to make this mess editable.
-
-//========================================================================================
-//
-//
-//
-//========================================================================================
-// The board is the only one on a bus for programming.
-// Need a way to set the I2C address.
-// have a command that will put the board in PROG mode.
-// have a command to set the I2C address.
-// RESET via watchdog ?
-// have a command that puts the board back to OP mode.
-// remember: add ".development" to the lib directory, so that it can be edited.
-
+#include <EEPROM.h>
+#include "LcsDrvLib.h"
+#include "LcsDrvDesc.h"
 
 //----------------------------------------------------------------------------------------
 // Local name space
@@ -56,11 +42,67 @@ namespace {
 //
 //
 //----------------------------------------------------------------------------------------
+  const uint16_t  DRV_MWORD           = 0xa5a5;
 
-I2cMemData i2cData;
+//----------------------------------------------------------------------------------------
+// The LcsBoardHeader structure defines what the board actually represents. It is 
+// also the first structure that can be found on the controller board EEPROM. An 
+// Atmega Attiny controller board also has the nice property of a serial number. 
+// The header structure is 16 bytes long and matches exactly what is used in the 
+// PICO controller world.
+//
+// The options fields are board specific information. For the Attiny, we store 
+// a couple of flags and the confugured I2C address.
+// 
+//----------------------------------------------------------------------------------------
+struct LcsDrvHeader {
 
+    uint16_t            boardMword;                 // 0  - magic word
+    uint16_t            boardType;                  // 1  - family/type/subtype
+    uint16_t            boardVersion;               // 2  - major / sub version
+    uint16_t            serialNum1;                 // 3  - serial number part 1
+    uint16_t            serialNum2;                 // 4  - serial number part 2
+    uint16_t            serialNum3;                 // 5  - serial number part 3
+    uint16_t            serialNum4;                 // 6  - serial number part 4  
+    uint16_t            boardOptions;               // 7  - options, board specific
+};
 
-                 
+//----------------------------------------------------------------------------------------
+// The attribute storage. It is used by the I2C layer to store and read data and by the
+// access function for the upper firmware layer.
+//
+//----------------------------------------------------------------------------------------
+volatile uint16_t drvAttributes[ MAX_DRV_ATTRIBUTES ];
+
+//----------------------------------------------------------------------------------------
+// The driver header structure. This structure is the first structure in the EEPROM.
+// We read it in when we initialize the driver. 
+//
+//----------------------------------------------------------------------------------------
+LcsDrvHeader drvHeader;
+
+//----------------------------------------------------------------------------------------
+// I2C data structures. We exchange data packets with 3 or 5 bytes. The master sends 
+// a 3 byte data packet for writing attributes and a 5 byte packet for a request with
+// two 16-bit arguments. This allows use to cleanly identify how to react to the write
+// operation. A write of one byte starts a read request. The byte containts the command
+// code which is used to decide of we return an attribute, a two byte answer, or the
+// reqzest data, which is a five byte answer consisting of status byte and two 16-bit
+// arguments.  
+//
+// WRITE-ATTR:  i2cAdr,i2cCommand,i2cArg0-L,i2cArg0-H
+// READ-ATTR:   i2cAdr,i2cCommand,i2cArg0-L,i2cArg0-H 
+// 
+// REQ-SEND: i2cAdr,i2cCommand,i2cArg0-L,i2cArg0-H,i2cArg1-L,i2cArg1-H
+// REQ-RECV: i2cAdr,i2cCommand,i2cStatus,i2cArg0-L,i2cArg0-H,i2cArg1-L,i2cArg1-H
+//----------------------------------------------------------------------------------------
+uint8_t           i2cAdr;
+volatile uint8_t  i2cWriteCmd;
+volatile uint8_t  i2cReadCmd;
+volatile uint8_t  i2cStatus;
+volatile uint16_t i2cArg0;
+volatile uint16_t i2cArg1;
+
 //----------------------------------------------------------------------------------------
 // CRC for serial number validation...
 //
@@ -147,44 +189,49 @@ void setupWatchdog( ) {
 //----------------------------------------------------------------------------------------
 uint8_t formatEEPROM( ) {
 
-  I2cMemData tmp;
+  LcsDrvHeader tmp;
 
   uint64_t hwUID = buildHwUID( );
 
-  tmp.head.boardMword       = DRV_MWORD;                   
-  tmp.head.boardType        = 0;                                  
-  tmp.head.boardVersion     = 0;                 
-  tmp.head.serialNum1       = hwUID & 0xFFFF;                    
-  tmp.head.serialNum2       = ( hwUID >> 16 ) & 0xFFFF;                    
-  tmp.head.serialNum3       = ( hwUID >> 32 ) & 0xFFFF;             
-  tmp.head.serialNum4       = ( hwUID >> 48 ) & 0xFFFF;   
-  tmp.head.boardOptions     = 0;
-        
-  for ( int i = 0; i < MAX_DRV_ATTRIBUTES; i++ ) tmp.data[ i ] = 0;
+  tmp.boardMword       = DRV_MWORD;                   
+  tmp.boardType        = DRV_TYPE;                                  
+  tmp.boardVersion     = DRV_VERSION;                 
+  tmp.serialNum1       = hwUID & 0xFFFF;                    
+  tmp.serialNum2       = ( hwUID >> 16 ) & 0xFFFF;                    
+  tmp.serialNum3       = ( hwUID >> 32 ) & 0xFFFF;             
+  tmp.serialNum4       = ( hwUID >> 48 ) & 0xFFFF;   
+  tmp.boardOptions     = 0;
+
+  for ( int i = 0; i < MAX_DRV_ATTRIBUTES; i++ ) drvAttributes[ i ] = 0;
 
   EEPROM.put( 0, tmp );
-
+  EEPROM.put( sizeof( LcsDrvHeader ), drvAttributes );
+   
   return( 0 );
 }
 
 //----------------------------------------------------------------------------------------
 // After reset, load the memory data structure with the content from the EEPROM. We first
-// read just the header and check the magic word. If the word is valid, the EEPROM is 
-// perhaps valid as well. If not, we format the EEPROM with default content. In either
-// case, we then read the entire memory structure and return with a valid setup.
+// read the header data and check if they mach the program defied constants. If valid, 
+// the remaining data is loaded from the EEPROM. If not, we format the EEPROM with default
+// content. In either case, we return with a valid data setup.
 // 
 //----------------------------------------------------------------------------------------
 uint8_t loadFromEEPROM( ) {
 
-  EEPROM.get( 0, i2cData.head.boardMword );
+    EEPROM.get( 0, drvHeader );
+    if (( drvHeader.boardMword != DRV_MWORD ) ||
+        ( drvHeader.boardType != DRV_TYPE ) ||
+        ( drvHeader.boardVersion != DRV_VERSION )) {
 
-  if ( i2cData.head.boardMword != DRV_MWORD ) formatEEPROM( );
-
-  EEPROM.get( 0, i2cData );  
-
+        formatEEPROM( );
+    }
+  
+  EEPROM.get( sizeof( LcsDrvHeader ), drvAttributes );  
   return ( 0 );
 }
 
+// ??? needed ?
 //----------------------------------------------------------------------------------------
 // Read a word from the EEPROM. We view the EEPROM as an array of 16-bit words.
 //
@@ -192,11 +239,12 @@ uint8_t loadFromEEPROM( ) {
 uint16_t readField( uint8_t index ) {
   
     uint16_t value;
-    int addr = index * sizeof(uint16_t);
+    int addr = index * sizeof( uint16_t );
     EEPROM.get( addr, value) ;
     return value;
 }
 
+// ??? needed ?
 //----------------------------------------------------------------------------------------
 // Write a word to the EEPROM. We view the EEPROM as an array of 16-bit words.
 //
@@ -208,36 +256,12 @@ void updateField( uint8_t index, uint16_t value ) {
 }
 
 //----------------------------------------------------------------------------------------
-// I2C data structures. We exchange data packets with 3 or 5 bytes. The master sends 
-// a 3 byte data packet for writing attributes and a 5 byte packet for a request with
-// two 16-bit arguments. This allows use to cleanly identify how to react to the write
-// operation. A write of one byte starts a read request. The byte containts the command
-// code which is used to decide of we return an attribute, a two byte answer, or the
-// reqzest data, which is a five byte answer consisting of status byte and two 16-bit
-// arguments.  
-//
-// WRITE-ATTR:  i2cAdr,i2cCommand,i2cArg0-L,i2cArg0-H
-// READ-ATTR:   i2cAdr,i2cCommand,i2cArg0-L,i2cArg0-H 
-// 
-// REQ-SEND: i2cAdr,i2cCommand,i2cArg0-L,i2cArg0-H,i2cArg1-L,i2cArg1-H
-// REQ-RECV: i2cAdr,i2cCommand,i2cStatus,i2cArg0-L,i2cArg0-H,i2cArg1-L,i2cArg1-H
-//----------------------------------------------------------------------------------------
-uint8_t           i2cAdr;
-volatile uint8_t  i2cWriteCmd;
-volatile uint8_t  i2cReadCmd;
-volatile uint8_t  i2cStatus;
-volatile uint16_t i2cArg0;
-volatile uint16_t i2cArg1;
-volatile uint16_t drvAttributes[ MAX_DRV_ATTRIBUTES ];
-
-//----------------------------------------------------------------------------------------
-// The I2C channel receiver callback. We are informed that there is data. As long as we
-// have data, we read them in. By proocol definition there are exactly three date sizes.
-// A size of one represents just the command byte. We look at the start of a read 
-// sequence. A data size of three represents the command byte and two data bytes. This 
-// is mapped to an attribute read. We need however to check that the command code 
-// matches. Finally, a data size of five is a driver request. We fill the arguent area
-// and let the upper firmware layer handle it. 
+// The I2C channel receiver callback. We are informed that there is data. By proocol 
+// definition there are exactly three date sizes. A size of one represents just the 
+// command byte. We look at the start of a read sequence. A data size of three represents
+// the command byte and two data bytes. This is mapped to an attribute read. We need 
+// however to check that the command code matches. Finally, a data size of five is a 
+// driver request. We fill the arguent area and let the upper firmware layer handle it. 
 //
 //----------------------------------------------------------------------------------------
 void receiveEvent( int numOfBytes ) {
@@ -252,6 +276,7 @@ void receiveEvent( int numOfBytes ) {
     else if ( numOfBytes == 3 ) {
 
         i2cWriteCmd = Wire.read( );
+        i2cReadCmd  = DRV_CMD_IDLE;
     
         if ( i2cWriteCmd <= DRV_CMD_ATTR_END ) {
 
@@ -290,7 +315,12 @@ void receiveEvent( int numOfBytes ) {
 // The I2C channel master requests data. Serve thy master bidding. We have already 
 // received the command byte and now we need to return the requested data. For a command
 // code for attribute fetch, we just return the attribute data. For a request command
-// coee, we return the status and the two arguments.
+// code, we return the status and the two arguments. 
+//
+// Note that we cannot wait for the upper layer to finish the reqtesed operation. When
+// the master requests a read, we will return data. The key is that the status field
+// will not signal completion. So, the master will typically loop reading the packet
+// until it has a status code of success.
 //
 //----------------------------------------------------------------------------------------
 void requestEvent( ) {
@@ -310,8 +340,8 @@ void requestEvent( ) {
         Wire.write( highByte( i2cArg1 ));
     }
 
-    i2cCommand = DRV_CMD_IDLE;
-    i2cReadCmd = DRV_CMD_IDLE;
+    i2cWriteCmd = DRV_CMD_IDLE;
+    i2cReadCmd  = DRV_CMD_IDLE;
 }
 
 //----------------------------------------------------------------------------------------
@@ -324,8 +354,8 @@ uint8_t initI2cChannel( ) {
   Wire.begin( i2cAdr );
   delay( 10 );
   
-  i2cWriteCmdd  = DRV_CMD_IDLE;
-  i2cReadCmdd   = DRV_CMD_IDLE;
+  i2cWriteCmd   = DRV_CMD_IDLE;
+  i2cReadCmd    = DRV_CMD_IDLE;
   i2cStatus     = 0;
   i2cArg0       = 0;
   i2cArg1       = 0;
@@ -339,14 +369,13 @@ uint8_t initI2cChannel( ) {
 
 
 //=======================================================================================
-//
+// Library functions, externally visible.
 //
 //
 //=======================================================================================
-// library functions...
 
 //----------------------------------------------------------------------------------------
-// Routine to "feed" the watch dog monster periodically.
+// Routine to "feed" the watchdog monster periodically.
 //
 //----------------------------------------------------------------------------------------
 void feedWatchdog( ) {
@@ -358,7 +387,7 @@ void feedWatchdog( ) {
 // On startup, we can check if the reset was originated from the watchdog facility.
 //
 //----------------------------------------------------------------------------------------
-bool wasWatchdogReset() {
+bool wasWatchdogReset( ) {
     
     uint8_t flags = RSTCTRL.RSTFR;
     RSTCTRL.RSTFR = flags; 
@@ -372,7 +401,7 @@ bool wasWatchdogReset() {
 // that there is work to do.
 //
 //----------------------------------------------------------------------------------------
-uint8_t i2cGetRequest( uint8_t *cmd, uint16_t *a0, uint16_t *a1 ) {
+int i2cGetRequest( uint8_t *cmd, uint16_t *arg0, uint16_t *arg1 ) {
 
     if ( i2cWriteCmd != DRV_CMD_IDLE ) {
     
@@ -382,7 +411,7 @@ uint8_t i2cGetRequest( uint8_t *cmd, uint16_t *a0, uint16_t *a1 ) {
         *arg1 = i2cArg1;
         sei( );
 
-        return 1;
+        return ( 1 );
     }
     else return( 0 ); 
 }
@@ -393,54 +422,132 @@ uint8_t i2cGetRequest( uint8_t *cmd, uint16_t *a0, uint16_t *a1 ) {
 // master ask for it.
 //
 //----------------------------------------------------------------------------------------
-void i2cSetResponse(uint8_t rStat, uint16_t r0, uint16_t r1) {
+void i2cSetResponse( uint8_t rStat, uint16_t r0, uint16_t r1 ) {
 
     cli( );
-
     i2cStatus = rStat;
     i2cArg0   = r0;
     i2cArg1   = r1;
-  
     sei( );
 }
 
+//----------------------------------------------------------------------------------------
+// A routine to retrieve an attribute from the attrbute array. Note that we disable
+// interrupts shortly, since the array is a volatile structure. If the index is not
+// within range, a zero value is returned.
+//
+//----------------------------------------------------------------------------------------
+uint16_t getAttr( uint8_t index ) {
 
+    uint16_t tmp;
 
+    if ( index < MAX_DRV_ATTRIBUTES ) {
 
+        cli( ); 
+        tmp = drvAttributes[ index ];
+        sei( );
 
-// ??? what do we need ? 
-
-// ??? should we have routines for accessing the memory strucure or just allow access
-// to it ? 
-
+        return ( tmp );
+    }
+    else return( 0 );
+}
 
 //----------------------------------------------------------------------------------------
-// 
+// A routine to update an attribute of the attribute array. Note that we disable
+// interrupts shortly, since the array is a volatile structure. An invalid index 
+// is no operation.
 //
+//----------------------------------------------------------------------------------------
+void setAttr( uint8_t index, uint16_t val ) {
+
+    if ( index < MAX_DRV_ATTRIBUTES ) {
+
+        cli( ); 
+        drvAttributes[ index ] = val;
+        sei( );
+    }
+}
+
+//----------------------------------------------------------------------------------------
+// "refreshAttr" is a function to refresh an attribute from the EEPROM content. An 
+// invalid index is no operation.
+//
+//----------------------------------------------------------------------------------------
+void refreshAttr( uint8_t index ) {
+
+    if ( index < MAX_DRV_ATTRIBUTES ) {
+
+        int ofs = sizeof( LcsDrvHeader ) + ( index * sizeof( uint16_t ));
+        uint16_t tmp;
+        
+       EEPROM.get( ofs, tmp );
+
+        cli( ); 
+        drvAttributes[ index ] = tmp;
+        cli( ); 
+    }
+}
+
+//----------------------------------------------------------------------------------------
+// "saveAttr" is a function to store an attribute to its EEPROM location. An invalid 
+// index is no operation.
+// 
+//----------------------------------------------------------------------------------------
+void saveAttr( uint8_t index ) {
+
+    if ( index < MAX_DRV_ATTRIBUTES ) {
+
+        int ofs = sizeof( LcsDrvHeader ) + ( index * sizeof( uint16_t ));
+
+        cli( ); 
+        uint16_t tmp = drvAttributes[ index ];
+        cli( ); 
+
+        EEPROM.put( ofs, tmp );
+    }
+}
+
+//----------------------------------------------------------------------------------------
+// The main routine to get the show going. A firmware layer is expected to call this 
+// routine as the first thing. We will load the initial values from the EEPROM and 
+// setup our I2C channel.
 //
 //----------------------------------------------------------------------------------------
 uint8_t initDrvRuntime( ) {
 
   loadFromEEPROM( );
   initI2cChannel( );
-  // setupWatchdog( ); // later ...
-
+ 
   return( 0 );
 }
 
 //----------------------------------------------------------------------------------------
-// 
+// The main loop. After the initialization, the firmware can perform its other setup
+// task and the enter the runtime loop.
 //
+// ??? how do we call the firmware routines ?
 //
+// ??? we may just drop this and let the firmware provide the loop...
 //----------------------------------------------------------------------------------------
 void startDrvRuntime( ) {
 
-    while ( ) {
+   // setupWatchdog( ); // later ...
 
-    
+    while ( true ) {
+
+      
     
     }
 }
+
+
+
+
+
+
+
+
+
 
 
 
