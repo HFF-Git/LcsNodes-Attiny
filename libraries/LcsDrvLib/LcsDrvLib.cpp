@@ -56,9 +56,6 @@ namespace {
 //
 //
 //----------------------------------------------------------------------------------------
-uint16_t ioBuf[ 64 ];
-uint16_t regIndex;      // when the read start, this index is set and auto increments
-                        // on each word received. ( or should it rather do byte thinking ? )
 
 I2cMemData i2cData;
 
@@ -210,29 +207,111 @@ void updateField( uint8_t index, uint16_t value ) {
     EEPROM.put( addr, value );
 }
 
+//----------------------------------------------------------------------------------------
+// I2C data structures. We exchange data packets with 3 or 5 bytes. The master sends 
+// a 3 byte data packet for writing attributes and a 5 byte packet for a request with
+// two 16-bit arguments. This allows use to cleanly identify how to react to the write
+// operation. A write of one byte starts a read request. The byte containts the command
+// code which is used to decide of we return an attribute, a two byte answer, or the
+// reqzest data, which is a five byte answer consisting of status byte and two 16-bit
+// arguments.  
+//
+// WRITE-ATTR:  i2cAdr,i2cCommand,i2cArg0-L,i2cArg0-H
+// READ-ATTR:   i2cAdr,i2cCommand,i2cArg0-L,i2cArg0-H 
+// 
+// REQ-SEND: i2cAdr,i2cCommand,i2cArg0-L,i2cArg0-H,i2cArg1-L,i2cArg1-H
+// REQ-RECV: i2cAdr,i2cCommand,i2cStatus,i2cArg0-L,i2cArg0-H,i2cArg1-L,i2cArg1-H
+//----------------------------------------------------------------------------------------
+uint8_t           i2cAdr;
+volatile uint8_t  i2cWriteCmd;
+volatile uint8_t  i2cReadCmd;
+volatile uint8_t  i2cStatus;
+volatile uint16_t i2cArg0;
+volatile uint16_t i2cArg1;
+volatile uint16_t drvAttributes[ MAX_DRV_ATTRIBUTES ];
 
 //----------------------------------------------------------------------------------------
 // The I2C channel receiver callback. We are informed that there is data. As long as we
-// have data, we read them in and ...
+// have data, we read them in. By proocol definition there are exactly three date sizes.
+// A size of one represents just the command byte. We look at the start of a read 
+// sequence. A data size of three represents the command byte and two data bytes. This 
+// is mapped to an attribute read. We need however to check that the command code 
+// matches. Finally, a data size of five is a driver request. We fill the arguent area
+// and let the upper firmware layer handle it. 
 //
 //----------------------------------------------------------------------------------------
 void receiveEvent( int numOfBytes ) {
-  
-  while ( Wire.available( )) {
-     
-    uint8_t cmd = Wire.read( );
-  }
-  
+
+    if ( numOfBytes == 0 ) return;
+ 
+    if ( numOfBytes == 1 ) {
+
+      i2cReadCmd  = Wire.read( );
+      i2cWriteCmd = DRV_CMD_IDLE;
+    }
+    else if ( numOfBytes == 3 ) {
+
+        i2cWriteCmd = Wire.read( );
+    
+        if ( i2cWriteCmd <= DRV_CMD_ATTR_END ) {
+
+            uint8_t l = Wire.read( );
+            uint8_t h = Wire.read( );
+            drvAttributes[ i2cWriteCmd ] = ( l | ( h << 8 ));
+        
+            i2cReadCmd  = DRV_CMD_IDLE;
+            i2cWriteCmd = DRV_CMD_IDLE;
+        }
+    }
+    else if ( numOfBytes == 5 ) {
+
+        i2cWriteCmd = Wire.read( );
+        i2cReadCmd  = DRV_CMD_IDLE;
+      
+        if (( i2cWriteCmd >= DRV_CMD_REQ_START ) && ( i2cWriteCmd <= DRV_CMD_REQ_END )) {
+      
+            uint16_t arg0 = Wire.read( ) | ( Wire.read( ) << 8 );
+            uint16_t arg1 = Wire.read( ) | ( Wire.read( ) << 8 );
+
+            i2cArg0   = arg0;
+            i2cArg1   = arg1;
+            i2cStatus = 0;
+        }
+    } 
+    else {
+
+      i2cWriteCmd = DRV_CMD_IDLE;
+      i2cReadCmd  = DRV_CMD_IDLE;
+      while ( Wire.available( )) Wire.read( );
+    }
 }
 
 //----------------------------------------------------------------------------------------
-// The I2C channel master requests data. Serve thy master bidding.
-//
+// The I2C channel master requests data. Serve thy master bidding. We have already 
+// received the command byte and now we need to return the requested data. For a command
+// code for attribute fetch, we just return the attribute data. For a request command
+// coee, we return the status and the two arguments.
 //
 //----------------------------------------------------------------------------------------
 void requestEvent( ) {
 
-  Wire.write( 0x00 );
+  if ( i2cReadCmd < DRV_CMD_ATTR_END ) {
+    
+        uint16_t val = drvAttributes[ i2cReadCmd ];
+        Wire.write( lowByte( val ));
+        Wire.write( highByte( val ));
+    } 
+    else {
+      
+        Wire.write( i2cStatus );
+        Wire.write( lowByte( i2cArg0 ));
+        Wire.write( highByte( i2cArg0 ));
+        Wire.write( lowByte( i2cArg1 ));
+        Wire.write( highByte( i2cArg1 ));
+    }
+
+    i2cCommand = DRV_CMD_IDLE;
+    i2cReadCmd = DRV_CMD_IDLE;
 }
 
 //----------------------------------------------------------------------------------------
@@ -242,14 +321,19 @@ void requestEvent( ) {
 //----------------------------------------------------------------------------------------
 uint8_t initI2cChannel( ) {
 
-  Wire.begin( 0 ); // fix ....
+  Wire.begin( i2cAdr );
   delay( 10 );
+  
+  i2cWriteCmdd  = DRV_CMD_IDLE;
+  i2cReadCmdd   = DRV_CMD_IDLE;
+  i2cStatus     = 0;
+  i2cArg0       = 0;
+  i2cArg1       = 0;
+   
   Wire.onReceive( receiveEvent );
   Wire.onRequest( requestEvent );
   return( 0 );
 }
-
- 
 
 } // namespace
 
@@ -281,6 +365,47 @@ bool wasWatchdogReset() {
     return ( flags & RSTCTRL_WDRF_bm );
 }
 
+//----------------------------------------------------------------------------------------
+// The upper firmware layer will periodically call this procedure to check for work. This
+// is a request with two arguments. We run this interrupts disabled to avoid ugly race
+// conditions with the ISR handlers for the I2C interface. A positive return value means
+// that there is work to do.
+//
+//----------------------------------------------------------------------------------------
+uint8_t i2cGetRequest( uint8_t *cmd, uint16_t *a0, uint16_t *a1 ) {
+
+    if ( i2cWriteCmd != DRV_CMD_IDLE ) {
+    
+        cli( );
+        *cmd  = i2cWriteCmd;
+        *arg0 = i2cArg0;
+        *arg1 = i2cArg1;
+        sei( );
+
+        return 1;
+    }
+    else return( 0 ); 
+}
+
+//----------------------------------------------------------------------------------------
+// The upper firmware layer call this procedure to provide the request return. We also 
+// run interrupts disabled and set the reply fields for the I2C code to provide when the
+// master ask for it.
+//
+//----------------------------------------------------------------------------------------
+void i2cSetResponse(uint8_t rStat, uint16_t r0, uint16_t r1) {
+
+    cli( );
+
+    i2cStatus = rStat;
+    i2cArg0   = r0;
+    i2cArg1   = r1;
+  
+    sei( );
+}
+
+
+
 
 
 // ??? what do we need ? 
@@ -298,7 +423,6 @@ uint8_t initDrvRuntime( ) {
 
   loadFromEEPROM( );
   initI2cChannel( );
-
   // setupWatchdog( ); // later ...
 
   return( 0 );
@@ -309,11 +433,22 @@ uint8_t initDrvRuntime( ) {
 //
 //
 //----------------------------------------------------------------------------------------
-// ??? should we have a "startRuntime" and also resort to callbacks for the actual 
-// driver code ?
+void startDrvRuntime( ) {
 
-// ??? the main loop just pools the the command word and serves the watchdog.
-// ??? on a valid command, we cold invoke the callback...
+    while ( ) {
+
+    
+    
+    }
+}
+
+
+
+
+
+
+
+
 
 
 

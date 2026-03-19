@@ -66,8 +66,17 @@ struct LcsDrvBoardDesc {
 //
 //
 //----------------------------------------------------------------------------------------
-const int       MAX_DRV_ATTRIBUTES  = 48;
-const uint32_t  DRV_MWORD           = 0x12345678; // for now ...
+const uint16_t  DRV_MWORD           = 0xa5a5;
+
+const int       MAX_DRV_ATTRIBUTES  = 64;
+
+const uint8_t   DRV_CMD_ATTR_START  = 0;
+const uint8_t   DRV_CMD_ATTR_END    = MAX_DRV_ATTRIBUTES - 1;
+
+const uint8_t   DRV_CMD_REQ_START   = 64;
+const uint8_t   DRV_CMD_REQ_END     = 127;
+
+const uint8_t   DRV_CMD_IDLE        = 0xff;
 
 //----------------------------------------------------------------------------------------
 // I2C operations conceptually access a memory data structure. To the master the data
