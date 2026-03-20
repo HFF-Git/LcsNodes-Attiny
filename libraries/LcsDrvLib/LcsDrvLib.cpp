@@ -27,6 +27,7 @@
 #include <stdint.h>
 #include <avr/io.h>
 #include <avr/wdt.h> 
+#include <avr/interrupt.h>
 #include <Wire.h>
 #include <EEPROM.h>
 #include "LcsDrvLib.h"
@@ -546,732 +547,258 @@ void startDrvRuntime( ) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //=======================================================================================
 //
 //
 //
 //=======================================================================================
-// 4x4 matrix scan
 
-#if 0 
-
-uint16_t raw_state;        // instantaneous scan
-uint16_t stable_state;     // debounced result
-uint8_t  debounce[16];     // per-key counters
-
-// rows Port C
-
-#define ROW_MASK (PIN0_bm | PIN1_bm | PIN2_bm | PIN3_bm)
-
-static void rows_init(void) {
-    PORTC.DIRSET = ROW_MASK;
-    PORTC.OUTSET = ROW_MASK;   // all inactive (HIGH)
-}
-
-// columns port A
-
-#define COL_MASK (PIN0_bm | PIN1_bm | PIN2_bm | PIN3_bm)
-
-static void cols_init(void) {
-    PORTA.DIRCLR = COL_MASK;
-
-    // Enable pull-ups
-    PORTA.PIN0CTRL = PORT_PULLUPEN_bm;
-    PORTA.PIN1CTRL = PORT_PULLUPEN_bm;
-    PORTA.PIN2CTRL = PORT_PULLUPEN_bm;
-    PORTA.PIN3CTRL = PORT_PULLUPEN_bm;
-}
-
-static inline void select_row(uint8_t row) {
-    PORTC.OUTSET = ROW_MASK;
-    PORTC.OUTCLR = (PIN0_bm << row);
-}
-
-static inline void select_row(uint8_t row) {
-    PORTC.OUTSET = ROW_MASK;
-    PORTC.OUTCLR = (PIN0_bm << row);
-}
-
-static uint16_t matrix_scan_raw(void) {
-    uint16_t result = 0;
-
-    for (uint8_t row = 0; row < 4; row++) {
-        select_row(row);
-        _delay_us(10);   // settle time
-
-        uint8_t cols = (~PORTA.IN) & COL_MASK; // active LOW → invert
-
-        for (uint8_t col = 0; col < 4; col++) {
-            if (cols & (PIN0_bm << col)) {
-                result |= (1 << (row * 4 + col));
-            }
-        }
-    }
-
-    return result;
-}
-
-#define DEBOUNCE_TICKS 5   // 5 × 10 ms = 50 ms
-
-static void debounce_update(uint16_t raw) {
-    for (uint8_t i = 0; i < 16; i++) {
-        uint8_t bit = (raw >> i) & 1;
-        uint8_t stable = (stable_state >> i) & 1;
-
-        if (bit == stable) {
-            debounce[i] = 0;   // no change
-        } else {
-            if (++debounce[i] >= DEBOUNCE_TICKS) {
-                stable_state ^= (1 << i);  // accept change
-                debounce[i] = 0;
-            }
-        }
-    }
-}
-
-#define F_CPU 16000000UL
-#include <avr/io.h>
-#include <util/delay.h>
-
-int main(void) {
-    rows_init();
-    cols_init();
-
-    stable_state = 0;
-
-    while (1) {
-        raw_state = matrix_scan_raw();
-        debounce_update(raw_state);
-
-        _delay_ms(10);
-    }
-}
-
-#endif
-
-
-//=======================================================================================
+//----------------------------------------------------------------------------------------
 //
 //
+//----------------------------------------------------------------------------------------
+#define SERVO_COUNT   8
+#define SERVO_SLOT_US 2500
+#define SERVO_MIN_US  500
+#define SERVO_MAX_US  2400
+
+//----------------------------------------------------------------------------------------
+// The servo configuration data. We have the HW pin, the upper and lower limit and a
+// transition time, which specifies how ling it will take going from current position 
+// to the targe position. 
 //
-//=======================================================================================
-// PWM servo stuff - version 1
-
-#if 0
-
-// include file...
-
-#ifndef SERVO_H
-#define SERVO_H
-
-#include <stdint.h>
-
-#define SERVO_MAX 8
-
-void servo_init(void);
-
-/* index: 0..SERVO_MAX-1
- * pin: bit number on PORTA (0..7)
- */
-void servo_attach(uint8_t index, uint8_t pin);
-
-/* pulse width in microseconds (500–2500 typical) */
-void servo_write_us(uint8_t index, uint16_t us);
-
-#endif
-
-
-#include "servo.h"
-#include <avr/io.h>
-#include <avr/interrupt.h>
-
-#define SERVO_FRAME_US 20000
-#define SERVO_MIN_US   500
-#define SERVO_MAX_US   2500
-#define SERVO_GAP_US   4     // tiny inter-servo gap
-
-static volatile uint16_t pulse[SERVO_MAX];
-static volatile uint8_t  mask[SERVO_MAX];
-static volatile uint8_t  count;
-
-static volatile uint8_t  idx;
-static volatile uint8_t  phase;
-static volatile uint16_t acc_time;
-
-void servo_init(void)
-{
-    // GPIO (PORTA only, by design)
-    PORTA.DIR |= 0xFF;
-
-    // Default pulses
-    for (uint8_t i = 0; i < SERVO_MAX; i++)
-        pulse[i] = 1500;
-
-    count = 0;
-    idx = 0;
-    phase = 0;
-    acc_time = 0;
-
-    // TCA0: normal mode, 1 µs tick
-    TCA0.SINGLE.CTRLA = 0;
-    TCA0.SINGLE.CTRLB = TCA_SINGLE_WGMODE_NORMAL_gc;
-    TCA0.SINGLE.CNT   = 0;
-    TCA0.SINGLE.CMP0  = 1000;
-    TCA0.SINGLE.INTCTRL = TCA_SINGLE_CMP0_bm;
-
-    // F_CPU = 4 MHz → DIV4 = 1 MHz
-    TCA0.SINGLE.CTRLA =
-        TCA_SINGLE_CLKSEL_DIV4_gc |
-        TCA_SINGLE_ENABLE_bm;
-}
-
-void servo_attach(uint8_t index, uint8_t pin)
-{
-    if (index >= SERVO_MAX || pin > 7)
-        return;
-
-    mask[index] = (1 << pin);
-    PORTA.DIR  |= (1 << pin);
-
-    if (index >= count)
-        count = index + 1;
-}
-
-void servo_write_us(uint8_t index, uint16_t us)
-{
-    if (index >= count)
-        return;
-
-    if (us < SERVO_MIN_US) us = SERVO_MIN_US;
-    if (us > SERVO_MAX_US) us = SERVO_MAX_US;
-
-    pulse[index] = us;
-}
-
-ISR(TCA0_CMP0_vect)
-{
-    TCA0.SINGLE.INTFLAGS = TCA_SINGLE_CMP0_bm;
-
-    if (!count)
-        return;
-
-    if (phase == 0)
-    {
-        // pulse ON
-        PORTA.OUT |= mask[idx];
-        TCA0.SINGLE.CMP0 += pulse[idx];
-        acc_time += pulse[idx];
-        phase = 1;
-    }
-    else
-    {
-        // pulse OFF
-        PORTA.OUT &= ~mask[idx];
-        idx++;
-
-        if (idx >= count)
-        {
-            // frame gap
-            uint16_t gap = SERVO_FRAME_US - acc_time;
-            TCA0.SINGLE.CMP0 += gap;
-            acc_time = 0;
-            idx = 0;
-        }
-        else
-        {
-            TCA0.SINGLE.CMP0 += SERVO_GAP_US;
-            acc_time += SERVO_GAP_US;
-        }
-
-        phase = 0;
-    }
-}
-
-#endif
-
-
-//=======================================================================================
-//
-//
-//
-//=======================================================================================
-// PWM servo stuff - version 1
-
-#if 0
-
-#ifndef SERVO_H
-#define SERVO_H
-
-#include <stdint.h>
-#include <avr/io.h>
-
-#define SERVO_MAX 8
-
-void servo_init(void);
-
-/* index: 0..SERVO_MAX-1
- * port : &PORTA, &PORTB, ...
- * pin  : bit number (0..7)
- */
-void servo_attach(uint8_t index, PORT_t *port, uint8_t pin);
-
-void servo_write_us(uint8_t index, uint16_t us);
-
-#endif
-
-
-
-#include "servo.h"
-#include <avr/interrupt.h>
-#include <avr/io.h>
-
-#define SERVO_FRAME_US 20000
-#define SERVO_MIN_US   500
-#define SERVO_MAX_US   2500
-#define SERVO_GAP_US   4
-
-
-static volatile uint16_t pulse[SERVO_MAX];
-static volatile uint8_t  mask[SERVO_MAX];
-static PORT_t           *port[SERVO_MAX];
-
-static volatile uint8_t  count;
-static volatile uint8_t  idx;
-static volatile uint8_t  phase;
-static volatile uint16_t acc_time;
-
-
-
-void servo_init(void)
-{
-    for (uint8_t i = 0; i < SERVO_MAX; i++)
-        pulse[i] = 1500;
-
-    count = 0;
-    idx = 0;
-    phase = 0;
-    acc_time = 0;
-
-    // TCA0: 1 µs tick (F_CPU = 4 MHz)
-    TCA0.SINGLE.CTRLA = 0;
-    TCA0.SINGLE.CTRLB = TCA_SINGLE_WGMODE_NORMAL_gc;
-    TCA0.SINGLE.CNT   = 0;
-    TCA0.SINGLE.CMP0  = 1000;
-    TCA0.SINGLE.INTCTRL = TCA_SINGLE_CMP0_bm;
-
-    TCA0.SINGLE.CTRLA =
-        TCA_SINGLE_CLKSEL_DIV4_gc |
-        TCA_SINGLE_ENABLE_bm;
-}
-
-void servo_attach(uint8_t index, PORT_t *p, uint8_t pin)
-{
-    if (index >= SERVO_MAX || pin > 7)
-        return;
-
-    port[index] = p;
-    mask[index] = (1 << pin);
-
-    p->DIR |= mask[index];
-
-    if (index >= count)
-        count = index + 1;
-}
-
-void servo_write_us(uint8_t index, uint16_t us)
-{
-    if (index >= count)
-        return;
-
-    if (us < SERVO_MIN_US) us = SERVO_MIN_US;
-    if (us > SERVO_MAX_US) us = SERVO_MAX_US;
-
-    pulse[index] = us;
-}
-
-
-ISR(TCA0_CMP0_vect)
-{
-    TCA0.SINGLE.INTFLAGS = TCA_SINGLE_CMP0_bm;
-
-    if (!count)
-        return;
-
-    if (phase == 0)
-    {
-        port[idx]->OUTSET = mask[idx];
-        TCA0.SINGLE.CMP0 += pulse[idx];
-        acc_time += pulse[idx];
-        phase = 1;
-    }
-    else
-    {
-        port[idx]->OUTCLR = mask[idx];
-        idx++;
-
-        if (idx >= count)
-        {
-            uint16_t gap = SERVO_FRAME_US - acc_time;
-            TCA0.SINGLE.CMP0 += gap;
-            acc_time = 0;
-            idx = 0;
-        }
-        else
-        {
-            TCA0.SINGLE.CMP0 += SERVO_GAP_US;
-            acc_time += SERVO_GAP_US;
-        }
-
-        phase = 0;
-    }
-}
-
-
-#endif
-
-//=======================================================================================
-//
-//
-//
-//=======================================================================================
-// anotehr servo version 
-
-#if 0 
-
-
-0   Servo0.lower
-2   Servo0.upper
-4   Servo0.transitionTime
-6   Servo1.lower
-8   Servo1.upper
-10  Servo1.transitionTime
-
+// ??? 8-bit values ?
+//----------------------------------------------------------------------------------------
 struct ServoConfig {
-    uint16_t lower;      // Untere Grenze
-    uint16_t upper;      // Obere Grenze
-    uint16_t transitionTime; // in ms
-};
 
-struct ServoState {
-    uint16_t current;    // aktueller PWM Wert
-    uint16_t target;     // Ziel PWM Wert
-    uint32_t lastUpdate; // millis() der letzten Aktualisierung
-};
-
-ServoConfig servoConfig[2]; // RAM
-ServoState servoState[2];   // RAM
-
-#include <EEPROM.h>
-
-void loadServoConfig() {
-    for (uint8_t i=0; i<2; i++) {
-        int addr = i*6;
-        EEPROM.get(addr, servoConfig[i]);
-        // sanity check
-        if (servoConfig[i].lower >= servoConfig[i].upper) {
-            servoConfig[i] = {1000, 2000, 1000}; // default
-            EEPROM.put(addr, servoConfig[i]);
-        }
-        servoState[i].current = servoConfig[i].lower; // Default Position
-        servoState[i].target = servoState[i].current;
-        servoState[i].lastUpdate = millis();
-    }
-}
-
-
-
-void saveServoConfig(uint8_t i) {
-    int addr = i*6;
-    EEPROM.put(addr, servoConfig[i]);
-}
-
-void setServoTarget(uint8_t i, uint16_t value) {
-    if (value < servoConfig[i].lower) value = servoConfig[i].lower;
-    if (value > servoConfig[i].upper) value = servoConfig[i].upper;
-    servoState[i].target = value;
-}
-
-void updateServos() {
-    uint32_t now = millis();
-    static uint8_t lastMoved = 0;
-
-    uint8_t i = (lastMoved == 0) ? 1 : 0; // alternierend
-    ServoState &s = servoState[i];
-    ServoConfig &c = servoConfig[i];
-
-    if (s.current != s.target) {
-        uint32_t dt = now - s.lastUpdate;
-        if (dt == 0) return;
-
-        int32_t diff = s.target - s.current;
-        int32_t step = diff * dt / c.transitionTime;
-        if (step == 0) step = (diff>0)?1:-1;
-
-        s.current += step;
-        if ((diff>0 && s.current > s.target) || (diff<0 && s.current < s.target))
-            s.current = s.target;
-
-        s.lastUpdate = now;
-
-        // hier echten PWM setzen
-        analogWrite(i, s.current);
-
-        lastMoved = i;
-    }
-}
-
-void setup() {
-    pinMode(5, OUTPUT); // Servo0
-    pinMode(6, OUTPUT); // Servo1
-    loadServoConfig();
-    analogWrite(5, servoState[0].current);
-    analogWrite(6, servoState[1].current);
-}
-
-void loop() {
-    updateServos();
-    // Hier könnte I2C oder andere Logik laufen
-}
-
-#endif
-
-//=======================================================================================
-//
-//
-//
-//=======================================================================================
-// Servo improvement...
-#if 0
-
-struct Servo {
-    uint16_t current;
-    uint16_t target;
-
+    uint8_t  pin;
     uint16_t lower;
     uint16_t upper;
-
-    uint16_t transition_ms;
-
-    uint32_t start_time;
-    uint16_t start_value;
+    uint16_t transitionMs;
 };
 
-Servo servo[2];
-
-// start movement ...
-
-void servo_set_target(uint8_t i, uint16_t value)
-{
-    if (value < servo[i].lower) value = servo[i].lower;
-    if (value > servo[i].upper) value = servo[i].upper;
-
-    servo[i].target = value;
-    servo[i].start_value = servo[i].current;
-    servo[i].start_time = millis();
-}
-
-// calculate position
-
-void servo_update(uint8_t i)
-{
-    Servo &s = servo[i];
-
-    if (s.current == s.target)
-        return;
-
-    uint32_t now = millis();
-    uint32_t dt = now - s.start_time;
-
-    if (dt >= s.transition_ms)
-    {
-        s.current = s.target;
-    }
-    else
-    {
-        int32_t diff = (int32_t)s.target - s.start_value;
-        s.current = s.start_value + diff * dt / s.transition_ms;
-    }
-
-    analogWrite(i, s.current);
-}
-
-// schedule alternate
-
-void servo_scheduler()
-{
-    static uint8_t next = 0;
-    static uint32_t last_tick = 0;
-
-    uint32_t now = millis();
-
-    if (now - last_tick < 10)   // 10 ms Tick
-        return;
-
-    last_tick = now;
-
-    servo_update(next);
-
-    next ^= 1;  // 0 -> 1 -> 0 -> 1
-}
-
-
-void loop()
-{
-    servo_scheduler();
-
-    handleI2C();
-
-    Watchdog::feed();
-}
-
-#endif
-
-//=======================================================================================
+//----------------------------------------------------------------------------------------
+// The servo current state data.
 //
-//
-//
-//=======================================================================================
-// another one ... servos do not move simulatenously... smooth no blocking delays
-// no interrupt handler needed... watch dog protects from hangs...
-
-#if 0 
-
-#include <EEPROM.h>
-
-struct ServoConfig {
-    uint16_t lower;
-    uint16_t upper;
-    uint16_t time_ms;
-};
-
+// ??? 8-bit values ?
+//----------------------------------------------------------------------------------------
 struct ServoState {
+  
     uint16_t current;
     uint16_t target;
     uint16_t start;
     uint32_t t0;
 };
 
-ServoConfig cfg[2];
-ServoState st[2];
 
-const ServoConfig defaultCfg[2] =
-{
-    {1000,2000,1000},
-    {1000,2000,1000}
-};
+//----------------------------------------------------------------------------------------
+//
+//
+//----------------------------------------------------------------------------------------
+volatile uint16_t servoPulseWidth[ SERVO_COUNT ];
+ServoConfig       servoConfig[ SERVO_COUNT ];
+ServoState        servoState[ SERVO_COUNT ];
+volatile uint16_t pulseWidth[ SERVO_COUNT ];
 
 
-void servo_load_config()
-{
-    for (uint8_t i=0;i<2;i++)
-    {
-        EEPROM.get(i*sizeof(ServoConfig), cfg[i]);
+//----------------------------------------------------------------------------------------
+// Initialize the servo subsystenm.
+//
+// ??? pass the congig arrray instead of the pins ?
+//----------------------------------------------------------------------------------------
+uint8_t servoSetupServoSubsys( const uint8_t *pins ) {
 
-        if (cfg[i].lower >= cfg[i].upper)
-        {
-            cfg[i] = defaultCfg[i];
-            EEPROM.put(i*sizeof(ServoConfig), cfg[i]);
+   for ( uint8_t i = 0; i < SERVO_COUNT; i++) {
+    
+        servoConfig[ i ].pin = pins[ i ];
+        pinMode(servoConfig[ i ].pin, OUTPUT );
+
+        servoConfig[ i ] = { 1000, 2000, 1000 };
+    }
+
+   for ( uint8_t i = 0; i < SERVO_COUNT; i++ ) {
+
+        servoState[ i ].current = servoConfig[ i ].lower;
+        servoState[ i ].target  = servoConfig[ i ].lower;
+        servoState[ i ].start   = servoState[ i ].current;
+        servoState[ i ].t0      = millis();
+
+        pulseWidth[ i ] = servoState[ i ].current;
+    }
+
+    cli( );
+
+    // TCB0 periodic interrupt mode
+    TCB0.CTRLA = 0;
+    TCB0.CTRLB = TCB_CNTMODE_INT_gc;
+    TCB0.CCMP  = 1000;
+
+    TCB0.INTCTRL = TCB_CAPT_bm;
+
+    // Clock = F_CPU / 2
+    TCB0.CTRLA = TCB_CLKSEL_DIV2_gc | TCB_ENABLE_bm;
+
+    sei( );
+}
+
+//----------------------------------------------------------------------------------------
+// A little abstraction for later replacing the Arduino calls.
+//
+// HAL (ATtiny1616 / AVR 0/1-series)
+//----------------------------------------------------------------------------------------
+static inline void servoSetPinHigh( uint8_t i ) {
+  
+    digitalWrite( servoConfig[ i ].pin, HIGH );
+}
+
+static inline void servoSetPinLow( uint8_t i ) {
+  
+    digitalWrite( servoConfig[ i ].pin, LOW );
+}
+
+static inline void servoSetTimer( uint16_t us ) {
+  
+    uint16_t ticks = (F_CPU / 2000000UL) * us; // F_CPU/2 → 0.5µs
+    TCB0.CCMP = ticks;
+}
+
+//----------------------------------------------------------------------------------------
+// Update the servo state.
+//
+//----------------------------------------------------------------------------------------
+void servoUpdate ( ) {
+  
+    uint32_t now = millis();
+
+    for ( uint8_t i = 0; i < SERVO_COUNT; i++ ) {
+
+        auto &s = servoState[ i ];
+        auto &c = servoConfig[ i ];
+
+        if ( s.current == s.target ) continue;
+
+        uint32_t dt = now - s.t0;
+
+        if ( dt >= c.transitionMs || c.transitionMs == 0 ) {
+          
+            s.current = s.target;
+        }
+        else {
+            
+            int32_t diff = (int32_t)s.target - s.start;
+            s.current = s.start + diff * dt / c.transitionMs;
         }
 
-        st[i].current = cfg[i].lower;
-        st[i].target  = cfg[i].lower;
-        st[i].start   = st[i].current;
-        st[i].t0      = millis();
+        pulseWidth[ i ] = s.current;
     }
 }
 
-void servo_set(uint8_t i,uint16_t value)
-{
-    if(value<cfg[i].lower) value=cfg[i].lower;
-    if(value>cfg[i].upper) value=cfg[i].upper;
+//----------------------------------------------------------------------------------------
+// The servo interrupt handler code. 
+// 
+//----------------------------------------------------------------------------------------
+void servoIsrHandler( ) {
+  
+    static uint8_t servo     = 0;
+    static bool    highPhase = false;
 
-    st[i].target=value;
-    st[i].start=st[i].current;
-    st[i].t0=millis();
-}
+    uint16_t pw = pulseWidth[ servo ];
 
-void servo_update(uint8_t i)
-{
-    auto &s=st[i];
-    auto &c=cfg[i];
+    if ( pw < SERVO_MIN_US ) pw = SERVO_MIN_US;
+    if ( pw > SERVO_MAX_US ) pw = SERVO_MAX_US;
 
-    if(s.current==s.target) return;
+    if ( highPhase ) {
 
-    uint32_t dt=millis()-s.t0;
+        servoSetPinLow( servo );
+        servoSetTimer( SERVO_SLOT_US - pw );
+        highPhase = false;
 
-    if(dt>=c.time_ms)
-        s.current=s.target;
-    else
-    {
-        int32_t diff=(int32_t)s.target-s.start;
-        s.current=s.start+diff*dt/c.time_ms;
+        servo++;
+        if ( servo >= SERVO_COUNT ) servo = 0;
     }
+    else {
 
-    analogWrite(i,s.current);
+        servoSetPinHigh( servo );
+        servoSetTimer( pw );
+        highPhase = true;
+    }
 }
 
-void servo_scheduler()
-{
-    static uint8_t next=0;
-    static uint32_t last=0;
-
-    uint32_t now=millis();
-
-    if(now-last<10) return;   // 10ms tick
-    last=now;
-
-    servo_update(next);
-
-    next^=1;
+//----------------------------------------------------------------------------------------
+// The actual interrupt routine.
+//
+//----------------------------------------------------------------------------------------
+ISR( TCB0_INT_vect ) {
+  
+    TCB0.INTFLAGS = TCB_CAPT_bm; // clear interrupt flag
+    servoIsrHandler( );
 }
 
-void watchdog_begin()
-{
-    _PROTECTED_WRITE(WDT.CTRLA,WDT_PERIOD_64CLK_gc);
+
+//----------------------------------------------------------------------------------------
+// 
+// ??? pass the config structure ?
+//----------------------------------------------------------------------------------------
+uint8_t servoSubsysInit( const uint8_t *pins ) {
+
+    return( servoSetupServoSubsys( pins ));
 }
 
-inline void watchdog_feed()
-{
-    __builtin_avr_wdr();
+//----------------------------------------------------------------------------------------
+// Set a servo position within the bounds of lower and upper config value. We set the
+// new target in the servo state and also remember the time we did it.
+//
+// ??? 8-bit value ?
+//----------------------------------------------------------------------------------------
+void servoSet( uint8_t i, uint16_t value ) {
+  
+    if  ( i >= SERVO_COUNT ) return;
+
+    if ( value < servoConfig[ i ].lower) value = servoConfig[ i ].lower;
+    if ( value > servoConfig[ i ].upper) value = servoConfig[ i ].upper;
+
+    servoState[ i ].target = value;
+    servoState[ i ].start  = servoState[ i ].current;
+    servoState[ i ].t0     = millis( );
 }
 
-void setup()
-{
-    pinMode(0,OUTPUT);
-    pinMode(1,OUTPUT);
 
-    servo_load_config();
 
-    analogWrite(0,st[0].current);
-    analogWrite(1,st[1].current);
 
-    watchdog_begin();
-}
 
-void loop()
-{
-    servo_scheduler();
 
-    handleI2C();   // deine Steuerlogik
 
-    watchdog_feed();
-}
 
-#endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //=======================================================================================

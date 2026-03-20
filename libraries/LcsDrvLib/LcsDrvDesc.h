@@ -24,6 +24,9 @@
 //  GNU General Public License:  http://opensource.org/licenses/GPL-3.0
 //
 //========================================================================================
+
+// ??? this rather belongs to an actual board project .... ?
+
 #pragma once
 
 const uint8_t   DRV_MAJOR_VERSION   = 1;
