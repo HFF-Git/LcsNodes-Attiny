@@ -166,6 +166,19 @@ uint64_t buildHwUID( ) {
    return( fnv1a64( uidBuf, sizeof( uidBuf )));
 }
 
+
+//----------------------------------------------------------------------------------------
+// Setup a basic timer for the timestamp functions.
+//
+// 
+//
+// ??? need to set up a basic timer for the micro/millis function.
+//----------------------------------------------------------------------------------------
+
+
+
+
+
 //----------------------------------------------------------------------------------------
 // Setup the whatchdog. The moment that function is called, the watchdog timer needs to
 // be resetted periodically.  
@@ -369,11 +382,76 @@ uint8_t initI2cChannel( ) {
 } // namespace
 
 
-//=======================================================================================
+//========================================================================================
 // Library functions, externally visible.
 //
 //
-//=======================================================================================
+//========================================================================================
+
+
+
+
+
+//========================================================================================
+// Basic Timer for timestamps and delays.
+//
+//
+//========================================================================================
+
+//----------------------------------------------------------------------------------------
+//
+//
+//----------------------------------------------------------------------------------------
+volatile uint32_t millisCount = 0;
+
+void drvTimeInit( void ) {
+  
+    TCA0.SINGLE.CTRLA     = TCA_SINGLE_CLKSEL_DIV64_gc;
+    // TCA0.SINGLE.PER       = 250; // ~1ms at 16MHz / 64
+    TCA0.SINGLE.PER       = 313; // ~1ms at 20MHz / 64
+    TCA0.SINGLE.INTCTRL   = TCA_SINGLE_OVF_bm;
+    TCA0.SINGLE.CTRLA     |= TCA_SINGLE_ENABLE_bm;
+
+    sei( );
+}
+
+ISR( TCA0_OVF_vect ) {
+  
+    millisCount ++;
+}
+
+uint32_t drvMillis( ) {
+
+    #if 1
+    return( millis( ));
+    #else
+    uint32_t m;
+    cli( );
+    m = millisCount;
+    sei( );
+    return m;
+    #endif
+}
+
+//----------------------------------------------------------------------------------------
+//
+//
+//----------------------------------------------------------------------------------------
+void drvDelay( uint32_t val ) {
+
+    #if 1
+    delay( val );
+    #else 
+    uint32_t start = drvMillis( );
+    while (( drvMillislis( ) - start ) < val );
+    #endif   
+}
+
+//========================================================================================
+// WatchDog Support
+//
+//
+//========================================================================================
 
 //----------------------------------------------------------------------------------------
 // Routine to "feed" the watchdog monster periodically.
@@ -394,6 +472,156 @@ bool wasWatchdogReset( ) {
     RSTCTRL.RSTFR = flags; 
     return ( flags & RSTCTRL_WDRF_bm );
 }
+
+//========================================================================================
+// Digital Input/Output
+//
+//
+//========================================================================================
+
+//----------------------------------------------------------------------------------------
+//
+// Example. drvPinMode( &PORTB, PIN5_bm ) 
+//----------------------------------------------------------------------------------------
+void drvPinOutput(PORT_t *port, uint8_t pinBitmask ) {
+    
+    port -> DIRSET = pinBitmask;
+}
+
+void drvPinInput( PORT_t *port, uint8_t pinBitmask ) {
+  
+    port -> DIRCLR = pinBitmask;
+}
+
+void drvPinPullup ( PORT_t *port, uint8_t pinBitmask ) {
+
+    for ( int i = 0; i < 8; i ++ ) {
+
+        if ( pinBitmask & ( 1 << i )) {
+
+            ( &port->PIN0CTRL )[ i ] = PORT_PULLUPEN_bm;
+        }
+    }
+}
+
+void drvDigitalWrite( PORT_t *port, uint8_t pinBitmask, uint8_t value ) {
+  
+    if ( value ) port -> OUTSET = pinBitmask;
+    else         port -> OUTCLR = pinBitmask;
+}
+
+uint8_t drvDigitalRead( PORT_t *port, uint8_t pinBitmask ) {
+  
+    return (( port ->IN & pinBitmask ) != 0 );
+}
+
+void drvPinHigh( PORT_t *port, uint8_t pinBitmask ) {
+    
+    port -> OUTSET = pinBitmask;
+}
+
+void drvPinLow( PORT_t *port, uint8_t pinBitmask ) {
+    
+    port -> OUTCLR = pinBitmask;
+}
+
+inline void drvPinToggle( PORT_t *port, uint8_t pinBitmask ) {
+  
+    port -> OUTTGL = pinBitmask;
+}
+
+//========================================================================================
+// Analog Input
+//
+//
+//========================================================================================
+
+//----------------------------------------------------------------------------------------
+//
+//
+// Example.
+// drvAdcPinSetup(&PORTA, PIN3_bm);
+//
+// drvAdcInit();
+//
+// uint16_t value = drvAnalogRead(ADC_MUXPOS_AIN3_gc);
+//
+// Actual Voltage: Vin = ( adcValue / 1023 )  * Vref
+//
+//----------------------------------------------------------------------------------------
+void drvAdcInit( ) {
+  
+    // Reference = VDD
+    VREF.CTRLA = VREF_ADC0REFSEL_4V34_gc;
+
+    // ADC clock prescaler
+    ADC0.CTRLC = ADC_PRESC_DIV16_gc;
+
+    // Enable ADC
+    ADC0.CTRLA = ADC_ENABLE_bm;
+
+    // Optional: small delay for stabilization
+    for (volatile int i = 0; i < 1000; i++);
+}
+
+//----------------------------------------------------------------------------------------
+//
+//
+//----------------------------------------------------------------------------------------
+void drvAdcPinSetup(PORT_t *port, uint8_t pinBitmask) {
+  
+    for (uint8_t i = 0; i < 8; i++) {
+      
+        if (pinBitmask & (1 << i)) {
+
+            // 1. Set as input
+            port->DIRCLR = (1 << i);
+
+            // 2. Disable pull-up
+            port->PIN0CTRL |= PORT_PULLUPEN_bm;
+
+            // 3. Disable digital input buffer (optional but recommended)
+            (&port->PIN0CTRL)[i] |= PORT_ISC_INPUT_DISABLE_gc;
+        }
+    }
+}
+
+//----------------------------------------------------------------------------------------
+//
+//
+//----------------------------------------------------------------------------------------
+uint16_t drvAnalogRead( uint8_t muxpos ) {
+  
+    // Select channel
+    ADC0.MUXPOS = muxpos;
+
+    // Start conversion
+    ADC0.COMMAND = ADC_STCONV_bm;
+
+    // Wait for result
+    while ( ! ( ADC0.INTFLAGS & ADC_RESRDY_bm ));
+
+    // Clear flag
+    ADC0.INTFLAGS = ADC_RESRDY_bm;
+
+    return ADC0.RES;
+}
+
+//----------------------------------------------------------------------------------------
+//
+//
+//----------------------------------------------------------------------------------------
+uint32_t adcToMilliVolts( uint16_t adcValue, uint32_t vref_mV ) {
+  
+    return ((uint32_t)adcValue * vref_mV) / 1023;
+}
+
+
+//========================================================================================
+// I2C Support
+//
+//
+//========================================================================================
 
 //----------------------------------------------------------------------------------------
 // The upper firmware layer will periodically call this procedure to check for work. This
@@ -431,6 +659,12 @@ void i2cSetResponse( uint8_t rStat, uint16_t r0, uint16_t r1 ) {
     i2cArg1   = r1;
     sei( );
 }
+
+//========================================================================================
+// Driver Attribute access.
+//
+//
+//========================================================================================
 
 //----------------------------------------------------------------------------------------
 // A routine to retrieve an attribute from the attrbute array. Note that we disable
@@ -508,6 +742,13 @@ void saveAttr( uint8_t index ) {
     }
 }
 
+
+//========================================================================================
+// Library core setup and loop.
+//
+//
+//========================================================================================
+
 //----------------------------------------------------------------------------------------
 // The main routine to get the show going. A firmware layer is expected to call this 
 // routine as the first thing. We will load the initial values from the EEPROM and 
@@ -526,11 +767,11 @@ uint8_t initDrvRuntime( ) {
 // The main loop. After the initialization, the firmware can perform its other setup
 // task and the enter the runtime loop.
 //
-// ??? how do we call the firmware routines ?
+// 
 //
-// ??? we may just drop this and let the firmware provide the loop...
+// ??? we do the loop here but breakout to the driver code...
 //----------------------------------------------------------------------------------------
-void startDrvRuntime( ) {
+void startDrvRuntime( DriverFunction f ) {
 
    // setupWatchdog( ); // later ...
 
@@ -565,13 +806,13 @@ void startDrvRuntime( ) {
 //----------------------------------------------------------------------------------------
 // The servo configuration data. We have the HW pin, the upper and lower limit and a
 // transition time, which specifies how ling it will take going from current position 
-// to the targe position. 
+// to the target position. 
 //
-// ??? 8-bit values ?
 //----------------------------------------------------------------------------------------
 struct ServoConfig {
 
-    uint8_t  pin;
+    PORT_t   port;
+    uint8_t  pinBitMask;
     uint16_t lower;
     uint16_t upper;
     uint16_t transitionMs;
@@ -580,7 +821,7 @@ struct ServoConfig {
 //----------------------------------------------------------------------------------------
 // The servo current state data.
 //
-// ??? 8-bit values ?
+// 
 //----------------------------------------------------------------------------------------
 struct ServoState {
   
@@ -595,10 +836,13 @@ struct ServoState {
 //
 //
 //----------------------------------------------------------------------------------------
-volatile uint16_t servoPulseWidth[ SERVO_COUNT ];
+uint8_t           activeServoCount;
 ServoConfig       servoConfig[ SERVO_COUNT ];
 ServoState        servoState[ SERVO_COUNT ];
-volatile uint16_t pulseWidth[ SERVO_COUNT ];
+volatile uint8_t  activeServo;
+volatile bool     activeServoHighPhase;
+volatile uint16_t servoPulseWidth[ SERVO_COUNT ];
+
 
 
 //----------------------------------------------------------------------------------------
@@ -606,90 +850,84 @@ volatile uint16_t pulseWidth[ SERVO_COUNT ];
 //
 // ??? pass the congig arrray instead of the pins ?
 //----------------------------------------------------------------------------------------
-uint8_t servoSetupServoSubsys( const uint8_t *pins ) {
+uint8_t servoSetupServoSubsys(int numOfServos, ServoConfig *cfg)
+{
+    if (numOfServos > SERVO_COUNT) return 99;
 
-   for ( uint8_t i = 0; i < SERVO_COUNT; i++) {
+    activeServoCount      = numOfServos;
+    activeServo           = 0;
+    activeServoHighPhase  = false;
+
+    // Copy configuration
+    for (uint8_t i = 0; i < numOfServos; i++) {
+
+        servoConfig[i] = cfg[i];
+        drvPinOutput( &servoConfig[i].port, servoConfig[i].pinBitMask);
+    }
+
+    // Initialize state
+    for (uint8_t i = 0; i < numOfServos; i++) {
+
+        servoState[i].current = servoConfig[i].lower;
+        servoState[i].target  = servoConfig[i].lower;
+        servoState[i].start   = servoState[i].current;
+        servoState[i].t0      = millis();
+
+        servoPulseWidth[i] = servoState[i].current;
+    }
     
-        servoConfig[ i ].pin = pins[ i ];
-        pinMode(servoConfig[ i ].pin, OUTPUT );
 
-        servoConfig[ i ] = { 1000, 2000, 1000 };
-    }
+    // Timer setup (TCB0)
+    cli();
 
-   for ( uint8_t i = 0; i < SERVO_COUNT; i++ ) {
+    TCB0.CTRLA    = 0;
+    TCB0.CTRLB    = TCB_CNTMODE_INT_gc;
+    TCB0.CCMP     = 1000;
+    TCB0.INTCTRL  = TCB_CAPT_bm;
+    TCB0.CTRLA    = TCB_CLKSEL_DIV2_gc | TCB_ENABLE_bm;
 
-        servoState[ i ].current = servoConfig[ i ].lower;
-        servoState[ i ].target  = servoConfig[ i ].lower;
-        servoState[ i ].start   = servoState[ i ].current;
-        servoState[ i ].t0      = millis();
+    sei();
 
-        pulseWidth[ i ] = servoState[ i ].current;
-    }
-
-    cli( );
-
-    // TCB0 periodic interrupt mode
-    TCB0.CTRLA = 0;
-    TCB0.CTRLB = TCB_CNTMODE_INT_gc;
-    TCB0.CCMP  = 1000;
-
-    TCB0.INTCTRL = TCB_CAPT_bm;
-
-    // Clock = F_CPU / 2
-    TCB0.CTRLA = TCB_CLKSEL_DIV2_gc | TCB_ENABLE_bm;
-
-    sei( );
+    return 0;
 }
 
 //----------------------------------------------------------------------------------------
-// A little abstraction for later replacing the Arduino calls.
+// 
 //
-// HAL (ATtiny1616 / AVR 0/1-series)
 //----------------------------------------------------------------------------------------
-static inline void servoSetPinHigh( uint8_t i ) {
-  
-    digitalWrite( servoConfig[ i ].pin, HIGH );
-}
-
-static inline void servoSetPinLow( uint8_t i ) {
-  
-    digitalWrite( servoConfig[ i ].pin, LOW );
-}
-
 static inline void servoSetTimer( uint16_t us ) {
   
-    uint16_t ticks = (F_CPU / 2000000UL) * us; // F_CPU/2 → 0.5µs
+    uint16_t ticks = ( F_CPU / 2000000UL ) * us; // F_CPU/2 → 0.5µs
     TCB0.CCMP = ticks;
 }
 
 //----------------------------------------------------------------------------------------
 // Update the servo state.
 //
+// ??? !!! needs to be called periodcally from outer loop.
 //----------------------------------------------------------------------------------------
-void servoUpdate ( ) {
+void servoUpdate( ) {
   
-    uint32_t now = millis();
+    uint32_t now = drvMillis();
 
-    for ( uint8_t i = 0; i < SERVO_COUNT; i++ ) {
+    for (uint8_t i = 0; i < activeServoCount; i++) {
 
-        auto &s = servoState[ i ];
-        auto &c = servoConfig[ i ];
+        auto &s = servoState[i];
+        auto &c = servoConfig[i];
 
-        if ( s.current == s.target ) continue;
+        if (s.current == s.target) continue;
 
         uint32_t dt = now - s.t0;
 
-        if ( dt >= c.transitionMs || c.transitionMs == 0 ) {
-          
+        if (dt >= c.transitionMs || c.transitionMs == 0) {
             s.current = s.target;
         }
         else {
-            
             int32_t diff = (int32_t)s.target - s.start;
             s.current = s.start + diff * dt / c.transitionMs;
         }
 
-        pulseWidth[ i ] = s.current;
+        servoPulseWidth[i] = s.current;
     }
 }
 
@@ -699,28 +937,32 @@ void servoUpdate ( ) {
 //----------------------------------------------------------------------------------------
 void servoIsrHandler( ) {
   
-    static uint8_t servo     = 0;
-    static bool    highPhase = false;
+    static bool    highPhase  = false;
 
-    uint16_t pw = pulseWidth[ servo ];
+    uint16_t pw = servoPulseWidth[ activeServo ];
 
-    if ( pw < SERVO_MIN_US ) pw = SERVO_MIN_US;
-    if ( pw > SERVO_MAX_US ) pw = SERVO_MAX_US;
+    if (pw < SERVO_MIN_US) pw = SERVO_MIN_US;
+    if (pw > SERVO_MAX_US) pw = SERVO_MAX_US;
 
     if ( highPhase ) {
 
-        servoSetPinLow( servo );
+        activeServoHighPhase = false;
+      
+        // End pulse
+        drvPinLow( &servoConfig[activeServo].port, servoConfig[activeServo].pinBitMask );
         servoSetTimer( SERVO_SLOT_US - pw );
-        highPhase = false;
-
-        servo++;
-        if ( servo >= SERVO_COUNT ) servo = 0;
+        
+        // Move to next servo after full cycle
+        activeServo++;
+        if ( activeServo >= activeServoCount ) activeServo = 0;
     }
     else {
 
-        servoSetPinHigh( servo );
+        activeServoHighPhase = true;
+        
+        // Start pulse
+        drvPinHigh(&servoConfig[activeServo].port, servoConfig[activeServo].pinBitMask);
         servoSetTimer( pw );
-        highPhase = true;
     }
 }
 
@@ -729,20 +971,11 @@ void servoIsrHandler( ) {
 //
 //----------------------------------------------------------------------------------------
 ISR( TCB0_INT_vect ) {
-  
+
     TCB0.INTFLAGS = TCB_CAPT_bm; // clear interrupt flag
     servoIsrHandler( );
 }
 
-
-//----------------------------------------------------------------------------------------
-// 
-// ??? pass the config structure ?
-//----------------------------------------------------------------------------------------
-uint8_t servoSubsysInit( const uint8_t *pins ) {
-
-    return( servoSetupServoSubsys( pins ));
-}
 
 //----------------------------------------------------------------------------------------
 // Set a servo position within the bounds of lower and upper config value. We set the
@@ -750,16 +983,24 @@ uint8_t servoSubsysInit( const uint8_t *pins ) {
 //
 // ??? 8-bit value ?
 //----------------------------------------------------------------------------------------
-void servoSet( uint8_t i, uint16_t value ) {
-  
-    if  ( i >= SERVO_COUNT ) return;
+static inline uint16_t servoMap(uint8_t v, uint16_t lower, uint16_t upper)
+{
+    return lower + ((uint32_t)(upper - lower) * v) / 255;
+}
 
-    if ( value < servoConfig[ i ].lower) value = servoConfig[ i ].lower;
-    if ( value > servoConfig[ i ].upper) value = servoConfig[ i ].upper;
+void servoSet(uint8_t i, uint8_t value)
+{
+    if (i >= activeServoCount) return;
 
-    servoState[ i ].target = value;
-    servoState[ i ].start  = servoState[ i ].current;
-    servoState[ i ].t0     = millis( );
+    if (value > 255) value = 255;
+
+    uint16_t mapped = servoMap(value,
+                               servoConfig[i].lower,
+                               servoConfig[i].upper);
+
+    servoState[i].target = mapped;
+    servoState[i].start  = servoState[i].current;
+    servoState[i].t0     = millis();
 }
 
 
