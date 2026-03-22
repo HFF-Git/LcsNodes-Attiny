@@ -66,6 +66,7 @@ enum DrvErrIds : uint8_t {
 //
 //
 //----------------------------------------------------------------------------------------
+void      drvFatalError( int n );
 uint32_t  drvMillis( );
 void      drvDelay( uint32_t val );
 

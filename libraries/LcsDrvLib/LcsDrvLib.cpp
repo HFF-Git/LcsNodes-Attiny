@@ -105,6 +105,23 @@ volatile uint16_t i2cArg0;
 volatile uint16_t i2cArg1;
 
 //----------------------------------------------------------------------------------------
+// "delayMs" is used by teh fatal error code setting. When reporting a fatal error, as
+// little as possible software should be used. Hence we have a minimalistic delay 
+// routine.
+//
+//----------------------------------------------------------------------------------------
+void delayMs( uint16_t ms ) {
+  
+    while ( ms-- ) {
+      
+        // ~20,000 cycles per ms → 5000 iterations × ~4 cycles
+        for ( uint16_t i = 0; i < 5000; i++ ) {
+            __asm__ __volatile__( "nop" );
+        }
+    }
+}
+
+//----------------------------------------------------------------------------------------
 // CRC for serial number validation...
 //
 //----------------------------------------------------------------------------------------
@@ -383,14 +400,48 @@ uint8_t initI2cChannel( ) {
 
 
 //========================================================================================
+//========================================================================================
 // Library functions, externally visible.
 //
 //
 //========================================================================================
+//========================================================================================
 
 
+//========================================================================================
+// Fatal Error Support
+//
+//
+//========================================================================================
 
+//----------------------------------------------------------------------------------------
+//
+//
+//----------------------------------------------------------------------------------------
+void drvFatalError( int n ) {
 
+    PORT_t  *port       = &PORTB;
+    uint8_t pinBitMask  = 0;  // fix ...
+    int     longPulse   = 1500;
+    int     shortPulse  = 500;
+
+    n = n % 8;
+    port -> DIRSET = pinBitMask;
+
+    while ( true ) {
+
+        delayMs( longPulse );
+       
+        for ( int i = 0; i < n; i++ ) {
+
+            
+            port -> OUTSET = pinBitMask;
+            delayMs( shortPulse );
+            port -> OUTCLR = pinBitMask;
+            delayMs( shortPulse );
+        }
+    }
+}
 
 //========================================================================================
 // Basic Timer for timestamps and delays.
@@ -483,7 +534,7 @@ bool wasWatchdogReset( ) {
 //
 // Example. drvPinMode( &PORTB, PIN5_bm ) 
 //----------------------------------------------------------------------------------------
-void drvPinOutput(PORT_t *port, uint8_t pinBitmask ) {
+void drvPinOutput( PORT_t *port, uint8_t pinBitmask ) {
     
     port -> DIRSET = pinBitmask;
 }
