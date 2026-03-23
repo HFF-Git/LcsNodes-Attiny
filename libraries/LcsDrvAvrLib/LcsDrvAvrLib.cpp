@@ -506,9 +506,10 @@ uint32_t drvMillis( ) {
     return( millis( ));
     #else
     uint32_t m;
+    uint8_t  sreg = SREG;
     cli( );
     m = millisCount;
-    sei( );
+    SREG = sreg;
     return m;
     #endif
 }
@@ -762,9 +763,10 @@ uint16_t getAttr( uint8_t index ) {
 
     if ( index < MAX_DRV_ATTRIBUTES ) {
 
+        uint8_t sreg = SREG;
         cli( ); 
         tmp = drvAttributes[ index ];
-        sei( );
+        SREG = sreg;
 
         return ( tmp );
     }
@@ -787,9 +789,10 @@ void setAttr( uint8_t index, uint16_t val ) {
 
     if (( index >= 8 ) && ( index < MAX_DRV_ATTRIBUTES )) {
       
-        cli( ); 
+        uint8_t sreg = SREG;
+        cli( );  
         drvAttributes[ index ] = val;
-        sei( );
+        SREG = sreg;
     }
 }
 
@@ -807,9 +810,10 @@ void refreshAttr( uint8_t index ) {
         
        EEPROM.get( ofs, tmp );
 
-        cli( ); 
+        uint8_t sreg = SREG;
+        cli( );  
         drvAttributes[ index ] = tmp;
-        cli( ); 
+        SREG = sreg; 
     }
 }
 
@@ -825,9 +829,10 @@ void saveAttr( uint8_t index ) {
 
         int ofs = EEPROM_ATTR_RANGE_OFS + ( index * sizeof( uint16_t ));
 
+        uint8_t sreg = SREG;
         cli( ); 
         uint16_t tmp = drvAttributes[ index ];
-        cli( ); 
+        SREG = sreg;
 
         EEPROM.put( ofs, tmp );
     }
@@ -858,6 +863,8 @@ void saveAttr( uint8_t index ) {
 #define SERVO_SLOT_US 2500
 #define SERVO_MIN_US  500
 #define SERVO_MAX_US  2400
+#define SERVO_US_MIN 1000
+#define SERVO_US_MAX 2000
 
 //----------------------------------------------------------------------------------------
 // The servo configuration data. We have the HW pin, the upper and lower limit and a
@@ -867,11 +874,11 @@ void saveAttr( uint8_t index ) {
 //----------------------------------------------------------------------------------------
 struct ServoConfig {
 
-    PORT_t   port;
-    uint8_t  pinBitMask;
-    uint16_t lower;
-    uint16_t upper;
-    uint16_t transitionMs;
+    PORT_t    *port;
+    uint8_t   pinBitMask;
+    uint8_t   lower;
+    uint8_t   upper;
+    uint16_t  transitionMs;
 };
 
 //----------------------------------------------------------------------------------------
@@ -886,7 +893,6 @@ struct ServoState {
     uint32_t t0;
 };
 
-
 //----------------------------------------------------------------------------------------
 // Global variables for servo support.
 //
@@ -898,11 +904,38 @@ volatile uint8_t  activeServo;
 volatile bool     activeServoHighPhase;
 volatile uint16_t servoPulseWidth[ SERVO_COUNT ];
 
+//----------------------------------------------------------------------------------------
+//
+//
+//----------------------------------------------------------------------------------------
+uint16_t mapToUs( uint8_t v ) {
+    
+    return ( SERVO_US_MIN + ((uint32_t)( SERVO_US_MAX - SERVO_US_MIN ) * v ) / 255 );
+}
+
+//----------------------------------------------------------------------------------------
+//
+//
+//----------------------------------------------------------------------------------------
+void servoSetupTimer( ) {
+
+    // Timer setup (TCB0)
+    uint8_t sreg = SREG;
+    cli( ); 
+
+    TCB0.CTRLA    = 0;
+    TCB0.CTRLB    = TCB_CNTMODE_INT_gc;
+    TCB0.CCMP     = 1000;
+    TCB0.INTCTRL  = TCB_CAPT_bm;
+    TCB0.CTRLA    = TCB_CLKSEL_DIV2_gc | TCB_ENABLE_bm;
+
+    SREG = sreg;
+}
 
 //----------------------------------------------------------------------------------------
 // Initialize the servo subsystenm.
 //
-// ??? pass the congig arrray instead of the pins ?
+// 
 // ??? pass attribute index and store all this data in attributes in the first place ?
 //----------------------------------------------------------------------------------------
 uint8_t servoSetupServoSubsys( int numOfServos, ServoConfig *cfg ) {
@@ -914,35 +947,27 @@ uint8_t servoSetupServoSubsys( int numOfServos, ServoConfig *cfg ) {
     activeServoHighPhase  = false;
 
     // Copy configuration
-    for (uint8_t i = 0; i < numOfServos; i++) {
+    for ( uint8_t i = 0; i < numOfServos; i++ ) {
 
         servoConfig[i] = cfg[i];
-        drvPinOutput( &servoConfig[i].port, servoConfig[i].pinBitMask);
+        drvPinOutput( servoConfig[i].port, servoConfig[i].pinBitMask);
     }
 
     // Initialize state
-    for (uint8_t i = 0; i < numOfServos; i++) {
+    for ( uint8_t i = 0; i < numOfServos; i++ ) {
 
-        servoState[i].current = servoConfig[i].lower;
-        servoState[i].target  = servoConfig[i].lower;
+        servoState[i].current = mapToUs(servoConfig[i].lower);
+        servoState[i].target  = servoState[i].current;
         servoState[i].start   = servoState[i].current;
-        servoState[i].t0      = millis();
+        servoState[i].t0      = drvMillis();
 
         servoPulseWidth[i] = servoState[i].current;
     }
     
 
     // Timer setup (TCB0)
-    cli();
-
-    TCB0.CTRLA    = 0;
-    TCB0.CTRLB    = TCB_CNTMODE_INT_gc;
-    TCB0.CCMP     = 1000;
-    TCB0.INTCTRL  = TCB_CAPT_bm;
-    TCB0.CTRLA    = TCB_CLKSEL_DIV2_gc | TCB_ENABLE_bm;
-
-    sei();
-
+    servoSetupTimer( );
+    
     return 0;
 }
 
@@ -950,16 +975,62 @@ uint8_t servoSetupServoSubsys( int numOfServos, ServoConfig *cfg ) {
 // 
 //
 //----------------------------------------------------------------------------------------
-static inline void servoSetTimer( uint16_t us ) {
+void servoSetTimer( uint16_t us ) {
   
     uint16_t ticks = ( F_CPU / 2000000UL ) * us; // F_CPU/2 → 0.5µs
     TCB0.CCMP = ticks;
 }
 
 //----------------------------------------------------------------------------------------
+// The servo interrupt handler code. 
+// 
+//----------------------------------------------------------------------------------------
+void servoIsrHandler( ) {
+  
+    static bool    highPhase  = false;
+
+    uint16_t pw = servoPulseWidth[ activeServo ];
+
+    if (pw < SERVO_MIN_US) pw = SERVO_MIN_US;
+    if (pw > SERVO_MAX_US) pw = SERVO_MAX_US;
+
+    if ( activeServoHighPhase ) {
+
+        activeServoHighPhase = false;
+      
+        // End pulse
+        drvPinLow( servoConfig[activeServo].port, servoConfig[activeServo].pinBitMask );
+        servoSetTimer( SERVO_SLOT_US - pw );
+        
+        // Move to next servo after full cycle
+        activeServo++;
+        if ( activeServo >= activeServoCount ) activeServo = 0;
+    }
+    else {
+
+        activeServoHighPhase = true;
+        
+        // Start pulse
+        drvPinHigh( servoConfig[activeServo].port, servoConfig[activeServo].pinBitMask);
+        servoSetTimer( pw );
+    }
+}
+
+//----------------------------------------------------------------------------------------
+// The actual interrupt routine.
+//
+//----------------------------------------------------------------------------------------
+ISR( TCB0_INT_vect ) {
+
+    TCB0.INTFLAGS = TCB_CAPT_bm; // clear interrupt flag
+    servoIsrHandler( );
+}
+
+//----------------------------------------------------------------------------------------
 // Update the servo state.
 //
 // ??? !!! needs to be called periodcally from outer loop.
+// ??? is this also a good place to keep attributes and config in sync ?
 //----------------------------------------------------------------------------------------
 void servoUpdate( ) {
   
@@ -982,81 +1053,57 @@ void servoUpdate( ) {
             s.current = s.start + diff * dt / c.transitionMs;
         }
 
+        uint8_t sreg = SREG;
+        cli();
         servoPulseWidth[i] = s.current;
+        SREG = sreg;
     }
 }
 
 //----------------------------------------------------------------------------------------
-// The servo interrupt handler code. 
-// 
+//
+//
 //----------------------------------------------------------------------------------------
-void servoIsrHandler( ) {
+void servoSet( uint8_t i, uint8_t value ) {
   
-    static bool    highPhase  = false;
+    if ( i >= activeServoCount ) return;
 
-    uint16_t pw = servoPulseWidth[ activeServo ];
+    auto &cfg = servoConfig[ i ];
+    auto &st  = servoState[ i ];
 
-    if (pw < SERVO_MIN_US) pw = SERVO_MIN_US;
-    if (pw > SERVO_MAX_US) pw = SERVO_MAX_US;
+    // Clamp to configured limits
+    if ( value < cfg.lower ) value = cfg.lower;
+    if ( value > cfg.upper ) value = cfg.upper;
 
-    if ( highPhase ) {
+    // Convert to pulse width
+    uint16_t targetUs = mapToUs( value );
 
-        activeServoHighPhase = false;
-      
-        // End pulse
-        drvPinLow( &servoConfig[activeServo].port, servoConfig[activeServo].pinBitMask );
-        servoSetTimer( SERVO_SLOT_US - pw );
-        
-        // Move to next servo after full cycle
-        activeServo++;
-        if ( activeServo >= activeServoCount ) activeServo = 0;
-    }
-    else {
-
-        activeServoHighPhase = true;
-        
-        // Start pulse
-        drvPinHigh(&servoConfig[activeServo].port, servoConfig[activeServo].pinBitMask);
-        servoSetTimer( pw );
-    }
+    st.target = targetUs;
+    st.start  = st.current;
+    st.t0     = millis();
 }
 
-//----------------------------------------------------------------------------------------
-// The actual interrupt routine.
-//
-//----------------------------------------------------------------------------------------
-ISR( TCB0_INT_vect ) {
-
-    TCB0.INTFLAGS = TCB_CAPT_bm; // clear interrupt flag
-    servoIsrHandler( );
-}
-
-
-//----------------------------------------------------------------------------------------
-// Set a servo position within the bounds of lower and upper config value. We set the
-// new target in the servo state and also remember the time we did it.
-//
-// ??? 8-bit value ?
-//----------------------------------------------------------------------------------------
-static inline uint16_t servoMap(uint8_t v, uint16_t lower, uint16_t upper)
-{
-    return lower + ((uint32_t)(upper - lower) * v) / 255;
-}
-
-void servoSet(uint8_t i, uint8_t value)
+// for debugging / calibration.
+void servoSetUs(uint8_t i, uint16_t us)
 {
     if (i >= activeServoCount) return;
 
-    if (value > 255) value = 255;
+    if (us < SERVO_MIN_US) us = SERVO_MIN_US;
+    if (us > SERVO_MAX_US) us = SERVO_MAX_US;
 
-    uint16_t mapped = servoMap(value,
-                               servoConfig[i].lower,
-                               servoConfig[i].upper);
+    auto &st = servoState[i];
 
-    servoState[i].target = mapped;
-    servoState[i].start  = servoState[i].current;
-    servoState[i].t0     = millis();
+    st.target = us;
+    st.start  = st.current;
+    st.t0     = drvMillis();
 }
+
+//----------------------------------------------------------------------------------------
+//
+//
+//----------------------------------------------------------------------------------------
+void servoSetMin(uint8_t i) { servoSet( i, 0 ); }
+void servoSetMax(uint8_t i) { servoSet( i, 255 ); }
 
 
 
