@@ -30,20 +30,22 @@
 #include <avr/interrupt.h>
 #include <Wire.h>
 #include <EEPROM.h>
-#include "LcsDrvLib.h"
+#include "LcsDrvAvrLib.h"
 #include "LcsDrvDesc.h"
 
 //----------------------------------------------------------------------------------------
-// Local name space
+// Local name space. We keep here the local declarations and utility functions.
 //
 //----------------------------------------------------------------------------------------
 namespace {
 
 //----------------------------------------------------------------------------------------
-//
+// The magic word. A confugured EEPROM needs to have as the first two bytes this number.
 //
 //----------------------------------------------------------------------------------------
-  const uint16_t  DRV_MWORD           = 0xa5a5;
+  const uint16_t  EEPROM_MWORD            = 0xa5a5;
+  const uint16_t  EEPROM_MWORD_OFS        = 0;
+  const uint16_t  EEPROM_ATTR_RANGE_OFS   = 8;
 
 //----------------------------------------------------------------------------------------
 // The LcsBoardHeader structure defines what the board actually represents. It is 
@@ -55,6 +57,18 @@ namespace {
 // The options fields are board specific information. For the Attiny, we store 
 // a couple of flags and the confugured I2C address.
 // 
+//
+// ??? rethink this. We need to check the magic word. Fine.
+// ??? the board type and version could also be the first two attributes. Easier to 
+// read this way. 
+// ??? the serial number is produced on request. No need to store.
+// ??? the boardOptions could be actually two words, one for the library and one 
+// for the firmware. Both are also atributes. The library word is readonly and 
+// can only be modifed by the configuratio process. The firmware options word
+// is passed through the init runtime.
+//
+// ??? the EEPROM would then mirror the attributes as before. BUT there is no
+// header in that sense.
 //----------------------------------------------------------------------------------------
 struct LcsDrvHeader {
 
@@ -67,6 +81,21 @@ struct LcsDrvHeader {
     uint16_t            serialNum4;                 // 6  - serial number part 4  
     uint16_t            boardOptions;               // 7  - options, board specific
 };
+
+//----------------------------------------------------------------------------------------
+//
+// Attribute - the first 8 are reserved. Leaves 56 for the firmware.
+//
+//  0 - boardType
+//  1 - boardVersion
+//  2 - serialNum1
+//  3 - serialNum2
+//  4 - serialNum3
+//  5 - serialNum4
+//  6 - boardOptions
+//  7 - firmwareOptions
+//
+//----------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------
 // The attribute storage. It is used by the I2C layer to store and read data and by the
@@ -224,7 +253,7 @@ uint8_t formatEEPROM( ) {
 
   uint64_t hwUID = buildHwUID( );
 
-  tmp.boardMword       = DRV_MWORD;                   
+  tmp.boardMword       = EEPROM_MWORD;                   
   tmp.boardType        = DRV_TYPE;                                  
   tmp.boardVersion     = DRV_VERSION;                 
   tmp.serialNum1       = hwUID & 0xFFFF;                    
@@ -251,7 +280,7 @@ uint8_t formatEEPROM( ) {
 uint8_t loadFromEEPROM( ) {
 
     EEPROM.get( 0, drvHeader );
-    if (( drvHeader.boardMword != DRV_MWORD ) ||
+    if (( drvHeader.boardMword != EEPROM_MWORD ) ||
         ( drvHeader.boardType != DRV_TYPE ) ||
         ( drvHeader.boardVersion != DRV_VERSION )) {
 
@@ -555,13 +584,13 @@ void drvPinPullup ( PORT_t *port, uint8_t pinBitmask ) {
     }
 }
 
-void drvDigitalWrite( PORT_t *port, uint8_t pinBitmask, uint8_t value ) {
+void drvPinWrite( PORT_t *port, uint8_t pinBitmask, uint8_t value ) {
   
     if ( value ) port -> OUTSET = pinBitmask;
     else         port -> OUTCLR = pinBitmask;
 }
 
-uint8_t drvDigitalRead( PORT_t *port, uint8_t pinBitmask ) {
+uint8_t drvPinRead( PORT_t *port, uint8_t pinBitmask ) {
   
     return (( port ->IN & pinBitmask ) != 0 );
 }
@@ -576,7 +605,7 @@ void drvPinLow( PORT_t *port, uint8_t pinBitmask ) {
     port -> OUTCLR = pinBitmask;
 }
 
-inline void drvPinToggle( PORT_t *port, uint8_t pinBitmask ) {
+void drvPinToggle( PORT_t *port, uint8_t pinBitmask ) {
   
     port -> OUTTGL = pinBitmask;
 }
@@ -588,91 +617,88 @@ inline void drvPinToggle( PORT_t *port, uint8_t pinBitmask ) {
 //========================================================================================
 
 //----------------------------------------------------------------------------------------
+// Seetup the ADC subsystem. We set the reference voltage and clock prescaler and finally
+// enable the ADC hardware.
 //
-//
-// Example.
-// drvAdcPinSetup(&PORTA, PIN3_bm);
-//
-// drvAdcInit();
-//
-// uint16_t value = drvAnalogRead(ADC_MUXPOS_AIN3_gc);
-//
-// Actual Voltage: Vin = ( adcValue / 1023 )  * Vref
-//
+// ??? how to set it for our RailCOm scenario ?
 //----------------------------------------------------------------------------------------
 void drvAdcInit( ) {
-  
-    // Reference = VDD
+ 
     VREF.CTRLA = VREF_ADC0REFSEL_4V34_gc;
-
-    // ADC clock prescaler
     ADC0.CTRLC = ADC_PRESC_DIV16_gc;
-
-    // Enable ADC
     ADC0.CTRLA = ADC_ENABLE_bm;
 
-    // Optional: small delay for stabilization
-    for (volatile int i = 0; i < 1000; i++);
+    for ( volatile int i = 0; i < 1000; i++ ); // delay a little
 }
 
 //----------------------------------------------------------------------------------------
-//
+// Configure a pin for analog input. We are passed the port and port bitmask.
+// 
+// Example.drvAdcPinSetup( &PORTA, PIN3_bm );
 //
 //----------------------------------------------------------------------------------------
-void drvAdcPinSetup(PORT_t *port, uint8_t pinBitmask) {
+void drvAdcPinSetup(PORT_t *port, uint8_t pinBitmask ) {
   
-    for (uint8_t i = 0; i < 8; i++) {
+    for ( uint8_t i = 0; i < 8; i++ ) {
       
-        if (pinBitmask & (1 << i)) {
+        if ( pinBitmask & ( 1 << i )) {
 
-            // 1. Set as input
-            port->DIRCLR = (1 << i);
-
-            // 2. Disable pull-up
-            port->PIN0CTRL |= PORT_PULLUPEN_bm;
-
-            // 3. Disable digital input buffer (optional but recommended)
-            (&port->PIN0CTRL)[i] |= PORT_ISC_INPUT_DISABLE_gc;
+            port->DIRCLR              = ( 1 << i );
+            port->PIN0CTRL            |= PORT_PULLUPEN_bm;
+            ( &port->PIN0CTRL ) [i ]  |= PORT_ISC_INPUT_DISABLE_gc;
         }
     }
 }
 
 //----------------------------------------------------------------------------------------
+// Read analog input. In contrast to the port bitmap used for the pin, the analog hardware
+// is simply indexed to select the channel.
 //
+// Example: uint16_t value = drvAnalogRead( ADC_MUXPOS_AIN3_gc );
+//
+// Actual Voltage: Vin = ( adcValue / 1023 )  * Vref
 //
 //----------------------------------------------------------------------------------------
 uint16_t drvAnalogRead( uint8_t muxpos ) {
   
-    // Select channel
     ADC0.MUXPOS = muxpos;
-
-    // Start conversion
     ADC0.COMMAND = ADC_STCONV_bm;
 
-    // Wait for result
     while ( ! ( ADC0.INTFLAGS & ADC_RESRDY_bm ));
-
-    // Clear flag
+    
     ADC0.INTFLAGS = ADC_RESRDY_bm;
 
-    return ADC0.RES;
+    return ( ADC0.RES );
 }
 
 //----------------------------------------------------------------------------------------
-//
+// A little helper function to convert adc digits to a voltage.
 //
 //----------------------------------------------------------------------------------------
 uint32_t adcToMilliVolts( uint16_t adcValue, uint32_t vref_mV ) {
   
-    return ((uint32_t)adcValue * vref_mV) / 1023;
+    return ((uint32_t) adcValue * vref_mV ) / 1023;
 }
 
 
 //========================================================================================
 // I2C Support
 //
-//
 //========================================================================================
+// At the heart of the satellite board is an I2C interface. Commands are sent to the 
+// satllite board, data is rwad or written to the attribute map. The implementation 
+// features a cenzral mempory data structure. The I2C slave routines store and retrieve
+// data from this data structure, the fimrware upper layer accesses this memory via 
+// defined procedures. Finally, this memory is backed by repsective EEPROM locations.
+// 
+// Care has to be taken when accessing the memory. The I2C slave interface runs as an
+// interrupt routine. So memory access from teh upper layer needs to be synchornized. 
+// Data, i.e. attribute access, is pwerformed directly in the I2C interrupt handler.
+// A function request from the LCS node is stored in global variables. Teh firmware
+// layer periodcally polls these locations. When there is a request, it is handled
+// and the result written back to the request locations.
+//
+//----------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------
 // The upper firmware layer will periodically call this procedure to check for work. This
@@ -714,8 +740,15 @@ void i2cSetResponse( uint8_t rStat, uint16_t r0, uint16_t r1 ) {
 //========================================================================================
 // Driver Attribute access.
 //
-//
 //========================================================================================
+// Attributes are a common concept in LCS. The satellite board also features a set of 
+// attributes accessible to the firmware. There are 64 attribites. The first eight are
+// reserved for the satellite libray and contains information such as board type or 
+// version. Attributes 8 to 63 are available to the firmeware. Attributes are also 
+// bac up by the EEPROM. There are routines to save or restore an attribute to or from
+// its EEPROM location.
+//
+//----------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------
 // A routine to retrieve an attribute from the attrbute array. Note that we disable
@@ -743,11 +776,17 @@ uint16_t getAttr( uint8_t index ) {
 // interrupts shortly, since the array is a volatile structure. An invalid index 
 // is no operation.
 //
+// ??? not all attributes are writable.
+// ??? should we allow the setting, just not from remote ?
+// ??? this way we could set boardtype and version, etc. programatically in the 
+// startup code.
 //----------------------------------------------------------------------------------------
 void setAttr( uint8_t index, uint16_t val ) {
 
-    if ( index < MAX_DRV_ATTRIBUTES ) {
+    if ( index >= MAX_DRV_ATTRIBUTES ) return;
 
+    if (( index >= 8 ) && ( index < MAX_DRV_ATTRIBUTES )) {
+      
         cli( ); 
         drvAttributes[ index ] = val;
         sei( );
@@ -756,14 +795,14 @@ void setAttr( uint8_t index, uint16_t val ) {
 
 //----------------------------------------------------------------------------------------
 // "refreshAttr" is a function to refresh an attribute from the EEPROM content. An 
-// invalid index is no operation.
-//
+// invalid index is no operation. The entire attribute range is a valid index input.
+// 
 //----------------------------------------------------------------------------------------
 void refreshAttr( uint8_t index ) {
 
     if ( index < MAX_DRV_ATTRIBUTES ) {
 
-        int ofs = sizeof( LcsDrvHeader ) + ( index * sizeof( uint16_t ));
+        int ofs = EEPROM_ATTR_RANGE_OFS + ( index * sizeof( uint16_t ));
         uint16_t tmp;
         
        EEPROM.get( ofs, tmp );
@@ -776,14 +815,15 @@ void refreshAttr( uint8_t index ) {
 
 //----------------------------------------------------------------------------------------
 // "saveAttr" is a function to store an attribute to its EEPROM location. An invalid 
-// index is no operation.
+// index is no operation. The entire attribute range is a valid index input.
 // 
+// ??? where do we check remote access to 0 .. 7 ?
 //----------------------------------------------------------------------------------------
 void saveAttr( uint8_t index ) {
 
     if ( index < MAX_DRV_ATTRIBUTES ) {
 
-        int ofs = sizeof( LcsDrvHeader ) + ( index * sizeof( uint16_t ));
+        int ofs = EEPROM_ATTR_RANGE_OFS + ( index * sizeof( uint16_t ));
 
         cli( ); 
         uint16_t tmp = drvAttributes[ index ];
@@ -793,61 +833,26 @@ void saveAttr( uint8_t index ) {
     }
 }
 
-
-//========================================================================================
-// Library core setup and loop.
-//
-//
-//========================================================================================
-
-//----------------------------------------------------------------------------------------
-// The main routine to get the show going. A firmware layer is expected to call this 
-// routine as the first thing. We will load the initial values from the EEPROM and 
-// setup our I2C channel.
-//
-//----------------------------------------------------------------------------------------
-uint8_t initDrvRuntime( ) {
-
-  loadFromEEPROM( );
-  initI2cChannel( );
- 
-  return( 0 );
-}
-
-//----------------------------------------------------------------------------------------
-// The main loop. After the initialization, the firmware can perform its other setup
-// task and the enter the runtime loop.
-//
-// 
-//
-// ??? we do the loop here but breakout to the driver code...
-//----------------------------------------------------------------------------------------
-void startDrvRuntime( DriverFunction f ) {
-
-   // setupWatchdog( ); // later ...
-
-    while ( true ) {
-
-      
-    
-    }
-}
-
-
-
-
-
-
-
 //=======================================================================================
-//
+// Servo support.
 //
 //
 //=======================================================================================
-
-//----------------------------------------------------------------------------------------
+// LCS features a servo library. Up to eight services are managed by the drivr library.
+// Each servo has a lower and upper limit for the servo position. IN addition, there
+// is a time value how long it should take to go from a current position to the target
+// position. 
 //
+// Servos are nicely staggered in the time slot. As each servo ecpects ot be refreshed
+// 50 times a second, we place the up to eight servos in the 20ms slot one after the 
+// other in their own 2.5 millsecod slot. Hence eight sevos max. 
 //
+// The servo subsysten has its onw table with the configuration data. Typically, the 
+// three values lower, upper and time are defined in the attribute range and synched
+// with this memory structure.
+//
+// ??? idea is to lower the total current consumption. 
+// ??? we could also have an attribute with "position".
 //----------------------------------------------------------------------------------------
 #define SERVO_COUNT   8
 #define SERVO_SLOT_US 2500
@@ -872,7 +877,6 @@ struct ServoConfig {
 //----------------------------------------------------------------------------------------
 // The servo current state data.
 //
-// 
 //----------------------------------------------------------------------------------------
 struct ServoState {
   
@@ -884,7 +888,7 @@ struct ServoState {
 
 
 //----------------------------------------------------------------------------------------
-//
+// Global variables for servo support.
 //
 //----------------------------------------------------------------------------------------
 uint8_t           activeServoCount;
@@ -895,15 +899,15 @@ volatile bool     activeServoHighPhase;
 volatile uint16_t servoPulseWidth[ SERVO_COUNT ];
 
 
-
 //----------------------------------------------------------------------------------------
 // Initialize the servo subsystenm.
 //
 // ??? pass the congig arrray instead of the pins ?
+// ??? pass attribute index and store all this data in attributes in the first place ?
 //----------------------------------------------------------------------------------------
-uint8_t servoSetupServoSubsys(int numOfServos, ServoConfig *cfg)
-{
-    if (numOfServos > SERVO_COUNT) return 99;
+uint8_t servoSetupServoSubsys( int numOfServos, ServoConfig *cfg ) {
+  
+    if ( numOfServos > SERVO_COUNT ) return 99;
 
     activeServoCount      = numOfServos;
     activeServo           = 0;
@@ -1070,6 +1074,47 @@ void servoSet(uint8_t i, uint8_t value)
 
 
 
+
+
+
+//========================================================================================
+// Library core setup and loop.
+//
+//
+//========================================================================================
+
+//----------------------------------------------------------------------------------------
+// The main routine to get the show going. A firmware layer is expected to call this 
+// routine as the first thing. We will load the initial values from the EEPROM and 
+// setup our I2C channel.
+//
+//----------------------------------------------------------------------------------------
+uint8_t initDrvRuntime( uint16_t boardType, uint16_t boardVersion ) {
+
+  loadFromEEPROM( );
+  initI2cChannel( );
+ 
+  return( 0 );
+}
+
+//----------------------------------------------------------------------------------------
+// The main loop. After the initialization, the firmware can perform its other setup
+// task and the enter the runtime loop.
+//
+// 
+//
+// ??? we do the loop here but breakout to the driver code...
+//----------------------------------------------------------------------------------------
+void startDrvRuntime( DriverFunction f ) {
+
+   // setupWatchdog( ); // later ...
+
+    while ( true ) {
+
+      
+    
+    }
+}
 
 
 

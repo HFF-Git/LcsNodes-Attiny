@@ -81,5 +81,5 @@ void      setAttr( uint8_t index, uint16_t val );
 void      refreshAttr( uint8_t index );
 void      saveAttr( uint8_t index );
 
-uint8_t   initDrvRuntime( );
+uint8_t   initDrvRuntime( uint16_t boardType, uint16_t boardVersion );
 void      startDrvRuntime( );
