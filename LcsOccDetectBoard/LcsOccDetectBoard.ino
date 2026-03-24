@@ -29,54 +29,61 @@
 #include <avr/wdt.h> 
 #include <Wire.h>
 #include <EEPROM.h>
-#include "LcsDrvLib.h"
+#include "LcsDrvAvrLib.h"
 
 
 //=======================================================================================
 //
 //
 //
+//=======================================================================================
+#include "arduino.h"
+#include <stdint.h>
+#include <avr/io.h>
+#include <util/delay.h>
+#include "LcsDrvAvrLib.h"
+
 //=======================================================================================
 // 4x4 matrix scan
+//=======================================================================================
 
-#if 0 
+uint16_t raw_state;
+uint16_t stable_state;
+uint8_t  debounce[16];
 
-uint16_t raw_state;        // instantaneous scan
-uint16_t stable_state;     // debounced result
-uint8_t  debounce[16];     // per-key counters
-
-// rows Port C
+//---------------------------------------------------------------------------------------
+// Pin masks
+//---------------------------------------------------------------------------------------
 
 #define ROW_MASK (PIN0_bm | PIN1_bm | PIN2_bm | PIN3_bm)
-
-static void rows_init(void) {
-    PORTC.DIRSET = ROW_MASK;
-    PORTC.OUTSET = ROW_MASK;   // all inactive (HIGH)
-}
-
-// columns port A
-
 #define COL_MASK (PIN0_bm | PIN1_bm | PIN2_bm | PIN3_bm)
 
+//---------------------------------------------------------------------------------------
+// Initialization
+//---------------------------------------------------------------------------------------
+
+static void rows_init(void) {
+    drvPinOutput(&PORTC, ROW_MASK);
+    drvPinHigh(&PORTC, ROW_MASK);   // all inactive (HIGH)
+}
+
 static void cols_init(void) {
-    PORTA.DIRCLR = COL_MASK;
-
-    // Enable pull-ups
-    PORTA.PIN0CTRL = PORT_PULLUPEN_bm;
-    PORTA.PIN1CTRL = PORT_PULLUPEN_bm;
-    PORTA.PIN2CTRL = PORT_PULLUPEN_bm;
-    PORTA.PIN3CTRL = PORT_PULLUPEN_bm;
+    drvPinInput(&PORTA, COL_MASK);
+    drvPinPullup(&PORTA, COL_MASK);
 }
 
-static inline void select_row(uint8_t row) {
-    PORTC.OUTSET = ROW_MASK;
-    PORTC.OUTCLR = (PIN0_bm << row);
-}
+//---------------------------------------------------------------------------------------
+// Row selection
+//---------------------------------------------------------------------------------------
 
 static inline void select_row(uint8_t row) {
-    PORTC.OUTSET = ROW_MASK;
-    PORTC.OUTCLR = (PIN0_bm << row);
+    drvPinHigh(&PORTC, ROW_MASK);                 // all HIGH
+    drvPinLow(&PORTC, (PIN0_bm << row));          // one LOW
 }
+
+//---------------------------------------------------------------------------------------
+// Matrix scan
+//---------------------------------------------------------------------------------------
 
 static uint16_t matrix_scan_raw(void) {
     uint16_t result = 0;
@@ -85,7 +92,8 @@ static uint16_t matrix_scan_raw(void) {
         select_row(row);
         _delay_us(10);   // settle time
 
-        uint8_t cols = (~PORTA.IN) & COL_MASK; // active LOW → invert
+        // Read all columns at once
+        uint8_t cols = ( ~ drvPortRead( &PORTA )) & COL_MASK;
 
         for (uint8_t col = 0; col < 4; col++) {
             if (cols & (PIN0_bm << col)) {
@@ -97,7 +105,11 @@ static uint16_t matrix_scan_raw(void) {
     return result;
 }
 
-#define DEBOUNCE_TICKS 5   // 5 × 10 ms = 50 ms
+//---------------------------------------------------------------------------------------
+// Debounce
+//---------------------------------------------------------------------------------------
+
+#define DEBOUNCE_TICKS 5
 
 static void debounce_update(uint16_t raw) {
     for (uint8_t i = 0; i < 16; i++) {
@@ -105,47 +117,29 @@ static void debounce_update(uint16_t raw) {
         uint8_t stable = (stable_state >> i) & 1;
 
         if (bit == stable) {
-            debounce[i] = 0;   // no change
+            debounce[i] = 0;
         } else {
             if (++debounce[i] >= DEBOUNCE_TICKS) {
-                stable_state ^= (1 << i);  // accept change
+                stable_state ^= (1 << i);
                 debounce[i] = 0;
             }
         }
     }
 }
 
-#define F_CPU 16000000UL
-#include <avr/io.h>
-#include <util/delay.h>
-
-int main(void) {
-    rows_init();
-    cols_init();
-
-    stable_state = 0;
-
-    while (1) {
-        raw_state = matrix_scan_raw();
-        debounce_update(raw_state);
-
-        _delay_ms(10);
-    }
-}
-
-#endif
-
-
-
-
-
+//---------------------------------------------------------------------------------------
+// Arduino entry points
+//---------------------------------------------------------------------------------------
 
 void setup() {
-  // put your setup code here, to run once:
-
+    rows_init();
+    cols_init();
+    stable_state = 0;
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+    raw_state = matrix_scan_raw();
+    debounce_update(raw_state);
 
+    _delay_ms(10);
 }

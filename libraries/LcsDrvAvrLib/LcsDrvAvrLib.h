@@ -73,6 +73,16 @@ void      drvDelay( uint32_t val );
 void      feedWatchdog( );
 bool      wasWatchdogReset( );
 
+void      drvPinOutput( PORT_t *port, uint8_t pinBitmask );
+void      drvPinInput( PORT_t *port, uint8_t pinBitmask );
+void      drvPinPullup ( PORT_t *port, uint8_t pinBitmask );
+void      drvPinWrite( PORT_t *port, uint8_t pinBitmask, uint8_t value );
+uint8_t   drvPinRead( PORT_t *port, uint8_t pinBitmask );
+uint8_t   drvPortRead(  PORT_t *port );
+void      drvPinHigh( PORT_t *port, uint8_t pinBitmask );
+void      drvPinLow( PORT_t *port, uint8_t pinBitmask );
+void      drvPinToggle( PORT_t *port, uint8_t pinBitmask );
+
 int       i2cGetRequest( uint8_t *cmd, uint16_t *a0, uint16_t *a1 );
 void      i2cSetResponse( uint8_t rStat, uint16_t r0, uint16_t r1 );
 
