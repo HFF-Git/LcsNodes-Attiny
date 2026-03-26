@@ -26,6 +26,8 @@
 //========================================================================================
 #pragma once
 
+namespace LCSDRV {
+
 typedef void ( *DriverFunction )( void );
 
 //----------------------------------------------------------------------------------------
@@ -93,3 +95,5 @@ void      saveAttr( uint8_t index );
 
 uint8_t   initDrvRuntime( uint16_t boardType, uint16_t boardVersion );
 void      startDrvRuntime( );
+
+} // namespace LCSDRV

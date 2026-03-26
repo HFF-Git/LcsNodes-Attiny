@@ -10,18 +10,18 @@
 //
 // Servos are nicely staggered in the time slot. As each servo expects to be refreshed
 // 50 times a second, we place the up to eight servos in the 20ms slot one after the 
-// other in their own 2.5 millsecod slot. Hence eight sevos max. 
+// other in their own 2.5 millisecond slot. Hence eight servos max. 
 //
-// The servo subsysten has its onw table with the configuration data. Typically, the 
+// The servo subsystem has its on table with the configuration data. Typically, the 
 // three values lower, upper and time are defined in the attribute range and synched
 // with this memory structure.
 //
 // ??? idea is to lower the total current consumption. 
 // ??? we could also have an attribute with "position".
 //
-// ??? is this a good idea to keep this outsode of the AVR library ? 
+// ??? is this a good idea to keep this outside of the AVR library ? 
 // ??? we could also have a flag that says we use servos or not. 
-// ??? the issue might oly be that we use a dedicated timer. 
+// ??? the issue might only be that we use a dedicated timer. 
 // ??? bit then we can keep the main loop inside and take care of all work that needs
 // to be done ...
 // 
@@ -51,12 +51,7 @@
 #include "LcsDrvAvrLib.h"
 #include "LcsDrvDesc.h"
 
-
-extern void drvPinOutput( PORT_t *port, uint8_t pinBitmask ) ;
-
-extern void drvPinHigh( PORT_t *port, uint8_t pinBitmask );
-
-extern void drvPinLow( PORT_t *port, uint8_t pinBitmask );
+using namespace LCSDRV;
 
 //----------------------------------------------------------------------------------------
 // Local name space. We keep here the local declarations and utility functions.
@@ -155,7 +150,7 @@ void servoSetupTimer( ) {
 }
 
 //----------------------------------------------------------------------------------------
-// Initialize the servo subsystenm.
+// Initialize the servo subsystem.
 //
 // 
 // ??? pass attribute index and store all this data in attributes in the first place ?
@@ -252,7 +247,7 @@ ISR( TCB0_INT_vect ) {
 //----------------------------------------------------------------------------------------
 // Update the servo state.
 //
-// ??? !!! needs to be called periodcally from outer loop.
+// ??? !!! needs to be called periodically from outer loop.
 // ??? is this also a good place to keep attributes and config in sync ?
 //----------------------------------------------------------------------------------------
 void servoUpdate( ) {

@@ -1,6 +1,6 @@
 //========================================================================================
 //
-// 
+// LCS Driver Core Library - ATTINY version. 
 //
 //----------------------------------------------------------------------------------------
 // 
@@ -39,48 +39,15 @@
 //----------------------------------------------------------------------------------------
 namespace {
 
-//----------------------------------------------------------------------------------------
-// The magic word. A confugured EEPROM needs to have as the first two bytes this number.
-//
-//----------------------------------------------------------------------------------------
-  const uint16_t  EEPROM_MWORD            = 0xa5a5;
-  const uint16_t  EEPROM_MWORD_OFS        = 0;
-  const uint16_t  EEPROM_ATTR_RANGE_OFS   = 8;
+using namespace LCSDRV;
 
 //----------------------------------------------------------------------------------------
-// The LcsBoardHeader structure defines what the board actually represents. It is 
-// also the first structure that can be found on the controller board EEPROM. An 
-// Atmega Attiny controller board also has the nice property of a serial number. 
-// The header structure is 16 bytes long and matches exactly what is used in the 
-// PICO controller world.
+// EEPROM.
 //
-// The options fields are board specific information. For the Attiny, we store 
-// a couple of flags and the confugured I2C address.
-// 
-//
-// ??? rethink this. We need to check the magic word. Fine.
-// ??? the board type and version could also be the first two attributes. Easier to 
-// read this way. 
-// ??? the serial number is produced on request. No need to store.
-// ??? the boardOptions could be actually two words, one for the library and one 
-// for the firmware. Both are also atributes. The library word is readonly and 
-// can only be modifed by the configuratio process. The firmware options word
-// is passed through the init runtime.
-//
-// ??? the EEPROM would then mirror the attributes as before. BUT there is no
-// header in that sense.
 //----------------------------------------------------------------------------------------
-struct LcsDrvHeader {
-
-    uint16_t            boardMword;                 // 0  - magic word
-    uint16_t            boardType;                  // 1  - family/type/subtype
-    uint16_t            boardVersion;               // 2  - major / sub version
-    uint16_t            serialNum1;                 // 3  - serial number part 1
-    uint16_t            serialNum2;                 // 4  - serial number part 2
-    uint16_t            serialNum3;                 // 5  - serial number part 3
-    uint16_t            serialNum4;                 // 6  - serial number part 4  
-    uint16_t            boardOptions;               // 7  - options, board specific
-};
+const uint16_t  EEPROM_MWORD            = 0xa5a5;
+const uint16_t  EEPROM_HEADER_OFS       = 0;
+const uint16_t  EEPROM_ATTR_RANGE_OFS   = 16;
 
 //----------------------------------------------------------------------------------------
 //
@@ -98,6 +65,12 @@ struct LcsDrvHeader {
 //----------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------
+//
+//
+//----------------------------------------------------------------------------------------
+volatile uint32_t millisCount = 0;
+
+//----------------------------------------------------------------------------------------
 // The attribute storage. It is used by the I2C layer to store and read data and by the
 // access function for the upper firmware layer.
 //
@@ -105,19 +78,12 @@ struct LcsDrvHeader {
 volatile uint16_t drvAttributes[ MAX_DRV_ATTRIBUTES ];
 
 //----------------------------------------------------------------------------------------
-// The driver header structure. This structure is the first structure in the EEPROM.
-// We read it in when we initialize the driver. 
-//
-//----------------------------------------------------------------------------------------
-LcsDrvHeader drvHeader;
-
-//----------------------------------------------------------------------------------------
 // I2C data structures. We exchange data packets with 3 or 5 bytes. The master sends 
 // a 3 byte data packet for writing attributes and a 5 byte packet for a request with
 // two 16-bit arguments. This allows use to cleanly identify how to react to the write
-// operation. A write of one byte starts a read request. The byte containts the command
+// operation. A write of one byte starts a read request. The byte contains the command
 // code which is used to decide of we return an attribute, a two byte answer, or the
-// reqzest data, which is a five byte answer consisting of status byte and two 16-bit
+// request data, which is a five byte answer consisting of status byte and two 16-bit
 // arguments.  
 //
 // WRITE-ATTR:  i2cAdr,i2cCommand,i2cArg0-L,i2cArg0-H
@@ -134,7 +100,7 @@ volatile uint16_t i2cArg0;
 volatile uint16_t i2cArg1;
 
 //----------------------------------------------------------------------------------------
-// "delayMs" is used by teh fatal error code setting. When reporting a fatal error, as
+// "delayMs" is used by the fatal error code setting. When reporting a fatal error, as
 // little as possible software should be used. Hence we have a minimalistic delay 
 // routine.
 //
@@ -173,7 +139,7 @@ uint8_t crc8( const uint8_t *data, size_t len ) {
 }
 
 //----------------------------------------------------------------------------------------
-// Hash function for building a 64-bit value from teh buffer input.
+// Hash function for building a 64-bit value from the buffer input.
 //
 //----------------------------------------------------------------------------------------
 uint64_t fnv1a64( uint8_t *data, uint8_t len ) {
@@ -212,22 +178,30 @@ uint64_t buildHwUID( ) {
    return( fnv1a64( uidBuf, sizeof( uidBuf )));
 }
 
-
 //----------------------------------------------------------------------------------------
-// Setup a basic timer for the timestamp functions.
 //
-// 
 //
-// ??? need to set up a basic timer for the micro/millis function.
+//
 //----------------------------------------------------------------------------------------
+void drvTimeInit( void ) {
+  
+    TCA0.SINGLE.CTRLA     = TCA_SINGLE_CLKSEL_DIV64_gc;
+    // TCA0.SINGLE.PER       = 250; // ~1ms at 16MHz / 64
+    TCA0.SINGLE.PER       = 313; // ~1ms at 20MHz / 64
+    TCA0.SINGLE.INTCTRL   = TCA_SINGLE_OVF_bm;
+    TCA0.SINGLE.CTRLA     |= TCA_SINGLE_ENABLE_bm;
 
+    sei( );
+}
 
-
-
+ISR( TCA0_OVF_vect ) {
+  
+    millisCount ++;
+}
 
 //----------------------------------------------------------------------------------------
-// Setup the whatchdog. The moment that function is called, the watchdog timer needs to
-// be resetted periodically.  
+// Setup the watchdog. The moment that function is called, the watchdog timer needs to
+// be reseted periodically.  
 //
 // WDT_PERIOD_8KCLK_gc → ca. 8 s
 // WDT_PERIOD_4KCLK_gc → ca. 4 s
@@ -242,32 +216,97 @@ void setupWatchdog( ) {
 }
 
 //----------------------------------------------------------------------------------------
+//
+// ??? check it out ...
+//----------------------------------------------------------------------------------------
+void drvEepromReadWord( uint16_t wordOffset, uint16_t *value ) {
+    
+    if ( wordOffset >= ( EEPROM_SIZE / 2 )) return;
+
+    const uint8_t *eeprom = (const uint8_t *)( EEPROM_START + ( wordOffset * 2 ));
+
+    *value = eeprom[ 0 ] | ((uint16_t) eeprom[ 1 ] << 8 );
+}
+
+#ifndef NVMCTRL_CMD_EEERWR_gc
+#define NVMCTRL_CMD_EEERWR_gc 0x03
+#endif
+
+static void eepromWriteByte( uint16_t addr, uint8_t value ) {
+   
+    // Wait until EEPROM is ready
+    while ( NVMCTRL.STATUS & NVMCTRL_EEBUSY_bm );
+
+    // Set address and data FIRST
+    NVMCTRL.ADDR = addr;
+    NVMCTRL.DATA = value;
+
+    // Atomic command execution
+    uint8_t sreg = SREG;
+    cli();
+
+    CCP = CCP_SPM_gc;
+    NVMCTRL.CTRLA = NVMCTRL_CMD_EEERWR_gc;
+
+    SREG = sreg;
+}
+
+void drvEepromWriteWord( uint16_t wordOffset, uint16_t value ) {
+  
+    if ( wordOffset >= ( EEPROM_SIZE / 2 )) return;
+
+    uint16_t addr = wordOffset * 2;
+    const uint8_t *eeprom = (const uint8_t *)( EEPROM_START + addr );
+
+    uint8_t low  = value & 0xFF;
+    uint8_t high = value >> 8;
+
+    // Only write bytes that changed
+    if ( eeprom[ 0 ] != low  ) eepromWriteByte( addr, low );
+    if ( eeprom[ 1 ] != high ) eepromWriteByte( addr + 1, high );
+}
+
+//----------------------------------------------------------------------------------------
 // "formatEEPROM" creates a default memory structure and stores it to the EEPROM. This 
 // function is typically called when the EEPROM is either brand new or was corrupted
 // somehow.
 //
 //----------------------------------------------------------------------------------------
-uint8_t formatEEPROM( ) {
+void formatEEPROM( ) {
 
-  LcsDrvHeader tmp;
+    uint64_t hwUID = buildHwUID( );
+  
+    drvAttributes[ 0 ] = DRV_TYPE;
+    drvAttributes[ 1 ] = DRV_VERSION;
+    drvAttributes[ 2 ] = hwUID & 0xFFFF; 
+    drvAttributes[ 3 ] = ( hwUID >> 16 ) & 0xFFFF;
+    drvAttributes[ 4 ] = ( hwUID >> 32 ) & 0xFFFF;
+    drvAttributes[ 5 ] = ( hwUID >> 48 ) & 0xFFFF; 
+    drvAttributes[ 6 ] = 0; 
+    drvAttributes[ 7 ] = 0;
+  
+    for ( int i = 8; i < MAX_DRV_ATTRIBUTES; i++ ) drvAttributes[ i ] = 0;
+  
+    #if 1
+        
+    EEPROM.put( EEPROM_HEADER_OFS, EEPROM_MWORD );
+    EEPROM.put( EEPROM_HEADER_OFS + 2, 0 );
+    EEPROM.put( EEPROM_HEADER_OFS + 4, 0 );
+    EEPROM.put( EEPROM_HEADER_OFS + 6, 0 );
+    
+    EEPROM.put( EEPROM_ATTR_RANGE_OFS, drvAttributes );
+  
+    #else
 
-  uint64_t hwUID = buildHwUID( );
+    drvEepromWriteWord( EEPROM_HEADER_OFS + 0, EEPROM_MWORD );
+    drvEepromWriteWord( EEPROM_HEADER_OFS + 1, 0 );
+    drvEepromWriteWord( EEPROM_HEADER_OFS + 2, 0 );
+    drvEepromWriteWord( EEPROM_HEADER_OFS + 3, 0 );
 
-  tmp.boardMword       = EEPROM_MWORD;                   
-  tmp.boardType        = DRV_TYPE;                                  
-  tmp.boardVersion     = DRV_VERSION;                 
-  tmp.serialNum1       = hwUID & 0xFFFF;                    
-  tmp.serialNum2       = ( hwUID >> 16 ) & 0xFFFF;                    
-  tmp.serialNum3       = ( hwUID >> 32 ) & 0xFFFF;             
-  tmp.serialNum4       = ( hwUID >> 48 ) & 0xFFFF;   
-  tmp.boardOptions     = 0;
-
-  for ( int i = 0; i < MAX_DRV_ATTRIBUTES; i++ ) drvAttributes[ i ] = 0;
-
-  EEPROM.put( 0, tmp );
-  EEPROM.put( sizeof( LcsDrvHeader ), drvAttributes );
-   
-  return( 0 );
+    for ( int i = 8; i < MAX_DRV_ATTRIBUTES; i++ ) 
+      drvEepromWriteWord( EEPROM_ATTR_RANGE_OFS + i, 0 );
+ 
+    #endif
 }
 
 //----------------------------------------------------------------------------------------
@@ -279,49 +318,23 @@ uint8_t formatEEPROM( ) {
 //----------------------------------------------------------------------------------------
 uint8_t loadFromEEPROM( ) {
 
-    EEPROM.get( 0, drvHeader );
-    if (( drvHeader.boardMword != EEPROM_MWORD ) ||
-        ( drvHeader.boardType != DRV_TYPE ) ||
-        ( drvHeader.boardVersion != DRV_VERSION )) {
-
-        formatEEPROM( );
-    }
+    uint16_t mWord;
+    
+    EEPROM.get( EEPROM_HEADER_OFS, mWord );
+    
+    if ( mWord != EEPROM_MWORD ) formatEEPROM( );
   
-  EEPROM.get( sizeof( LcsDrvHeader ), drvAttributes );  
-  return ( 0 );
-}
-
-// ??? needed ?
-//----------------------------------------------------------------------------------------
-// Read a word from the EEPROM. We view the EEPROM as an array of 16-bit words.
-//
-//----------------------------------------------------------------------------------------
-uint16_t readField( uint8_t index ) {
-  
-    uint16_t value;
-    int addr = index * sizeof( uint16_t );
-    EEPROM.get( addr, value) ;
-    return value;
-}
-
-// ??? needed ?
-//----------------------------------------------------------------------------------------
-// Write a word to the EEPROM. We view the EEPROM as an array of 16-bit words.
-//
-//----------------------------------------------------------------------------------------
-void updateField( uint8_t index, uint16_t value ) {
-  
-    int addr = index * sizeof( uint16_t );
-    EEPROM.put( addr, value );
+    EEPROM.get( EEPROM_ATTR_RANGE_OFS, drvAttributes );  
+    return ( 0 );
 }
 
 //----------------------------------------------------------------------------------------
-// The I2C channel receiver callback. We are informed that there is data. By proocol 
+// The I2C channel receiver callback. We are informed that there is data. By protocol 
 // definition there are exactly three date sizes. A size of one represents just the 
 // command byte. We look at the start of a read sequence. A data size of three represents
 // the command byte and two data bytes. This is mapped to an attribute read. We need 
 // however to check that the command code matches. Finally, a data size of five is a 
-// driver request. We fill the arguent area and let the upper firmware layer handle it. 
+// driver request. We fill the argument area and let the upper firmware layer handle it. 
 //
 //----------------------------------------------------------------------------------------
 void receiveEvent( int numOfBytes ) {
@@ -377,7 +390,7 @@ void receiveEvent( int numOfBytes ) {
 // code for attribute fetch, we just return the attribute data. For a request command
 // code, we return the status and the two arguments. 
 //
-// Note that we cannot wait for the upper layer to finish the reqtesed operation. When
+// Note that we cannot wait for the upper layer to finish the requested operation. When
 // the master requests a read, we will return data. The key is that the status field
 // will not signal completion. So, the master will typically loop reading the packet
 // until it has a status code of success.
@@ -435,16 +448,15 @@ uint8_t initI2cChannel( ) {
 //
 //========================================================================================
 //========================================================================================
-
+namespace LCSDRV {
 
 //========================================================================================
 // Fatal Error Support
 //
 //
 //========================================================================================
-
-//----------------------------------------------------------------------------------------
-//
+// We have one routine that will communicate a fatal error via the blinking of the 
+// activity LED. 
 //
 //----------------------------------------------------------------------------------------
 void drvFatalError( int n ) {
@@ -477,29 +489,10 @@ void drvFatalError( int n ) {
 //
 //
 //========================================================================================
-
-//----------------------------------------------------------------------------------------
+// We need a basic timer function for timestamps and delays.
 //
-//
+// ??? Timer TCA0 ? a conflict with Arduino ?
 //----------------------------------------------------------------------------------------
-volatile uint32_t millisCount = 0;
-
-void drvTimeInit( void ) {
-  
-    TCA0.SINGLE.CTRLA     = TCA_SINGLE_CLKSEL_DIV64_gc;
-    // TCA0.SINGLE.PER       = 250; // ~1ms at 16MHz / 64
-    TCA0.SINGLE.PER       = 313; // ~1ms at 20MHz / 64
-    TCA0.SINGLE.INTCTRL   = TCA_SINGLE_OVF_bm;
-    TCA0.SINGLE.CTRLA     |= TCA_SINGLE_ENABLE_bm;
-
-    sei( );
-}
-
-ISR( TCA0_OVF_vect ) {
-  
-    millisCount ++;
-}
-
 uint32_t drvMillis( ) {
 
     #if 1
@@ -510,14 +503,10 @@ uint32_t drvMillis( ) {
     cli( );
     m = millisCount;
     SREG = sreg;
-    return m;
+    return ( m );
     #endif
 }
 
-//----------------------------------------------------------------------------------------
-//
-//
-//----------------------------------------------------------------------------------------
 void drvDelay( uint32_t val ) {
 
     #if 1
@@ -533,20 +522,15 @@ void drvDelay( uint32_t val ) {
 //
 //
 //========================================================================================
-
-//----------------------------------------------------------------------------------------
-// Routine to "feed" the watchdog monster periodically.
-//
+// The watchdog is used to restart the device on a hang or loop. It needs to periodically
+// refreshed from the running software.
+// 
 //----------------------------------------------------------------------------------------
 void feedWatchdog( ) {
   
     wdt_reset( );
 }
 
-//----------------------------------------------------------------------------------------
-// On startup, we can check if the reset was originated from the watchdog facility.
-//
-//----------------------------------------------------------------------------------------
 bool wasWatchdogReset( ) {
     
     uint8_t flags = RSTCTRL.RSTFR;
@@ -559,8 +543,8 @@ bool wasWatchdogReset( ) {
 //
 //
 //========================================================================================
-
-//----------------------------------------------------------------------------------------
+// Our bread and butter routines for a digital IO pin. We generally use the PORT and 
+// port mask for naming a pin.
 //
 // Example. drvPinMode( &PORTB, PIN5_bm ) 
 //----------------------------------------------------------------------------------------
@@ -621,10 +605,14 @@ void drvPinToggle( PORT_t *port, uint8_t pinBitmask ) {
 //
 //
 //========================================================================================
-
-//----------------------------------------------------------------------------------------
-// Seetup the ADC subsystem. We set the reference voltage and clock prescaler and finally
-// enable the ADC hardware.
+// The analog subsystem. We set the reference voltage and clock pre-scaler and finally
+// enable the ADC hardware. A pin needs to be configured for ADC usage. In contrast to
+// the port bitmap used for the pin, the analog hardware is simply indexed to select the
+// ADC channel.
+//
+// Example: uint16_t value = drvAnalogRead( ADC_MUXPOS_AIN3_gc );
+//
+// Actual Voltage: Vin = ( adcValue / 1023 )  * Vref
 //
 // ??? how to set it for our RailCOm scenario ?
 //----------------------------------------------------------------------------------------
@@ -637,12 +625,6 @@ void drvAdcInit( ) {
     for ( volatile int i = 0; i < 1000; i++ ); // delay a little
 }
 
-//----------------------------------------------------------------------------------------
-// Configure a pin for analog input. We are passed the port and port bitmask.
-// 
-// Example.drvAdcPinSetup( &PORTA, PIN3_bm );
-//
-//----------------------------------------------------------------------------------------
 void drvAdcPinSetup(PORT_t *port, uint8_t pinBitmask ) {
   
     for ( uint8_t i = 0; i < 8; i++ ) {
@@ -656,15 +638,6 @@ void drvAdcPinSetup(PORT_t *port, uint8_t pinBitmask ) {
     }
 }
 
-//----------------------------------------------------------------------------------------
-// Read analog input. In contrast to the port bitmap used for the pin, the analog hardware
-// is simply indexed to select the channel.
-//
-// Example: uint16_t value = drvAnalogRead( ADC_MUXPOS_AIN3_gc );
-//
-// Actual Voltage: Vin = ( adcValue / 1023 )  * Vref
-//
-//----------------------------------------------------------------------------------------
 uint16_t drvAnalogRead( uint8_t muxpos ) {
   
     ADC0.MUXPOS = muxpos;
@@ -677,13 +650,9 @@ uint16_t drvAnalogRead( uint8_t muxpos ) {
     return ( ADC0.RES );
 }
 
-//----------------------------------------------------------------------------------------
-// A little helper function to convert adc digits to a voltage.
-//
-//----------------------------------------------------------------------------------------
-uint32_t adcToMilliVolts( uint16_t adcValue, uint32_t vref_mV ) {
+uint32_t adcToMilliVolts( uint16_t adcValue, uint32_t vrefMv ) {
   
-    return ((uint32_t) adcValue * vref_mV ) / 1023;
+    return ((uint32_t) adcValue * vrefMv ) / 1023;
 }
 
 
@@ -692,25 +661,17 @@ uint32_t adcToMilliVolts( uint16_t adcValue, uint32_t vref_mV ) {
 //
 //========================================================================================
 // At the heart of the satellite board is an I2C interface. Commands are sent to the 
-// satllite board, data is rwad or written to the attribute map. The implementation 
-// features a cenzral mempory data structure. The I2C slave routines store and retrieve
-// data from this data structure, the fimrware upper layer accesses this memory via 
-// defined procedures. Finally, this memory is backed by repsective EEPROM locations.
+// satellite board, data is read or written to the attribute map. The implementation 
+// features a central memory data structure. The I2C slave routines store and retrieve
+// data from this data structure, the firmware upper layer accesses this memory via 
+// defined procedures. Finally, this memory is backed by respective EEPROM locations.
 // 
 // Care has to be taken when accessing the memory. The I2C slave interface runs as an
-// interrupt routine. So memory access from teh upper layer needs to be synchornized. 
-// Data, i.e. attribute access, is pwerformed directly in the I2C interrupt handler.
-// A function request from the LCS node is stored in global variables. Teh firmware
-// layer periodcally polls these locations. When there is a request, it is handled
-// and the result written back to the request locations.
-//
-//----------------------------------------------------------------------------------------
-
-//----------------------------------------------------------------------------------------
-// The upper firmware layer will periodically call this procedure to check for work. This
-// is a request with two arguments. We run this interrupts disabled to avoid ugly race
-// conditions with the ISR handlers for the I2C interface. A positive return value means
-// that there is work to do.
+// interrupt routine. So memory access from the upper layer needs to be synchronized. 
+// Data, i.e. attribute access, is performed directly in the I2C interrupt handler.
+// A function request from the LCS node is stored in a set of global variables. The 
+// firmware layer periodically polls these locations. When there is a request, it is 
+// handled and the result written back to the request locations.
 //
 //----------------------------------------------------------------------------------------
 int i2cGetRequest( uint8_t *cmd, uint16_t *arg0, uint16_t *arg1 ) {
@@ -728,12 +689,6 @@ int i2cGetRequest( uint8_t *cmd, uint16_t *arg0, uint16_t *arg1 ) {
     else return( 0 ); 
 }
 
-//----------------------------------------------------------------------------------------
-// The upper firmware layer call this procedure to provide the request return. We also 
-// run interrupts disabled and set the reply fields for the I2C code to provide when the
-// master ask for it.
-//
-//----------------------------------------------------------------------------------------
 void i2cSetResponse( uint8_t rStat, uint16_t r0, uint16_t r1 ) {
 
     cli( );
@@ -748,34 +703,24 @@ void i2cSetResponse( uint8_t rStat, uint16_t r0, uint16_t r1 ) {
 //
 //========================================================================================
 // Attributes are a common concept in LCS. The satellite board also features a set of 
-// attributes accessible to the firmware. There are 64 attribites. The first eight are
-// reserved for the satellite libray and contains information such as board type or 
-// version. Attributes 8 to 63 are available to the firmeware. Attributes are also 
-// bac up by the EEPROM. There are routines to save or restore an attribute to or from
-// its EEPROM location.
-//
-//----------------------------------------------------------------------------------------
-
-//----------------------------------------------------------------------------------------
-// A routine to retrieve an attribute from the attrbute array. Note that we disable
-// interrupts shortly, since the array is a volatile structure. If the index is not
-// within range, a zero value is returned.
+// attributes accessible to the firmware. There are 64 attributes. The first eight are
+// reserved for the satellite library and contains information such as board type or 
+// version. Attributes 8 to 63 are available to the firmware. Attributes are also 
+// backed up by the EEPROM. There are routines to save or restore an attribute to or 
+// from its EEPROM location. Note that the routines can also be called from within an 
+// interrupt handler.
 //
 //----------------------------------------------------------------------------------------
 uint16_t getAttr( uint8_t index ) {
 
-    uint16_t tmp;
+    if ( index >=  MAX_DRV_ATTRIBUTES ) return( 0 );
+   
+    uint8_t sreg = SREG;
+    cli( ); 
+    uint16_t tmp = drvAttributes[ index ];
+    SREG = sreg;
 
-    if ( index < MAX_DRV_ATTRIBUTES ) {
-
-        uint8_t sreg = SREG;
-        cli( ); 
-        tmp = drvAttributes[ index ];
-        SREG = sreg;
-
-        return ( tmp );
-    }
-    else return( 0 );
+    return ( tmp );
 }
 
 //----------------------------------------------------------------------------------------
@@ -785,7 +730,7 @@ uint16_t getAttr( uint8_t index ) {
 //
 // ??? not all attributes are writable.
 // ??? should we allow the setting, just not from remote ?
-// ??? this way we could set boardtype and version, etc. programatically in the 
+// ??? this way we could set board type and version, etc. programmatically in the 
 // startup code.
 //----------------------------------------------------------------------------------------
 void setAttr( uint8_t index, uint16_t val ) {
@@ -801,25 +746,19 @@ void setAttr( uint8_t index, uint16_t val ) {
     }
 }
 
-//----------------------------------------------------------------------------------------
-// "refreshAttr" is a function to refresh an attribute from the EEPROM content. An 
-// invalid index is no operation. The entire attribute range is a valid index input.
-// 
-//----------------------------------------------------------------------------------------
 void refreshAttr( uint8_t index ) {
 
-    if ( index < MAX_DRV_ATTRIBUTES ) {
+    if ( index >= MAX_DRV_ATTRIBUTES ) return;
 
-        int ofs = EEPROM_ATTR_RANGE_OFS + ( index * sizeof( uint16_t ));
-        uint16_t tmp;
-        
-       EEPROM.get( ofs, tmp );
+    int ofs = EEPROM_ATTR_RANGE_OFS + ( index * sizeof( uint16_t ));
+    uint16_t tmp;
+    
+    EEPROM.get( ofs, tmp );
 
-        uint8_t sreg = SREG;
-        cli( );  
-        drvAttributes[ index ] = tmp;
-        SREG = sreg; 
-    }
+    uint8_t sreg = SREG;
+    cli( );  
+    drvAttributes[ index ] = tmp;
+    SREG = sreg; 
 }
 
 //----------------------------------------------------------------------------------------
@@ -830,41 +769,28 @@ void refreshAttr( uint8_t index ) {
 //----------------------------------------------------------------------------------------
 void saveAttr( uint8_t index ) {
 
-    if ( index < MAX_DRV_ATTRIBUTES ) {
+    if ( index >= MAX_DRV_ATTRIBUTES ) return;
 
-        int ofs = EEPROM_ATTR_RANGE_OFS + ( index * sizeof( uint16_t ));
+    int ofs = EEPROM_ATTR_RANGE_OFS + ( index * sizeof( uint16_t ));
 
-        uint8_t sreg = SREG;
-        cli( ); 
-        uint16_t tmp = drvAttributes[ index ];
-        SREG = sreg;
+    uint8_t sreg = SREG;
+    cli( ); 
+    uint16_t tmp = drvAttributes[ index ];
+    SREG = sreg;
 
-        EEPROM.put( ofs, tmp );
-    }
+    EEPROM.put( ofs, tmp );
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 //========================================================================================
 // Library core setup and loop.
 //
 //
 //========================================================================================
-
-//----------------------------------------------------------------------------------------
 // The main routine to get the show going. A firmware layer is expected to call this 
 // routine as the first thing. We will load the initial values from the EEPROM and 
-// setup our I2C channel.
+// setup our I2C channel. Between INIT and START of the runtime, a firmware can perform
+// its own initialization work. The firmware's periodic work is a function that the 
+// START routine will call periodically.
 //
 //----------------------------------------------------------------------------------------
 uint8_t initDrvRuntime( uint16_t boardType, uint16_t boardVersion ) {
@@ -875,14 +801,6 @@ uint8_t initDrvRuntime( uint16_t boardType, uint16_t boardVersion ) {
   return( 0 );
 }
 
-//----------------------------------------------------------------------------------------
-// The main loop. After the initialization, the firmware can perform its other setup
-// task and the enter the runtime loop.
-//
-// 
-//
-// ??? we do the loop here but breakout to the driver code...
-//----------------------------------------------------------------------------------------
 void startDrvRuntime( DriverFunction f ) {
 
    // setupWatchdog( ); // later ...
@@ -1224,3 +1142,5 @@ uint16_t r2 = rx[0] | (rx[1] << 8);
 uint16_t r3 = rx[2] | (rx[3] << 8);
 
 #endif
+
+} // namespace LCSDRV
