@@ -5,7 +5,7 @@
 //----------------------------------------------------------------------------------------
 // The LCS driver core library for the ATTINY platform. This library is used by the 
 //satellite boards for the LCS layout control system. The idea ist that the LCS Nodes
-// provide an I2C interface to whcih the satellites are connected. The satellite board
+// provide an I2C interface to which the satellites are connected. The satellite board
 // implements an I2C slave interface and provides a set of attributes and functions
 // to the upper layer firmware. For example consider a turnout. Managing a modern
 // turnout involves a lot of work. There is the turnout motor control, the feedback
@@ -13,7 +13,7 @@
 // board can take care of all this work and provide a simple interface to the LCS node.
 // 
 // This library contains the core functionality and a set of routines to simplify
-// satrellite board software development. The idea is to handle as much as possible
+// satellite board software development. The idea is to handle as much as possible
 // transparent to the firmware developer. For example, the I2C slave interface is 
 // handled entirely at the core layer. The firmware layer just needs to check for
 // incoming requests and write the results back to the respective memory locations. 
@@ -22,7 +22,7 @@
 // firmware programmer can use. They are are also backed by non-volatile memory. There
 // are also routines for digital I/O, analog input, and a watchdog. The library also
 // provides a routine to report fatal error conditions. In this case, the library 
-// will blink the activity LED in a specific pattwern.
+// will blink the activity LED in a specific pattern.
 //
 //----------------------------------------------------------------------------------------
 //
@@ -62,12 +62,12 @@ using namespace LCSDRV;
 
 //----------------------------------------------------------------------------------------
 // EEPROM. The EEPROM is used to store the attribute data. The first 16 bytes are 
-// reserved for the header. The remaining 128 bytes are used for the attribute storage. 
+// reserved for the header. The next 128 bytes are used for the attribute storage. 
 // Each attribute is a 16-bit word. So, we can store 64 attributes in the EEPROM. The 
-// first 8 are reserved for the core libary itself.
+// first 8 are reserved for the core library itself.
 //
 //----------------------------------------------------------------------------------------
-const uint16_t  EEPROM_MWORD            = 0xa5a5;
+const uint32_t  EEPROM_MWORD            = 0xa5a5;
 const uint16_t  EEPROM_HEADER_OFS       = 0;
 const uint16_t  EEPROM_ATTR_RANGE_OFS   = 16;
 
@@ -75,15 +75,14 @@ const uint16_t  EEPROM_ATTR_RANGE_OFS   = 16;
 //
 // Attribute - the first 8 are reserved. The words are identical to the LCS node nodeMap
 // data structure.
-//
-//. 0 - magicWord   
-//  1 - boardType
-//  2 - boardVersion
-//  3 - serialNum1
-//  4 - serialNum2
-//  5 - serialNum3
-//  6 - serialNum4
-//  7 - boardOptions
+// 
+//  0 - boardType
+//  1 - boardVersion
+//  2 - serialNum1
+//  3 - serialNum2
+//  4 - serialNum3
+//  5 - serialNum4
+//  6 - boardOptions
 //  
 //----------------------------------------------------------------------------------------
 
@@ -117,7 +116,7 @@ volatile uint16_t drvAttributes[ MAX_DRV_ATTRIBUTES ];
 // REQ-SEND: i2cAdr,i2cCommand,i2cArg0-L,i2cArg0-H,i2cArg1-L,i2cArg1-H
 // REQ-RECV: i2cAdr,i2cCommand,i2cStatus,i2cArg0-L,i2cArg0-H,i2cArg1-L,i2cArg1-H
 //
-// Note that deoending on the command code, the LCS node master expect to receive 
+// Note that depending on the command code, the LCS node master expect to receive 
 // the attribute data, the status and arguments of a request, or a simple status byte. 
 // The firmware layer needs to fill the respective data structures and the I2C layer
 // will take care of the rest. The firmware layer also needs to check for incoming 
@@ -364,25 +363,29 @@ void drvEepromWriteWord( uint16_t wordOffset, uint16_t value ) {
 // somehow. We build a default attribute array with the first eight locations reserved
 // for the core library.
 //
+// ??? we do only write the magic word in the header. clear the rest ?
 //----------------------------------------------------------------------------------------
 void formatEEPROM( ) {
 
     uint64_t hwUID = buildHwUID( );
-  
-    drvAttributes[ 0 ] = EEPROM_MWORD;
-    drvAttributes[ 1 ] = DRV_TYPE;
-    drvAttributes[ 2 ] = DRV_VERSION;
-    drvAttributes[ 3 ] = hwUID & 0xFFFF; 
-    drvAttributes[ 4 ] = ( hwUID >> 16 ) & 0xFFFF;
-    drvAttributes[ 5 ] = ( hwUID >> 32 ) & 0xFFFF;
-    drvAttributes[ 6 ] = ( hwUID >> 48 ) & 0xFFFF; 
+
+    drvAttributes[ 0 ] = DRV_TYPE;
+    drvAttributes[ 1 ] = DRV_VERSION;
+    drvAttributes[ 2 ] = hwUID & 0xFFFF; 
+    drvAttributes[ 3 ] = ( hwUID >> 16 ) & 0xFFFF;
+    drvAttributes[ 4 ] = ( hwUID >> 32 ) & 0xFFFF;
+    drvAttributes[ 5 ] = ( hwUID >> 48 ) & 0xFFFF; 
     drvAttributes[ 7 ] = 0; 
   
     for ( int i = 8; i < MAX_DRV_ATTRIBUTES; i++ ) drvAttributes[ i ] = 0;
   
     #if 1
+    EEPROM.put( EEPROM_HEADER_OFS, EEPROM_MWORD );
     EEPROM.put( EEPROM_ATTR_RANGE_OFS, drvAttributes, sizeof( drvAttributes ));
     #else   
+    drvEepromWriteWord( EEPROM_HEADER_OFS, EEPROM_MWORD & 0xFFFF );
+    drvEepromWriteWord( EEPROM_HEADER_OFS + 1, ( EEPROM_MWORD >> 16 ) & 0xFFFF );
+
     for ( int i = 0; i < MAX_DRV_ATTRIBUTES; i++ ) 
       drvEepromWriteWord( EEPROM_ATTR_RANGE_OFS + i, 0 );
     #endif
@@ -397,12 +400,16 @@ void formatEEPROM( ) {
 //----------------------------------------------------------------------------------------
 void loadFromEEPROM( ) {
 
-    uint16_t mWord;
+    uint32_t mWord;
     
     #if 1
     EEPROM.get( EEPROM_HEADER_OFS, mWord );
     #else
-    drvEepromReadWord( EEPROM_HEADER_OFS, &mWord );
+    uint16_t tmp;
+    drvEepromReadWord( EEPROM_HEADER_OFS, &tmp );
+    mWord = tmp;
+    drvEepromReadWord( EEPROM_HEADER_OFS + 1, &tmp );
+    mWord |= ( (uint32_t)tmp ) << 16;
     #endif
 
     if ( mWord != EEPROM_MWORD ) formatEEPROM( );
