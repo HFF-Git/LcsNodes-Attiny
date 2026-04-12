@@ -443,6 +443,23 @@ void loadFromEEPROM( ) {
 // Note that we do not wait for the firmware to handle the request. We just store
 // the command code and arguments and return. The firmware layer needs to periodically
 // check for incoming requests and handle them. 
+
+//  GET: We send the following data:
+//
+//      W: i2cAdr, item
+//      R: i2cAdr, arg-h, arg-l
+
+//  SET: W: i2cAdr, item, arg-h, arg-l
+
+//  REQ: We first send the request:
+// 
+//      W: i2cAdr, item, arg1-h, arg1-l, arg2-h, arg2-l
+//
+//  And then poll for the reply:
+//
+//      W: i2cAdr, item
+//      R: i2cAdr, stat, arg1-h, arg1-l, arg2-h, arg2-l
+
 //
 //----------------------------------------------------------------------------------------
 void receiveEvent( int numOfBytes ) {
@@ -453,13 +470,13 @@ void receiveEvent( int numOfBytes ) {
     }
     else if ( numOfBytes == 1 ) {
 
-      i2cReadCmd  = Wire.read( );
-      i2cWriteCmd = DRV_CMD_IDLE;
+        i2cReadCmd  = Wire.read( );
+        i2cWriteCmd = DRV_CMD_IDLE;
     }
     else if ( numOfBytes == 3 ) {
 
-        i2cWriteCmd = Wire.read( );
         i2cReadCmd  = DRV_CMD_IDLE;
+        i2cWriteCmd = Wire.read( );
     
         if ( i2cWriteCmd <= DRV_CMD_ATTR_END ) {
 
@@ -473,8 +490,8 @@ void receiveEvent( int numOfBytes ) {
     }
     else if ( numOfBytes == 5 ) {
 
-        i2cWriteCmd = Wire.read( );
         i2cReadCmd  = DRV_CMD_IDLE;
+        i2cWriteCmd = Wire.read( );
       
         if (( i2cWriteCmd >= DRV_CMD_REQ_START ) && ( i2cWriteCmd <= DRV_CMD_REQ_END )) {
       
@@ -488,9 +505,9 @@ void receiveEvent( int numOfBytes ) {
     } 
     else {
 
-      i2cWriteCmd = DRV_CMD_IDLE;
-      i2cReadCmd  = DRV_CMD_IDLE;
-      while ( Wire.available( )) Wire.read( );
+        i2cWriteCmd = DRV_CMD_IDLE;
+        i2cReadCmd  = DRV_CMD_IDLE;
+        while ( Wire.available( )) Wire.read( );
     }
 }
 
