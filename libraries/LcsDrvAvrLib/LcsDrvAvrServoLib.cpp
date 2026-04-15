@@ -298,11 +298,11 @@ void servoSet( uint8_t i, uint8_t value ) {
 
     st.target = targetUs;
     st.start  = st.current;
-    st.t0     = millis();
+    st.t0     = drvMillis();
 }
 
 // for debugging / calibration.
-void servoSetUs(uint8_t i, uint16_t us)
+void servoSetUs(uint8_t i, uint16_t us )
 {
     if (i >= activeServoCount) return;
 

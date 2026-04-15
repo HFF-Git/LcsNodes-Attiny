@@ -1,6 +1,6 @@
 //========================================================================================
 //
-//
+// LCS Driver Core Library - ATTINY version. 
 //
 //----------------------------------------------------------------------------------------
 // 
@@ -93,7 +93,9 @@ void      setAttr( uint8_t index, uint16_t val );
 void      refreshAttr( uint8_t index );
 void      saveAttr( uint8_t index );
 
-uint8_t   initDrvRuntime( uint16_t boardType, uint16_t boardVersion );
+uint8_t   initDrvRuntime( uint16_t boardType, 
+                          uint16_t boardVersion,
+                          uint16_t firmwareOptions );
 void      startDrvRuntime( );
 
 } // namespace LCSDRV
