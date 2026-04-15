@@ -28,6 +28,23 @@
 
 namespace LCSDRV {
 
+//----------------------------------------------------------------------------------------
+//
+// Attribute - the first 8 are reserved. The words are identical to the LCS node nodeMap
+// data structure.
+// 
+//  0 - boardType
+//  1 - boardVersion
+//  2 - serialNum1
+//  3 - serialNum2
+//  4 - serialNum3
+//  5 - serialNum4
+//  6 - boardOptions
+//  7 - firmwareOptions
+//  
+//----------------------------------------------------------------------------------------
+
+
 typedef void ( *DriverFunction )( void );
 
 //----------------------------------------------------------------------------------------
