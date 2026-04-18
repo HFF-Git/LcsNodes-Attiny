@@ -44,8 +44,20 @@ namespace LCSDRV {
 //  
 //----------------------------------------------------------------------------------------
 
+//----------------------------------------------------------------------------------------
+//
+//
+//
+//----------------------------------------------------------------------------------------
+extern "C" {
 
-typedef void ( *DriverFunction )( void );
+    typedef void ( *DrvTaskFunction )( uint32_t *nextInterval );
+
+    typedef void ( *DrvRequestFunction ) ( uint8_t cmd, 
+                                           uint16_t *arg0, 
+                                           uint16_t *arg1, 
+                                           uint8_t *rStat );
+}
 
 //----------------------------------------------------------------------------------------
 //
@@ -89,7 +101,6 @@ void      drvFatalError( int n );
 uint32_t  drvMillis( );
 void      drvDelay( uint32_t val );
 
-void      feedWatchdog( );
 bool      wasWatchdogReset( );
 
 void      drvPinOutput( PORT_t *port, uint8_t pinBitmask );
@@ -113,6 +124,7 @@ void      saveAttr( uint8_t index );
 uint8_t   initDrvRuntime( uint16_t boardType, 
                           uint16_t boardVersion,
                           uint16_t firmwareOptions );
-void      startDrvRuntime( );
+
+void      startDrvRuntime( DrvTaskFunction tFunc, DrvRequestFunction rFunc );
 
 } // namespace LCSDRV

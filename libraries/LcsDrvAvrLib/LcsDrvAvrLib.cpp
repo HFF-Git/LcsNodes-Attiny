@@ -60,8 +60,6 @@ namespace {
 
 using namespace LCSDRV;  
 
-
-
 //----------------------------------------------------------------------------------------
 // EEPROM. The EEPROM is used to store the attribute data. The first 16 bytes are 
 // reserved for the header. The next 128 bytes are used for the attribute storage. 
@@ -71,18 +69,21 @@ using namespace LCSDRV;
 //----------------------------------------------------------------------------------------
 const uint32_t  EEPROM_MWORD            = 0xa5a50000;
 const uint16_t  EEPROM_HEADER_OFS       = 0;
-const uint16_t  EEPROM_ATTR_RANGE_OFS   = 16; 
+// const uint16_t  EEPROM_ATTR_RANGE_OFS   = 16; 
 
 //----------------------------------------------------------------------------------------
 // Global variables.
 //
 //----------------------------------------------------------------------------------------
-uint16_t            drvBoardType;
-uint16_t            drvBoardVersion;
+uint16_t            drvBoardType        = 0 ;
+uint16_t            drvBoardVersion     = 0;
 
 uint16_t            drvFirmwareOptions;
-volatile uint32_t   millisCount = 0;
+volatile uint32_t   millisCount         = 0;
+volatile uint32_t   nextInterval        = 0;
 
+DrvTaskFunction     drvTaskFunc         = nullptr;
+DrvRequestFunction  drvReqFunc          = nullptr;
 
 const uint16_t      DEFAULT_BOARD_OPTIONS = 0x2a; // default I2C address ? 
 
@@ -126,7 +127,6 @@ struct DrvEepromLayout {
     uint32_t head[ 4 ];
     uint16_t attr[ MAX_DRV_ATTRIBUTES ];
 };
-
 
 //----------------------------------------------------------------------------------------
 // The attribute map contains the attribute array. It is a volatile memory array,
@@ -319,8 +319,22 @@ void setupWatchdog( ) {
     wdt_reset( );
 }
 
+void updateWatchdog( ) {
+  
+    wdt_reset( );
+}
+
+bool wasWatchdogReset( ) {
+    
+    uint8_t flags = RSTCTRL.RSTFR;
+    RSTCTRL.RSTFR = flags; 
+    return ( flags & RSTCTRL_WDRF_bm );
+}
+
 //----------------------------------------------------------------------------------------
-// Setup the event buffer.
+// Setup the event buffer. We maintain a circular buffer for the last events that we
+// encounter. In case of a crash, the fatal error message will report the data via the
+// activity LED output.
 //
 //----------------------------------------------------------------------------------------
 void setupEventMap( ) {
@@ -375,6 +389,7 @@ inline void ledOff( ) {
 //      Start marker    blink
 //      Event Id        blink
 //      Arg             blink
+//      Separator       blink
 //
 //
 // Let's see how useful this really is :).
@@ -780,7 +795,9 @@ void drvFatalError( int n ) {
 //========================================================================================
 // The "drvMillis" function returns the number of milliseconds since the device was
 // reset. The "drvDelay" function takes a number of milliseconds as input and blocks
-// for that duration. 
+// for that duration. Remember "blocks" is a bad thing in a blocking style application.
+// We need to make sure that we timely respond to events. If you need to pause for a 
+// bit, the task callback with an appropriate value is the way to go.
 //
 //----------------------------------------------------------------------------------------
 uint32_t drvMillis( ) {
@@ -808,27 +825,6 @@ void drvDelay( uint32_t val ) {
 }
 
 //========================================================================================
-// WatchDog Support
-//
-//========================================================================================
-// The watchdog is used to restart the device on a hang or loop. If the software fails
-// to refresh the watchdog within the specified period, the watchdog will trigger a
-// reset of the device. 
-//
-//----------------------------------------------------------------------------------------
-void feedWatchdog( ) {
-  
-    wdt_reset( );
-}
-
-bool wasWatchdogReset( ) {
-    
-    uint8_t flags = RSTCTRL.RSTFR;
-    RSTCTRL.RSTFR = flags; 
-    return ( flags & RSTCTRL_WDRF_bm );
-}
-
-//========================================================================================
 // Digital Input/Output
 //
 //========================================================================================
@@ -847,6 +843,11 @@ void drvPinOutput( PORT_t *port, uint8_t pinBitmask ) {
 void drvPinInput( PORT_t *port, uint8_t pinBitmask ) {
   
     port -> DIRCLR = pinBitmask;
+
+    // ??? add the pull-up as a boolean, and save the function below ?
+
+    // ??? have an optional interrupt handler attached ?
+    // ??? worry about this when we need it ...
 }
 
 void drvPinPullup ( PORT_t *port, uint8_t pinBitmask ) {
@@ -970,8 +971,6 @@ uint32_t adcToMilliVolts( uint16_t adcValue, uint32_t vrefMv ) {
 // set the I2C state to "REQ_OUT", which is the state for the I2C routines to 
 // answer properly to the master's polling. Before, the 
 //
-// ??? how robust is it for repeated gets without a response ? We would get the 
-// same request stored again.
 //----------------------------------------------------------------------------------------
 int i2cGetRequest( uint8_t *cmd, uint16_t *a0, uint16_t *a1 ) {
   
@@ -981,7 +980,7 @@ int i2cGetRequest( uint8_t *cmd, uint16_t *a0, uint16_t *a1 ) {
     if ( i2cState != I2C_REQ_IN ) {
       
         SREG = sreg;
-        return 0;
+        return ( 0 );
     }
 
     *cmd = i2cCmd;
@@ -993,7 +992,7 @@ int i2cGetRequest( uint8_t *cmd, uint16_t *a0, uint16_t *a1 ) {
     i2cState = I2C_IDLE;
 
     SREG = sreg;
-    return 1;
+    return ( 1 );
 }
 
 void i2cSetResponse( uint8_t status, uint16_t a0, uint16_t a1 ) {
@@ -1134,17 +1133,55 @@ uint8_t initDrvRuntime( uint16_t boardType,
 
 //----------------------------------------------------------------------------------------
 // After all setup is done, the upper firmware layer calls the start routine, which
-// will setup the watchdog and then loop calling the user defined firmware code.
+// will setup the watchdog, remember the callbacks and then just loop. Each time around
+// we first update the watchdog. Next, we check if a period function is registered and 
+// the scheduled time interval expired. The callback has the option of setting the next 
+// interval. Finally, if a request type callback is registered, we check for an I2C
+// request and if there is one, handle it.
+//
+// Note that all these calls are blocking calls, so when when a task or request function
+// somehow loops or fails otherwise, we end up with a watchdog reset. On the upside, the
+// firmware designer needs only to worry about two callbacks to write for a simple 
+// application. Still, when more control is needed, the task function could be run with
+// a really low or zero interval count, so that it runs quite often. Likewise, the 
+// I2C request handling could be done wit the the getRequest and setResponse functions,
+// when a callback is simply not registered.
 //
 //----------------------------------------------------------------------------------------
-void startDrvRuntime( DriverFunction f ) {
+void startstartDrvRuntime( DrvTaskFunction tFunc, DrvRequestFunction rFunc ) {
+
+    drvTaskFunc = tFunc;
+    drvReqFunc  = rFunc; 
 
     setupWatchdog( );
 
     while ( true ) {
-     
-        feedWatchdog( );
-        f( );
+
+        uint32_t now  = drvMillis( );
+        uint32_t next = 0;
+        uint8_t  cmd;
+        uint8_t  rStat;
+        uint16_t arg0;
+        uint16_t arg1;
+       
+        updateWatchdog( );
+
+        if (( nextInterval >= now ) && ( tFunc != nullptr )) {
+
+            drvTaskFunc( &next );
+            nextInterval = now + next;
+        }
+
+        if ( drvReqFunc != nullptr ) {
+
+            if ( i2cGetRequest( &cmd, &arg0, &arg1 ) != 0 ) {
+
+                drvReqFunc( cmd, &arg0, &arg1, &rStat );
+
+                i2cSetResponse( rStat, arg0, arg1 );
+
+            }
+        }       
     }
 }
 
@@ -1155,165 +1192,92 @@ void startDrvRuntime( DriverFunction f ) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+#if 0
 //=======================================================================================
-//
+// Attiny I2C slave. 
 //
 //
 //=======================================================================================
-// use a I2C slave library, small footprint. Later.
-// For now, stick to Arduino libraries.
+void i2c_slave_init(uint8_t address) {
+    // Set address (7-bit, shifted)
+    TWI0.SADDR = (address << 1);
 
-// A simple lib ? 
-#if 0 
+    // Enable TWI slave + interrupts
+    TWI0.SCTRLA = TWI_ENABLE_bm
+                | TWI_DIEN_bm   // Data interrupt
+                | TWI_APIEN_bm  // Address/Stop interrupt
+                | TWI_PIEN_bm;  // Stop interrupt
 
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include <stdbool.h>
-
-#define I2C_ADDR 0x30
-#define LED_PIN  PIN3_bm
-
-#define REG_LED     0
-#define REG_STATUS  1
-#define REG_CMD     2
-#define REG_DATA    3
-
-#define STATUS_TIMEOUT   (1 << 0)
-#define STATUS_BAD_REG   (1 << 1)
-#define STATUS_GENCALL   (1 << 2)
-
-volatile uint8_t regs[4];
-volatile uint8_t reg_index = 0;
-volatile bool expecting_reg = true;
-
-volatile uint8_t i2c_idle_ticks = 0;
-
-/* ---------------- GPIO ---------------- */
-
-static void gpio_init(void) {
-    PORTA.DIRSET = LED_PIN;
-    PORTA.OUTCLR = LED_PIN;
+    // Enable smart mode + ACK by default
+    TWI0.SCTRLB = TWI_SMEN_bm | TWI_ACKACT_ACK_gc;
 }
 
-/* ---------------- RTC timeout ---------------- */
 
-static void rtc_init(void) {
-    // 16 ms periodic interrupt
-    RTC.CLKSEL = RTC_CLKSEL_INT1K_gc;
-    RTC.PITCTRLA = RTC_PERIOD_CYC16_gc | RTC_PITEN_bm;
-    RTC.PITINTCTRL = RTC_PI_bm;
+volatile uint8_t rx_buffer[16];
+volatile uint8_t rx_index = 0;
+
+volatile uint8_t tx_buffer[16];
+volatile uint8_t tx_len = 0;
+volatile uint8_t tx_index = 0;
+
+// Equivalent to Wire.onReceive()
+void on_receive(uint8_t *data, uint8_t len) {
+    // your logic here
 }
 
-ISR(RTC_PIT_vect) {
-    RTC.PITINTFLAGS = RTC_PI_bm;
-
-    if (++i2c_idle_ticks > 10) { // ~160 ms
-        regs[REG_STATUS] |= STATUS_TIMEOUT;
-    }
-}
-
-/* ---------------- I2C ---------------- */
-
-static void i2c_init(void) {
-    TWI0.SADDR = I2C_ADDR << 1;
-
-    TWI0.SCTRLA =
-        TWI_ENABLE_bm |
-        TWI_APIEN_bm |
-        TWI_DIEN_bm |
-        TWI_PIEN_bm;   // STOP interrupt
-
-    TWI0.SCTRLB = TWI_SCMD_RESPONSE_gc;
+// Equivalent to Wire.onRequest()
+void on_request(void) {
+    // prepare tx_buffer + tx_len
 }
 
 ISR(TWI0_TWIS_vect) {
     uint8_t status = TWI0.SSTATUS;
 
-    // Reset timeout counter on any I2C activity
-    i2c_idle_ticks = 0;
-
-    /* Address or STOP */
+    // --- Address match ---
     if (status & TWI_APIF_bm) {
+        rx_index = 0;
+        tx_index = 0;
 
-        if (status & TWI_AP_bm) {
-            expecting_reg = true;
+        // Check if master wants to read
+        if (status & TWI_DIR_bm) {
+            on_request();
+        }
 
-            if (status & TWI_GENCALL_bm) {
-                regs[REG_STATUS] |= STATUS_GENCALL;
+        // Clear flag + ACK
+        TWI0.SCTRLB = TWI_SCMD_RESPONSE_gc;
+    }
+
+    // --- Data interrupt ---
+    else if (status & TWI_DIF_bm) {
+
+        if (status & TWI_DIR_bm) {
+            // Master is reading from us
+
+            if (tx_index < tx_len) {
+                TWI0.SDATA = tx_buffer[tx_index++];
+            } else {
+                TWI0.SDATA = 0xFF; // default
+            }
+
+        } else {
+            // Master writing to us
+
+            if (rx_index < sizeof(rx_buffer)) {
+                rx_buffer[rx_index++] = TWI0.SDATA;
             }
         }
 
         TWI0.SCTRLB = TWI_SCMD_RESPONSE_gc;
     }
 
-    /* Data phase */
-    if (status & TWI_DIF_bm) {
-
-        // Master write
+    // --- Stop condition ---
+    else if (status & TWI_APIF_bm) {
         if (!(status & TWI_DIR_bm)) {
-            uint8_t data = TWI0.SDATA;
-
-            if (expecting_reg) {
-                if (data < 4) {
-                    reg_index = data;
-                } else {
-                    regs[REG_STATUS] |= STATUS_BAD_REG;
-                    reg_index = 0;
-                }
-                expecting_reg = false;
-            } else {
-                regs[reg_index] = data;
-            }
-
-            TWI0.SCTRLB = TWI_SCMD_RESPONSE_gc;
-        }
-        // Master read (not allowed on General Call)
-        else {
-            if (status & TWI_GENCALL_bm) {
-                TWI0.SDATA = 0xFF;
-            } else {
-                TWI0.SDATA = regs[reg_index];
-            }
-
-            TWI0.SCTRLB = TWI_SCMD_RESPONSE_gc;
-        }
-    }
-}
-
-/* ---------------- Main ---------------- */
-
-int main(void) {
-    gpio_init();
-    i2c_init();
-    rtc_init();
-
-    sei();
-
-    while (1) {
-        /* LED control */
-        if (regs[REG_LED]) {
-            PORTA.OUTSET = LED_PIN;
-        } else {
-            PORTA.OUTCLR = LED_PIN;
+            // write transaction finished
+            on_receive((uint8_t*)rx_buffer, rx_index);
         }
 
-        /* Command handling */
-        if (regs[REG_CMD] & 0x01) {
-            regs[REG_STATUS] = 0;
-            regs[REG_CMD] = 0;
-        }
+        TWI0.SCTRLB = TWI_SCMD_COMPTRANS_gc;
     }
 }
 #endif
