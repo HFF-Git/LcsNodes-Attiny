@@ -1148,7 +1148,7 @@ uint8_t initDrvRuntime( uint16_t boardType,
 // when a callback is simply not registered.
 //
 //----------------------------------------------------------------------------------------
-void startstartDrvRuntime( DrvTaskFunction tFunc, DrvRequestFunction rFunc ) {
+void startDrvRuntime( DrvTaskFunction tFunc, DrvRequestFunction rFunc ) {
 
     drvTaskFunc = tFunc;
     drvReqFunc  = rFunc; 
@@ -1176,7 +1176,7 @@ void startstartDrvRuntime( DrvTaskFunction tFunc, DrvRequestFunction rFunc ) {
 
             if ( i2cGetRequest( &cmd, &arg0, &arg1 ) != 0 ) {
 
-                drvReqFunc( cmd, &arg0, &arg1, &rStat );
+                rStat = drvReqFunc( cmd, &arg0, &arg1 );
 
                 i2cSetResponse( rStat, arg0, arg1 );
 

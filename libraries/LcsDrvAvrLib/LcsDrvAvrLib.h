@@ -53,10 +53,9 @@ extern "C" {
 
     typedef void ( *DrvTaskFunction )( uint32_t *nextInterval );
 
-    typedef void ( *DrvRequestFunction ) ( uint8_t cmd, 
+    typedef uint8_t ( *DrvRequestFunction ) ( uint8_t cmd, 
                                            uint16_t *arg0, 
-                                           uint16_t *arg1, 
-                                           uint8_t *rStat );
+                                           uint16_t *arg1 );
 }
 
 //----------------------------------------------------------------------------------------
