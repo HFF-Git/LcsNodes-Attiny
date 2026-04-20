@@ -42,13 +42,26 @@
 //  GNU General Public License:  http://opensource.org/licenses/GPL-3.0
 //
 //========================================================================================
+
+
+#define ARDUINO_I2C     1
+#define ARDUINO_EEPROM  1
+
+
 #include "arduino.h"
 #include <stdint.h>
 #include <avr/io.h>
 #include <avr/wdt.h> 
 #include <avr/interrupt.h>
+
+#if ARDUINO_I2C == 1
 #include <Wire.h>
+#endif
+
+#if ARDUINO_EEPROM == 1
 #include <EEPROM.h>
+#endif
+
 #include "LcsDrvAvrLib.h"
 #include "LcsDrvDesc.h"
 
@@ -69,7 +82,6 @@ using namespace LCSDRV;
 //----------------------------------------------------------------------------------------
 const uint32_t  EEPROM_MWORD            = 0xa5a50000;
 const uint16_t  EEPROM_HEADER_OFS       = 0;
-// const uint16_t  EEPROM_ATTR_RANGE_OFS   = 16; 
 
 //----------------------------------------------------------------------------------------
 // Global variables.
@@ -149,6 +161,8 @@ volatile uint16_t drvAttributes[ MAX_DRV_ATTRIBUTES ];
 // the request and its status. 
 //
 //----------------------------------------------------------------------------------------
+
+
 enum I2CState : uint8_t {
   
     I2C_IDLE = 0,
@@ -164,6 +178,18 @@ volatile uint8_t  i2cCmd;
 volatile uint8_t  i2cStatus;
 volatile uint16_t i2cArg0;
 volatile uint16_t i2cArg1;
+
+#if ARDUINO_I2C == 0 
+
+volatile uint8_t rx_buffer[16];
+volatile uint8_t rx_index = 0;
+
+volatile uint8_t tx_buffer[16];
+volatile uint8_t tx_len = 0;
+volatile uint8_t tx_index = 0;
+
+#endif
+
 
 //----------------------------------------------------------------------------------------
 // "delayMs" is used by the fatal error code setting. When reporting a fatal error, as
@@ -442,15 +468,17 @@ bool drvEepromReadBytes( uint16_t ofs, uint8_t *value, uint16_t len ) {
     
     if ( ofs + len >= EEPROM_SIZE ) return( false );
 
-    #if 0
+    #if ARDUINO_ERPROM == 1 
+
+    for ( uint16_t i = 0; i < len; i++ ) {
+
+        value[ i ] = EEPROM.read( ofs + i );
+    }
+
+    #else 
 
     const uint8_t *eeprom = (const uint8_t *)( EEPROM_START + ofs );
-
     memcpy( value, eeprom, len );
-
-    #else
-
-    *value = EEPROM.read( ofs );
 
     #endif 
 
@@ -470,7 +498,11 @@ bool drvEepromReadBytes( uint16_t ofs, uint8_t *value, uint16_t len ) {
 //----------------------------------------------------------------------------------------
 bool eepromWriteByte( uint16_t ofs, uint8_t value ) {
 
-    #if 0
+    #if ARDUINO_EEPROM == 1
+
+    EEPROM.put( ofs, value );
+
+    #else 
 
     const uint8_t NVMCTRL_CMD_EEERWR_gc = 0x03;
 
@@ -489,10 +521,6 @@ bool eepromWriteByte( uint16_t ofs, uint8_t value ) {
     CCP = CCP_SPM_gc;
     NVMCTRL.CTRLA = NVMCTRL_CMD_EEERWR_gc;
     SREG = sreg;
-
-    #else
-
-    EEPROM.put( ofs, value );
 
     #endif
 
@@ -621,6 +649,8 @@ void loadFromEEPROM( ) {
 // The state variable keeps track of where we are in handling a request.
 //
 //----------------------------------------------------------------------------------------
+#if ARDUINO_I2C == 1
+
 void receiveEvent( int numBytes ) {
   
     if ( numBytes == 0 ) return;
@@ -665,6 +695,47 @@ void receiveEvent( int numBytes ) {
     i2cState = I2C_IDLE;
 }
 
+#else 
+
+void receiveEvent(uint8_t numBytes) {
+
+    if (numBytes == 0) return;
+
+    i2cCmd = rx_buffer[0];
+
+    if (numBytes == 1) {
+        i2cState = I2C_ATTR_READ;
+        return;
+    }
+
+    if (numBytes == 3) {
+        uint8_t l = rx_buffer[1];
+        uint8_t h = rx_buffer[2];
+
+        i2cArg0 = (l | (h << 8));
+        i2cState = I2C_ATTR_WRITE;
+        return;
+    }
+
+    if (numBytes == 5) {
+        uint8_t l0 = rx_buffer[1];
+        uint8_t h0 = rx_buffer[2];
+        uint8_t l1 = rx_buffer[3];
+        uint8_t h1 = rx_buffer[4];
+
+        i2cArg0 = (l0 | (h0 << 8));
+        i2cArg1 = (l1 | (h1 << 8));
+
+        i2cState = I2C_REQ_IN;
+        return;
+    }
+
+    // invalid
+    i2cState = I2C_IDLE;
+}
+
+#endif
+
 //----------------------------------------------------------------------------------------
 // The I2C channel master requests data. We stored in the previous receiveEvent 
 // routine the type of command we received and now we return the requested data.
@@ -675,6 +746,8 @@ void receiveEvent( int numBytes ) {
 // sending read requests until we finished the work.
 //
 //----------------------------------------------------------------------------------------
+#if ARDUINO_I2C == 1 
+
 void requestEvent( ) {
   
     switch ( i2cState ) {
@@ -709,6 +782,43 @@ void requestEvent( ) {
     i2cState = I2C_IDLE;
 }
 
+#else 
+
+void requestEvent(void) {
+
+    tx_len = 0;
+    tx_index = 0;
+
+    switch (i2cState) {
+
+        case I2C_ATTR_READ: {
+            uint16_t val = drvAttributes[i2cCmd];
+
+            tx_buffer[tx_len++] = (uint8_t)(val & 0xFF);
+            tx_buffer[tx_len++] = (uint8_t)(val >> 8);
+
+        } break;
+
+        case I2C_REQ_OUT: {
+
+            tx_buffer[tx_len++] = i2cStatus;
+            tx_buffer[tx_len++] = (uint8_t)(i2cArg0 & 0xFF);
+            tx_buffer[tx_len++] = (uint8_t)(i2cArg0 >> 8);
+            tx_buffer[tx_len++] = (uint8_t)(i2cArg1 & 0xFF);
+            tx_buffer[tx_len++] = (uint8_t)(i2cArg1 >> 8);
+
+        } break;
+
+        default: {
+            tx_buffer[tx_len++] = 0xFF;
+        } break;
+    }
+
+    i2cState = I2C_IDLE;
+}
+
+#endif
+
 //----------------------------------------------------------------------------------------
 // Setup the I2C channel. We use the I2C address from the attribute "options".
 // We also initialize the command and status variables. Finally, we register the receive
@@ -717,6 +827,8 @@ void requestEvent( ) {
 // requests and handle them. The I2C layer will take care of the rest.
 //
 //----------------------------------------------------------------------------------------
+#if ARDUINO_I2C == 1 
+
 uint8_t initI2cChannel( ) {
 
     i2cAdr = drvAttributes[ 7 ] & 0xff;
@@ -734,6 +846,76 @@ uint8_t initI2cChannel( ) {
     Wire.onRequest( requestEvent );
     return( 0 );
 }
+
+#else
+
+void initI2cChannel( ) {
+
+    // Set address (7-bit, shifted)
+    TWI0.SADDR = ( i2cAdr << 1 );
+
+    // Enable TWI slave + interrupts
+    TWI0.SCTRLA = TWI_ENABLE_bm
+                | TWI_DIEN_bm   // Data interrupt
+                | TWI_APIEN_bm  // Address/Stop interrupt
+                | TWI_PIEN_bm;  // Stop interrupt
+
+    // Enable smart mode + ACK by default
+    TWI0.SCTRLB = TWI_SMEN_bm | TWI_ACKACT_ACK_gc;
+}
+
+ISR(TWI0_TWIS_vect) {
+    uint8_t status = TWI0.SSTATUS;
+
+    // --- Address match ---
+    if (status & TWI_APIF_bm) {
+        rx_index = 0;
+        tx_index = 0;
+
+        // Check if master wants to read
+        if (status & TWI_DIR_bm) {
+            requestEvent();
+        }
+
+        // Clear flag + ACK
+        TWI0.SCTRLB = TWI_SCMD_RESPONSE_gc;
+    }
+
+    // --- Data interrupt ---
+    else if (status & TWI_DIF_bm) {
+
+        if (status & TWI_DIR_bm) {
+            // Master is reading from us
+
+            if (tx_index < tx_len) {
+                TWI0.SDATA = tx_buffer[tx_index++];
+            } else {
+                TWI0.SDATA = 0xFF; // default
+            }
+
+        } else {
+            // Master writing to us
+
+            if (rx_index < sizeof(rx_buffer)) {
+                rx_buffer[rx_index++] = TWI0.SDATA;
+            }
+        }
+
+        TWI0.SCTRLB = TWI_SCMD_RESPONSE_gc;
+    }
+
+    // --- Stop condition ---
+    else if (status & TWI_APIF_bm) {
+        if (!(status & TWI_DIR_bm)) {
+            // write transaction finished
+            receiveEvent( rx_index);
+        }
+
+        TWI0.SCTRLB = TWI_SCMD_COMPTRANS_gc;
+    }
+}
+
+#endif
 
 } // namespace
 
@@ -1186,98 +1368,3 @@ void startDrvRuntime( DrvTaskFunction tFunc, DrvRequestFunction rFunc ) {
 }
 
 } // namespace LCSDRV
-
-
-
-
-
-
-#if 0
-//=======================================================================================
-// Attiny I2C slave. 
-//
-//
-//=======================================================================================
-void i2c_slave_init(uint8_t address) {
-    // Set address (7-bit, shifted)
-    TWI0.SADDR = (address << 1);
-
-    // Enable TWI slave + interrupts
-    TWI0.SCTRLA = TWI_ENABLE_bm
-                | TWI_DIEN_bm   // Data interrupt
-                | TWI_APIEN_bm  // Address/Stop interrupt
-                | TWI_PIEN_bm;  // Stop interrupt
-
-    // Enable smart mode + ACK by default
-    TWI0.SCTRLB = TWI_SMEN_bm | TWI_ACKACT_ACK_gc;
-}
-
-
-volatile uint8_t rx_buffer[16];
-volatile uint8_t rx_index = 0;
-
-volatile uint8_t tx_buffer[16];
-volatile uint8_t tx_len = 0;
-volatile uint8_t tx_index = 0;
-
-// Equivalent to Wire.onReceive()
-void on_receive(uint8_t *data, uint8_t len) {
-    // your logic here
-}
-
-// Equivalent to Wire.onRequest()
-void on_request(void) {
-    // prepare tx_buffer + tx_len
-}
-
-ISR(TWI0_TWIS_vect) {
-    uint8_t status = TWI0.SSTATUS;
-
-    // --- Address match ---
-    if (status & TWI_APIF_bm) {
-        rx_index = 0;
-        tx_index = 0;
-
-        // Check if master wants to read
-        if (status & TWI_DIR_bm) {
-            on_request();
-        }
-
-        // Clear flag + ACK
-        TWI0.SCTRLB = TWI_SCMD_RESPONSE_gc;
-    }
-
-    // --- Data interrupt ---
-    else if (status & TWI_DIF_bm) {
-
-        if (status & TWI_DIR_bm) {
-            // Master is reading from us
-
-            if (tx_index < tx_len) {
-                TWI0.SDATA = tx_buffer[tx_index++];
-            } else {
-                TWI0.SDATA = 0xFF; // default
-            }
-
-        } else {
-            // Master writing to us
-
-            if (rx_index < sizeof(rx_buffer)) {
-                rx_buffer[rx_index++] = TWI0.SDATA;
-            }
-        }
-
-        TWI0.SCTRLB = TWI_SCMD_RESPONSE_gc;
-    }
-
-    // --- Stop condition ---
-    else if (status & TWI_APIF_bm) {
-        if (!(status & TWI_DIR_bm)) {
-            // write transaction finished
-            on_receive((uint8_t*)rx_buffer, rx_index);
-        }
-
-        TWI0.SCTRLB = TWI_SCMD_COMPTRANS_gc;
-    }
-}
-#endif

@@ -16,11 +16,11 @@
 // second 1616 test.... respond to our I2C address
 //
 //=========================================================================================== 
-#include "LcsLib.h"
+
 #include <Wire.h>
 
 #define I2C_ADDRESS 0x33      // Just an I2C number
-#define LED_PIN     PIN_PB3
+#define LED_PIN     PIN_PB2
 
 void receiveEvent( int howMany ) {
   
@@ -37,7 +37,7 @@ void requestEvent( ) {
 
 void setup( ) {
 
-  pinMode(LED_PIN, OUTPUT);
+  pinMode( LED_PIN, OUTPUT);
 
   Wire.begin( I2C_ADDRESS );   // Slave starten
   delay( 10 );
