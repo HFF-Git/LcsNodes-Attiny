@@ -28,8 +28,8 @@
 
 const uint8_t   DRV_MAJOR_VERSION   = 1;
 const uint8_t   DRV_MINOR_VERSION   = 2;
-const uint8_t   DRV_MAJOR_TYPE      = 3;
-const uint8_t   DRV_MINOR_TYPE      = 4;
+const uint8_t   DRV_MAJOR_TYPE      = 1;
+const uint8_t   DRV_MINOR_TYPE      = 2;
 
 const uint16_t  DRV_VERSION         = ( DRV_MAJOR_VERSION << 8 ) | DRV_MINOR_VERSION;
 const uint16_t  DRV_TYPE            = ( DRV_MAJOR_TYPE << 8 ) | DRV_MINOR_TYPE;

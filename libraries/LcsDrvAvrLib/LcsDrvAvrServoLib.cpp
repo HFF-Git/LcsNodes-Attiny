@@ -49,7 +49,6 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "LcsDrvAvrLib.h"
-#include "LcsDrvDesc.h"
 
 using namespace LCSDRV;
 
@@ -194,6 +193,7 @@ uint8_t servoSetupServoSubsys( int numOfServos, ServoConfig *cfg ) {
 //----------------------------------------------------------------------------------------
 // 
 //
+// ??? need to get the CPU frequency dynamically....
 //----------------------------------------------------------------------------------------
 void servoSetTimer( uint16_t us ) {
   

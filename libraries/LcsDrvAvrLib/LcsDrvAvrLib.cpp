@@ -63,7 +63,6 @@
 #endif
 
 #include "LcsDrvAvrLib.h"
-#include "LcsDrvDesc.h"
 
 //----------------------------------------------------------------------------------------
 // Local name space. We keep here the local declarations and utility functions.
@@ -93,6 +92,7 @@ uint16_t            drvBoardVersion     = 0;
 uint16_t            drvFirmwareOptions;
 volatile uint32_t   millisCount         = 0;
 volatile uint32_t   nextInterval        = 0;
+uint32_t            cpuFrequency        = 0;
 
 DrvTaskFunction     drvTaskFunc         = nullptr;
 DrvRequestFunction  drvReqFunc          = nullptr;
@@ -100,23 +100,25 @@ DrvRequestFunction  drvReqFunc          = nullptr;
 const uint16_t      DEFAULT_BOARD_OPTIONS = 0x2a; // default I2C address ? 
 
 //----------------------------------------------------------------------------------------
-//
+// The event buffer is a circular buffer that stores events. It is intended as a 
+// debugging help when things go wrong. In case of fatal error the event buffer 
+// is displayed as a series of LED blinks of the activity LED. Observing this pattern
+// on an oscilloscope might give a clue what happened. Event are quite small and 
+// can be added even while serving an interrupt. 
 //
 //----------------------------------------------------------------------------------------
-enum DrvEventClass {
+enum DrvEventClass : uint8_t {
 
+    DRV_EC_NIL = 0,
 
-};
-
-enum DrvEventArg { 
-
+    // ??? to do ...
 
 };
 
 struct DrvEventEntry {
 
-    uint8_t   event;
-    uint8_t   arg;
+    uint8_t event;
+    uint8_t arg;
 };
 
 const int EVENT_BUF_SIZE = 8;
@@ -161,8 +163,6 @@ volatile uint16_t drvAttributes[ MAX_DRV_ATTRIBUTES ];
 // the request and its status. 
 //
 //----------------------------------------------------------------------------------------
-
-
 enum I2CState : uint8_t {
   
     I2C_IDLE = 0,
@@ -261,27 +261,52 @@ uint64_t buildHwUID( ) {
 // correspond to 1/32 of a second, we can multiply the number of ticks by 32 to get
 // the CPU frequency in Hz.
 //
+// Note that the measurement is not too accurate, so we clamp the result to expected
+// values of 20 or 16 Mhz.
+//
 //----------------------------------------------------------------------------------------
-uint32_t measureCpuFreq( void ) {
+int32_t measureCpuFreq( ) {
 
     while ( RTC.STATUS > 0 );
 
-    RTC.CLKSEL = RTC_CLKSEL_INT32K_gc;
-    RTC.CTRLA  = RTC_RTCEN_bm | RTC_PRESCALER_DIV1_gc;
+    RTC.CLKSEL  = RTC_CLKSEL_INT32K_gc;
+    RTC.CTRLA   =  RTC_RTCEN_bm | RTC_PRESCALER_DIV1_gc;
+    RTC.CNT     = 0;
 
-    RTC.CNT = 0;
-
-    TCA0.SINGLE.CTRLA = 0;
-    TCA0.SINGLE.CNT   = 0;
-    TCA0.SINGLE.CTRLA = TCA_SINGLE_CLKSEL_DIV1_gc | TCA_SINGLE_ENABLE_bm;
+    TCA0.SINGLE.CTRLA   = 0;
+    TCA0.SINGLE.CNT     = 0;
+    TCA0.SINGLE.CTRLA   = TCA_SINGLE_CLKSEL_DIV1_gc | TCA_SINGLE_ENABLE_bm;
 
     uint16_t start = RTC.CNT;
+
     while ((uint16_t)( RTC.CNT - start ) < 1024 );
 
     uint32_t ticks = TCA0.SINGLE.CNT;
+
     TCA0.SINGLE.CTRLA = 0;
 
-    return ( ticks * 32 );
+    int32_t freq = ( ticks * 32 );
+
+    // ---- Clamp to known frequencies ----
+
+    const int32_t FREQ_16MHZ = 16000000;
+    const int32_t FREQ_20MHZ = 20000000;
+    const int32_t TOL        = 1000000; // ±1 MHz
+
+    if (freq > ( FREQ_16MHZ - TOL)  && freq < ( FREQ_16MHZ + TOL )) {
+
+        return FREQ_16MHZ;
+    }
+
+    if ( freq > ( FREQ_20MHZ - TOL ) && freq < ( FREQ_20MHZ + TOL )) {
+
+        return FREQ_20MHZ;
+    }
+
+    // fallback: pick closest
+
+    if ( abs( freq - FREQ_16MHZ ) < abs( freq - FREQ_20MHZ )) return FREQ_16MHZ;
+    else                                                      return FREQ_20MHZ;
 }
 
 //----------------------------------------------------------------------------------------
@@ -295,23 +320,21 @@ uint32_t measureCpuFreq( void ) {
 // frequency measurement and use the actual value for the timer setup.
 //
 //----------------------------------------------------------------------------------------
-void drvTimeInit( void ) {
+void drvTimeInit( ) {
 
-    uint32_t cpu_freq = measureCpuFreq( );
+    cpuFrequency = measureCpuFreq( );
 
-    static constexpr uint32_t CPU_FREQ = 20000000UL;
-    
-    cpu_freq = CPU_FREQ; // fix for now, later measure it.
+    static constexpr uint32_t CPU_FREQ = 20000000UL; // fix for now, later measure it.
+    cpuFrequency = CPU_FREQ; // fix for now, later measure it.
 
     uint16_t prescaler = 64;
-    uint16_t period    = ( cpu_freq / prescaler ) / 1000;
+    uint16_t period    = ( cpuFrequency / prescaler ) / 1000;
   
     TCA0.SINGLE.CTRLA   = 0; 
     TCA0.SINGLE.CTRLB   = 0;
     TCA0.SINGLE.PER     = period; 
     TCA0.SINGLE.INTCTRL = TCA_SINGLE_OVF_bm;
-    TCA0.SINGLE.CTRLA   = TCA_SINGLE_CLKSEL_DIV64_gc |
-                          TCA_SINGLE_ENABLE_bm;
+    TCA0.SINGLE.CTRLA   = TCA_SINGLE_CLKSEL_DIV64_gc | TCA_SINGLE_ENABLE_bm;
 
     sei( );
 }
@@ -930,23 +953,39 @@ ISR(TWI0_TWIS_vect) {
 namespace LCSDRV {
 
 //========================================================================================
-// Fatal Error Support
+// Activity LED support.
 //
 //
 //========================================================================================
-// We have one routine that will communicate a fatal error via the blinking of 
-// the activity LED. The routine takes an integer as input, which is the error 
-// code. The routine will blink the activity LED in a specific pattern to indicate
-// the error code. The error code is typically a small integer, and the blinking
-// pattern will consist of a series of short blinks followed by a long pause. For
-// example, if the error code is 3, the LED will blink three times quickly, then 
-// pause for a longer period before repeating the pattern.
+// We have a couple of routines that manage the activity LED on the board. The routines
+// allow to set and clear the LEF, blink it, and also to enter an endless loop when a
+// fatal error is detected. 
 //
-// In addition, there is the event map. We store events in a circular buffer 
+// In addition, there is the event map. We store simple events in a circular buffer 
 // which can be used to do some further analysis of a problem. The event map data
-// is dumped out via the same LED pin.
+// is dumped out via the same LED pin. Looking at the pattern on oscilloscope may help
+// to pin down ugly problems. 
 //
 //----------------------------------------------------------------------------------------
+void drvSetLedOn( ) {
+
+    ledOn( );
+}
+
+void drvSetLedOff( ) {
+
+    ledOff( );
+}
+
+void drvBlinkLed( int n ) {
+
+    for ( int i = 0; i < n; i++ ) {
+          
+        ledOn( );  delayMs( 200 );
+        ledOff( ); delayMs( 200 );
+    }
+}
+
 inline void eventAdd( uint8_t id, uint8_t a ) {
   
     uint8_t i = drvEventMap.head++ & ( EVENT_BUF_SIZE - 1);
@@ -959,12 +998,7 @@ void drvFatalError( int n ) {
 
     while ( true )  {
 
-        for ( int i = 0; i < n; i++ ) {
-          
-            ledOn( );  delayMs( 200 );
-            ledOff( ); delayMs( 200 );
-        }
-
+        drvBlinkLed( n );
         delayMs( 1000 );
         dumpTraceLED( );
         delayMs( 3000 );
@@ -1004,6 +1038,11 @@ void drvDelay( uint32_t val ) {
     uint32_t start = drvMillis( );
     while (( drvMillislis( ) - start ) < val );
     #endif   
+}
+
+uint32_t  drvCpuFrequency( ) {
+
+    retrurn ( cpuFrequency );
 }
 
 //========================================================================================

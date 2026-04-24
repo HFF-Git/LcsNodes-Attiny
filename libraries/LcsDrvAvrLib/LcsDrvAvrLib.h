@@ -96,11 +96,13 @@ enum DrvErrIds : uint8_t {
 //
 //
 //----------------------------------------------------------------------------------------
+void      drvSetLedOn( );
+void      drvSetLedOff( );
+void      drvBlinkLed( int n );
 void      drvFatalError( int n );
+uint32_t  drvCpuFrequency( );
 uint32_t  drvMillis( );
 void      drvDelay( uint32_t val );
-
-bool      wasWatchdogReset( );
 
 void      drvPinOutput( PORT_t *port, uint8_t pinBitmask );
 void      drvPinInput( PORT_t *port, uint8_t pinBitmask );
