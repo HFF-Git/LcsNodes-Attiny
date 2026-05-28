@@ -7,5 +7,14 @@
         "latex",
         "plaintext",
         "cpp"
-    ]
+    ],
+
+    "cmake.configureSettings": {
+
+        "CMAKE_TOOLCHAIN_FILE": "${workspaceFolder}/cmake/toolchain-avr.cmake"
+
+    },
+
+    "cmake.buildDirectory": "${workspaceFolder}/build"
+
 }
