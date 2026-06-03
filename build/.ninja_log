@@ -1,0 +1,13 @@
+# ninja log v7
+33	171	1780489942058613250	LcsDrvSignalBoard/CMakeFiles/LcsDrvSignalBoard.dir/main.cpp.obj	9db31596c1c3059a
+19	175	1780489942045098144	LcsDrvAvrLib-Test/CMakeFiles/LcsDrvAvrLib-Test.dir/main.cpp.obj	c2aa104a10dad411
+25	175	1780489942050392972	LcsDrvTurnoutBoard/CMakeFiles/LcsDrvTurnoutBoard.dir/main.cpp.obj	1da543aa1a38855e
+32	187	1780489942057719557	LcsDrvServoBoard/CMakeFiles/LcsDrvServoBoard.dir/main.cpp.obj	ce4629408fe2ba7c
+34	202	1780489942059610692	LcsDrvOccDetectBoard/CMakeFiles/LcsDrvOccDetectBoard.dir/main.cpp.obj	fc89726aa537a8b6
+19	301	1780489942044690568	libraries/LcsDrvAvrLib/CMakeFiles/LcsDrvAvrLib.dir/LcsDrvAvrLib.cpp.obj	95bcb588b45533f2
+301	348	1780489942326878492	libraries/LcsDrvAvrLib/libLcsDrvAvrLib.a	710e2109b003646f
+348	442	1780489942373531417	/Users/helmutfieres/GitHub/LcsNodes-Attiny/bin/LcsDrvAvrLib-Test/LcsDrvAvrLib-Test.elf	c6115c8c0c06acf0
+348	442	1780489942373882744	/Users/helmutfieres/GitHub/LcsNodes-Attiny/bin/LcsDrvTurnoutBoard/LcsDrvTurnoutBoard.elf	e398b1e13e1c764f
+349	442	1780489942374211072	/Users/helmutfieres/GitHub/LcsNodes-Attiny/bin/LcsDrvServoBoard/LcsDrvServoBoard.elf	64784abd5512a9c3
+349	442	1780489942374402235	/Users/helmutfieres/GitHub/LcsNodes-Attiny/bin/LcsDrvSignalBoard/LcsDrvSignalBoard.elf	89150e3c72811c90
+349	442	1780489942374622523	/Users/helmutfieres/GitHub/LcsNodes-Attiny/bin/LcsDrvOccDetectBoard/LcsDrvOccDetectBoard.elf	2c80dcaf651de3ba

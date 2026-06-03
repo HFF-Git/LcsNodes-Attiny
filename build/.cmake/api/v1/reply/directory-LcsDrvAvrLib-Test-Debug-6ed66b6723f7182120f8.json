@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "LcsDrvAvrLib-Test",
+		"source" : "LcsDrvAvrLib-Test"
+	}
+}

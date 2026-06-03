@@ -26,6 +26,15 @@
 //========================================================================================
 #pragma once
 
+#include <stdlib.h>
+#include <string.h>
+#include <stdint.h>
+#include <stddef.h>    
+#include <stdbool.h>    
+#include <avr/io.h>
+#include <avr/wdt.h> 
+#include <avr/interrupt.h>
+
 namespace LCSDRV {
 
 //----------------------------------------------------------------------------------------
@@ -122,10 +131,10 @@ void      setAttr( uint8_t index, uint16_t val );
 void      refreshAttr( uint8_t index );
 void      saveAttr( uint8_t index );
 
-uint8_t   initDrvRuntime( uint16_t boardType, 
+uint8_t   drvInitRuntime( uint16_t boardType, 
                           uint16_t boardVersion,
                           uint16_t firmwareOptions );
 
-void      startDrvRuntime( DrvTaskFunction tFunc, DrvRequestFunction rFunc );
+void      drvStartRuntime( DrvTaskFunction tFunc, DrvRequestFunction rFunc );
 
 } // namespace LCSDRV

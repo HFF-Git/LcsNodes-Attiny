@@ -1,0 +1,26 @@
+
+//========================================================================================
+//
+//
+//
+//========================================================================================
+1.) Use the megaTiny compiler tool chain. 
+
+2.) Use the C++14 language standard version.
+
+3.) For fashing to Attiny: 
+
+pymcuprog write -t uart -u /dev/cu.usbserial-0001 -d attiny1614 -f LcsDrvAvrLib-Test.hex
+
+// or a script ...
+#!/bin/bash
+
+PORT=/dev/cu.usbserial-0001
+MCU=attiny1614
+
+HEX=$(ls bin/*/*.hex | tail -n 1)
+
+pymcuprog write -t uart -u $PORT -d $MCU -f "$HEX"
+
+4.) watch out for 1616 / 1614 differences. 
+

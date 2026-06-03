@@ -1,0 +1,260 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2,
+						3,
+						4,
+						5,
+						6
+					],
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.20"
+					},
+					"projectIndex" : 0,
+					"source" : "."
+				},
+				{
+					"build" : "libraries/LcsDrvAvrLib",
+					"jsonFile" : "directory-libraries.LcsDrvAvrLib-Debug-52f05961ae6d54922b7b.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.20"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "libraries/LcsDrvAvrLib",
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"build" : "LcsDrvAvrLib-Test",
+					"jsonFile" : "directory-LcsDrvAvrLib-Test-Debug-6ed66b6723f7182120f8.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.20"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "LcsDrvAvrLib-Test",
+					"targetIndexes" : 
+					[
+						1,
+						2
+					]
+				},
+				{
+					"build" : "LcsDrvTurnoutBoard",
+					"jsonFile" : "directory-LcsDrvTurnoutBoard-Debug-2e7d2b7fde984e4ecf3e.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.20"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "LcsDrvTurnoutBoard",
+					"targetIndexes" : 
+					[
+						9,
+						10
+					]
+				},
+				{
+					"build" : "LcsDrvServoBoard",
+					"jsonFile" : "directory-LcsDrvServoBoard-Debug-c8dc603ffd5a7fa9784b.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.20"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "LcsDrvServoBoard",
+					"targetIndexes" : 
+					[
+						5,
+						6
+					]
+				},
+				{
+					"build" : "LcsDrvSignalBoard",
+					"jsonFile" : "directory-LcsDrvSignalBoard-Debug-96d1e4649b0138792445.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.20"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "LcsDrvSignalBoard",
+					"targetIndexes" : 
+					[
+						7,
+						8
+					]
+				},
+				{
+					"build" : "LcsDrvOccDetectBoard",
+					"jsonFile" : "directory-LcsDrvOccDetectBoard-Debug-adb9be579b550bb5e5e0.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.20"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "LcsDrvOccDetectBoard",
+					"targetIndexes" : 
+					[
+						3,
+						4
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1
+					],
+					"directoryIndexes" : 
+					[
+						0,
+						2,
+						3,
+						4,
+						5,
+						6
+					],
+					"name" : "attiny_workspace",
+					"targetIndexes" : 
+					[
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						1
+					],
+					"name" : "LcsDrvAvrLib",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						0
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 1,
+					"id" : "LcsDrvAvrLib::@372c9e7813a330480d4e",
+					"jsonFile" : "target-LcsDrvAvrLib-Debug-7547aa6461bbd3697e7b.json",
+					"name" : "LcsDrvAvrLib",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "LcsDrvAvrLib-Test::@559b31b7e6ed870ee933",
+					"jsonFile" : "target-LcsDrvAvrLib-Test-Debug-8041e5c73107bb2af8bd.json",
+					"name" : "LcsDrvAvrLib-Test",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "LcsDrvAvrLib-Test_flash::@559b31b7e6ed870ee933",
+					"jsonFile" : "target-LcsDrvAvrLib-Test_flash-Debug-00da2ee8b26bc3cc5c1d.json",
+					"name" : "LcsDrvAvrLib-Test_flash",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 6,
+					"id" : "LcsDrvOccDetectBoard::@8d6b6ddf87e457cd6c42",
+					"jsonFile" : "target-LcsDrvOccDetectBoard-Debug-901f33a07b6ea986a0ba.json",
+					"name" : "LcsDrvOccDetectBoard",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 6,
+					"id" : "LcsDrvOccDetectBoard_flash::@8d6b6ddf87e457cd6c42",
+					"jsonFile" : "target-LcsDrvOccDetectBoard_flash-Debug-664741307569e92f3c77.json",
+					"name" : "LcsDrvOccDetectBoard_flash",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "LcsDrvServoBoard::@86c64a25be751a2f6787",
+					"jsonFile" : "target-LcsDrvServoBoard-Debug-2618d02f5f4a80e2374b.json",
+					"name" : "LcsDrvServoBoard",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "LcsDrvServoBoard_flash::@86c64a25be751a2f6787",
+					"jsonFile" : "target-LcsDrvServoBoard_flash-Debug-34c8e149e81ef1d550bc.json",
+					"name" : "LcsDrvServoBoard_flash",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "LcsDrvSignalBoard::@4ec30b945c78665255ed",
+					"jsonFile" : "target-LcsDrvSignalBoard-Debug-6c69214f2bb896afa2ed.json",
+					"name" : "LcsDrvSignalBoard",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "LcsDrvSignalBoard_flash::@4ec30b945c78665255ed",
+					"jsonFile" : "target-LcsDrvSignalBoard_flash-Debug-79afd83e06e5067be30e.json",
+					"name" : "LcsDrvSignalBoard_flash",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "LcsDrvTurnoutBoard::@7389f5bf74f15ac3dd99",
+					"jsonFile" : "target-LcsDrvTurnoutBoard-Debug-4b84644c387bfacf90e2.json",
+					"name" : "LcsDrvTurnoutBoard",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "LcsDrvTurnoutBoard_flash::@7389f5bf74f15ac3dd99",
+					"jsonFile" : "target-LcsDrvTurnoutBoard_flash-Debug-870032eee4ee10f05e07.json",
+					"name" : "LcsDrvTurnoutBoard_flash",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/Users/helmutfieres/GitHub/LcsNodes-Attiny/build",
+		"source" : "/Users/helmutfieres/GitHub/LcsNodes-Attiny"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 8
+	}
+}

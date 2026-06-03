@@ -1,0 +1,72 @@
+{
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_custom_target"
+		],
+		"files" : 
+		[
+			"LcsDrvAvrLib-Test/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 71,
+				"parent" : 0
+			}
+		]
+	},
+	"dependencies" : 
+	[
+		{
+			"id" : "LcsDrvAvrLib-Test::@559b31b7e6ed870ee933"
+		}
+	],
+	"id" : "LcsDrvAvrLib-Test_flash::@559b31b7e6ed870ee933",
+	"name" : "LcsDrvAvrLib-Test_flash",
+	"paths" : 
+	{
+		"build" : "LcsDrvAvrLib-Test",
+		"source" : "LcsDrvAvrLib-Test"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		},
+		{
+			"name" : "CMake Rules",
+			"sourceIndexes" : 
+			[
+				1
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"isGenerated" : true,
+			"path" : "build/LcsDrvAvrLib-Test/CMakeFiles/LcsDrvAvrLib-Test_flash",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "build/LcsDrvAvrLib-Test/CMakeFiles/LcsDrvAvrLib-Test_flash.rule",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "UTILITY"
+}

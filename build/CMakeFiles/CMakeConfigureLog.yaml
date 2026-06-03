@@ -5,7 +5,7 @@ events:
     kind: "find-v1"
     backtrace:
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineSystem.cmake:12 (find_program)"
-      - "CMakeLists.txt:7 (project)"
+      - "CMakeLists.txt:12 (project)"
     mode: "program"
     variable: "CMAKE_UNAME"
     description: "Path to a program."
@@ -75,7 +75,7 @@ events:
     kind: "message-v1"
     backtrace:
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineSystem.cmake:207 (message)"
-      - "CMakeLists.txt:7 (project)"
+      - "CMakeLists.txt:12 (project)"
     message: |
       The target system is: Generic -  - avr
       The host system is: Darwin - 25.5.0 - arm64
@@ -83,7 +83,7 @@ events:
     kind: "find-v1"
     backtrace:
       - "/opt/homebrew/share/cmake/Modules/CMakeNinjaFindMake.cmake:5 (find_program)"
-      - "CMakeLists.txt:7 (project)"
+      - "CMakeLists.txt:12 (project)"
     mode: "program"
     variable: "CMAKE_MAKE_PROGRAM"
     description: "Program used to build from build.ninja files."
@@ -146,73 +146,12 @@ events:
   -
     kind: "find-v1"
     backtrace:
-      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompiler.cmake:115 (find_program)"
-      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:67 (_cmake_find_compiler_path)"
-      - "CMakeLists.txt:7 (project)"
-    mode: "program"
-    variable: "CMAKE_C_COMPILER_WITH_PATH"
-    description: "Path to a program."
-    settings:
-      SearchFramework: "FIRST"
-      SearchAppBundle: "FIRST"
-      CMAKE_FIND_USE_CMAKE_PATH: true
-      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
-      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
-      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
-      CMAKE_FIND_USE_INSTALL_PREFIX: true
-    names:
-      - "avr-gcc"
-    candidate_directories:
-      - "/opt/homebrew/bin/"
-      - "/opt/homebrew/sbin/"
-      - "/opt/local/bin/"
-      - "/opt/local/sbin/"
-      - "/opt/anaconda3/bin/"
-      - "/opt/anaconda3/condabin/"
-      - "/Users/helmutfieres/bin/"
-      - "/usr/local/bin/"
-      - "/System/Cryptexes/App/usr/bin/"
-      - "/usr/bin/"
-      - "/bin/"
-      - "/usr/sbin/"
-      - "/sbin/"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/"
-      - "/pkg/env/global/bin/"
-      - "/Library/Apple/usr/bin/"
-      - "/Library/TeX/texbin/"
-    found: "/opt/homebrew/bin/avr-gcc"
-    search_context:
-      ENV{PATH}:
-        - "/opt/homebrew/bin"
-        - "/opt/homebrew/sbin"
-        - "/opt/local/bin"
-        - "/opt/local/sbin"
-        - "/opt/anaconda3/bin"
-        - "/opt/anaconda3/condabin"
-        - "/Users/helmutfieres/bin"
-        - "/usr/local/bin"
-        - "/System/Cryptexes/App/usr/bin"
-        - "/usr/bin"
-        - "/bin"
-        - "/usr/sbin"
-        - "/sbin"
-        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
-        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
-        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
-        - "/pkg/env/global/bin"
-        - "/Library/Apple/usr/bin"
-        - "/Library/TeX/texbin"
-  -
-    kind: "find-v1"
-    backtrace:
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:462 (find_file)"
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:500 (CMAKE_DETERMINE_COMPILER_ID_WRITE)"
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:8 (CMAKE_DETERMINE_COMPILER_ID_BUILD)"
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:122 (CMAKE_DETERMINE_COMPILER_ID)"
-      - "CMakeLists.txt:7 (project)"
+      - "CMakeLists.txt:12 (project)"
     mode: "file"
     variable: "src_in"
     description: "Path to a file."
@@ -256,10 +195,10 @@ events:
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:122 (CMAKE_DETERMINE_COMPILER_ID)"
-      - "CMakeLists.txt:7 (project)"
+      - "CMakeLists.txt:12 (project)"
     message: |
       Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
-      Compiler: /opt/homebrew/bin/avr-gcc 
+      Compiler: /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc 
       Build flags: 
       Id flags:  
       
@@ -277,7 +216,7 @@ events:
     backtrace:
       - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
-      - "CMakeLists.txt:7 (project)"
+      - "CMakeLists.txt:12 (project)"
     mode: "program"
     variable: "CMAKE_AR"
     description: "Path to a program."
@@ -293,6 +232,7 @@ events:
       - "avr-ar"
       - "ar"
     candidate_directories:
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/"
       - "/opt/homebrew/bin/"
       - "/opt/homebrew/sbin/"
       - "/opt/local/bin/"
@@ -312,7 +252,7 @@ events:
       - "/pkg/env/global/bin/"
       - "/Library/Apple/usr/bin/"
       - "/Library/TeX/texbin/"
-    found: "/opt/homebrew/bin/avr-ar"
+    found: "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-ar"
     search_context:
       ENV{PATH}:
         - "/opt/homebrew/bin"
@@ -339,7 +279,7 @@ events:
     backtrace:
       - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
-      - "CMakeLists.txt:7 (project)"
+      - "CMakeLists.txt:12 (project)"
     mode: "program"
     variable: "CMAKE_RANLIB"
     description: "Path to a program."
@@ -355,6 +295,7 @@ events:
       - "avr-ranlib"
       - "ranlib"
     candidate_directories:
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/"
       - "/opt/homebrew/bin/"
       - "/opt/homebrew/sbin/"
       - "/opt/local/bin/"
@@ -374,7 +315,7 @@ events:
       - "/pkg/env/global/bin/"
       - "/Library/Apple/usr/bin/"
       - "/Library/TeX/texbin/"
-    found: "/opt/homebrew/bin/avr-ranlib"
+    found: "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-ranlib"
     search_context:
       ENV{PATH}:
         - "/opt/homebrew/bin"
@@ -401,7 +342,7 @@ events:
     backtrace:
       - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
-      - "CMakeLists.txt:7 (project)"
+      - "CMakeLists.txt:12 (project)"
     mode: "program"
     variable: "CMAKE_STRIP"
     description: "Path to a program."
@@ -417,6 +358,7 @@ events:
       - "avr-strip"
       - "strip"
     candidate_directories:
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/"
       - "/opt/homebrew/bin/"
       - "/opt/homebrew/sbin/"
       - "/opt/local/bin/"
@@ -436,7 +378,7 @@ events:
       - "/pkg/env/global/bin/"
       - "/Library/Apple/usr/bin/"
       - "/Library/TeX/texbin/"
-    found: "/opt/homebrew/bin/avr-strip"
+    found: "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-strip"
     search_context:
       ENV{PATH}:
         - "/opt/homebrew/bin"
@@ -463,7 +405,7 @@ events:
     backtrace:
       - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
-      - "CMakeLists.txt:7 (project)"
+      - "CMakeLists.txt:12 (project)"
     mode: "program"
     variable: "CMAKE_LINKER"
     description: "Path to a program."
@@ -479,6 +421,7 @@ events:
       - "avr-ld"
       - "ld"
     candidate_directories:
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/"
       - "/opt/homebrew/bin/"
       - "/opt/homebrew/sbin/"
       - "/opt/local/bin/"
@@ -498,7 +441,7 @@ events:
       - "/pkg/env/global/bin/"
       - "/Library/Apple/usr/bin/"
       - "/Library/TeX/texbin/"
-    found: "/opt/homebrew/bin/avr-ld"
+    found: "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-ld"
     search_context:
       ENV{PATH}:
         - "/opt/homebrew/bin"
@@ -525,7 +468,7 @@ events:
     backtrace:
       - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
-      - "CMakeLists.txt:7 (project)"
+      - "CMakeLists.txt:12 (project)"
     mode: "program"
     variable: "CMAKE_NM"
     description: "Path to a program."
@@ -541,6 +484,7 @@ events:
       - "avr-nm"
       - "nm"
     candidate_directories:
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/"
       - "/opt/homebrew/bin/"
       - "/opt/homebrew/sbin/"
       - "/opt/local/bin/"
@@ -560,7 +504,7 @@ events:
       - "/pkg/env/global/bin/"
       - "/Library/Apple/usr/bin/"
       - "/Library/TeX/texbin/"
-    found: "/opt/homebrew/bin/avr-nm"
+    found: "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-nm"
     search_context:
       ENV{PATH}:
         - "/opt/homebrew/bin"
@@ -587,7 +531,7 @@ events:
     backtrace:
       - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
-      - "CMakeLists.txt:7 (project)"
+      - "CMakeLists.txt:12 (project)"
     mode: "program"
     variable: "CMAKE_OBJDUMP"
     description: "Path to a program."
@@ -603,6 +547,7 @@ events:
       - "avr-objdump"
       - "objdump"
     candidate_directories:
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/"
       - "/opt/homebrew/bin/"
       - "/opt/homebrew/sbin/"
       - "/opt/local/bin/"
@@ -622,7 +567,7 @@ events:
       - "/pkg/env/global/bin/"
       - "/Library/Apple/usr/bin/"
       - "/Library/TeX/texbin/"
-    found: "/opt/homebrew/bin/avr-objdump"
+    found: "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-objdump"
     search_context:
       ENV{PATH}:
         - "/opt/homebrew/bin"
@@ -649,7 +594,7 @@ events:
     backtrace:
       - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
-      - "CMakeLists.txt:7 (project)"
+      - "CMakeLists.txt:12 (project)"
     mode: "program"
     variable: "CMAKE_READELF"
     description: "Path to a program."
@@ -665,6 +610,7 @@ events:
       - "avr-readelf"
       - "readelf"
     candidate_directories:
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/"
       - "/opt/homebrew/bin/"
       - "/opt/homebrew/sbin/"
       - "/opt/local/bin/"
@@ -684,7 +630,7 @@ events:
       - "/pkg/env/global/bin/"
       - "/Library/Apple/usr/bin/"
       - "/Library/TeX/texbin/"
-    found: "/opt/homebrew/bin/avr-readelf"
+    found: "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-readelf"
     search_context:
       ENV{PATH}:
         - "/opt/homebrew/bin"
@@ -711,7 +657,7 @@ events:
     backtrace:
       - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
-      - "CMakeLists.txt:7 (project)"
+      - "CMakeLists.txt:12 (project)"
     mode: "program"
     variable: "CMAKE_DLLTOOL"
     description: "Path to a program."
@@ -727,6 +673,7 @@ events:
       - "avr-dlltool"
       - "dlltool"
     candidate_directories:
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/"
       - "/opt/homebrew/bin/"
       - "/opt/homebrew/sbin/"
       - "/opt/local/bin/"
@@ -747,6 +694,7 @@ events:
       - "/Library/Apple/usr/bin/"
       - "/Library/TeX/texbin/"
     searched_directories:
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-dlltool"
       - "/opt/homebrew/bin/avr-dlltool"
       - "/opt/homebrew/sbin/avr-dlltool"
       - "/opt/local/bin/avr-dlltool"
@@ -766,6 +714,7 @@ events:
       - "/pkg/env/global/bin/avr-dlltool"
       - "/Library/Apple/usr/bin/avr-dlltool"
       - "/Library/TeX/texbin/avr-dlltool"
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/dlltool"
       - "/opt/homebrew/bin/dlltool"
       - "/opt/homebrew/sbin/dlltool"
       - "/opt/local/bin/dlltool"
@@ -812,7 +761,7 @@ events:
     backtrace:
       - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
-      - "CMakeLists.txt:7 (project)"
+      - "CMakeLists.txt:12 (project)"
     mode: "program"
     variable: "CMAKE_ADDR2LINE"
     description: "Path to a program."
@@ -828,6 +777,7 @@ events:
       - "avr-addr2line"
       - "addr2line"
     candidate_directories:
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/"
       - "/opt/homebrew/bin/"
       - "/opt/homebrew/sbin/"
       - "/opt/local/bin/"
@@ -847,7 +797,7 @@ events:
       - "/pkg/env/global/bin/"
       - "/Library/Apple/usr/bin/"
       - "/Library/TeX/texbin/"
-    found: "/opt/homebrew/bin/avr-addr2line"
+    found: "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-addr2line"
     search_context:
       ENV{PATH}:
         - "/opt/homebrew/bin"
@@ -874,7 +824,7 @@ events:
     backtrace:
       - "/opt/homebrew/share/cmake/Modules/CMakeFindBinUtils.cmake:238 (find_program)"
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:200 (include)"
-      - "CMakeLists.txt:7 (project)"
+      - "CMakeLists.txt:12 (project)"
     mode: "program"
     variable: "CMAKE_TAPI"
     description: "Path to a program."
@@ -890,6 +840,7 @@ events:
       - "avr-tapi"
       - "tapi"
     candidate_directories:
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/"
       - "/opt/homebrew/bin/"
       - "/opt/homebrew/sbin/"
       - "/opt/local/bin/"
@@ -910,6 +861,7 @@ events:
       - "/Library/Apple/usr/bin/"
       - "/Library/TeX/texbin/"
     searched_directories:
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-tapi"
       - "/opt/homebrew/bin/avr-tapi"
       - "/opt/homebrew/sbin/avr-tapi"
       - "/opt/local/bin/avr-tapi"
@@ -929,6 +881,7 @@ events:
       - "/pkg/env/global/bin/avr-tapi"
       - "/Library/Apple/usr/bin/avr-tapi"
       - "/Library/TeX/texbin/avr-tapi"
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/tapi"
       - "/opt/homebrew/bin/tapi"
       - "/opt/homebrew/sbin/tapi"
       - "/opt/local/bin/tapi"
@@ -975,7 +928,7 @@ events:
     backtrace:
       - "/opt/homebrew/share/cmake/Modules/Compiler/GNU-FindBinUtils.cmake:18 (find_program)"
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:201 (include)"
-      - "CMakeLists.txt:7 (project)"
+      - "CMakeLists.txt:12 (project)"
     mode: "program"
     variable: "CMAKE_C_COMPILER_AR"
     description: "A wrapper around 'ar' adding the appropriate '--plugin' option for the GCC compiler"
@@ -988,11 +941,12 @@ events:
       CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
       CMAKE_FIND_USE_INSTALL_PREFIX: true
     names:
-      - "avr-gcc-ar-9.5"
-      - "avr-gcc-ar-9"
-      - "avr-gcc-ar9"
+      - "avr-gcc-ar-7.3"
+      - "avr-gcc-ar-7"
+      - "avr-gcc-ar7"
       - "avr-gcc-ar"
     candidate_directories:
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/"
       - "/opt/homebrew/bin/"
       - "/opt/homebrew/sbin/"
       - "/opt/local/bin/"
@@ -1013,64 +967,67 @@ events:
       - "/Library/Apple/usr/bin/"
       - "/Library/TeX/texbin/"
     searched_directories:
-      - "/opt/homebrew/bin/avr-gcc-ar-9.5"
-      - "/opt/homebrew/sbin/avr-gcc-ar-9.5"
-      - "/opt/local/bin/avr-gcc-ar-9.5"
-      - "/opt/local/sbin/avr-gcc-ar-9.5"
-      - "/opt/anaconda3/bin/avr-gcc-ar-9.5"
-      - "/opt/anaconda3/condabin/avr-gcc-ar-9.5"
-      - "/Users/helmutfieres/bin/avr-gcc-ar-9.5"
-      - "/usr/local/bin/avr-gcc-ar-9.5"
-      - "/System/Cryptexes/App/usr/bin/avr-gcc-ar-9.5"
-      - "/usr/bin/avr-gcc-ar-9.5"
-      - "/bin/avr-gcc-ar-9.5"
-      - "/usr/sbin/avr-gcc-ar-9.5"
-      - "/sbin/avr-gcc-ar-9.5"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/avr-gcc-ar-9.5"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/avr-gcc-ar-9.5"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/avr-gcc-ar-9.5"
-      - "/pkg/env/global/bin/avr-gcc-ar-9.5"
-      - "/Library/Apple/usr/bin/avr-gcc-ar-9.5"
-      - "/Library/TeX/texbin/avr-gcc-ar-9.5"
-      - "/opt/homebrew/bin/avr-gcc-ar-9"
-      - "/opt/homebrew/sbin/avr-gcc-ar-9"
-      - "/opt/local/bin/avr-gcc-ar-9"
-      - "/opt/local/sbin/avr-gcc-ar-9"
-      - "/opt/anaconda3/bin/avr-gcc-ar-9"
-      - "/opt/anaconda3/condabin/avr-gcc-ar-9"
-      - "/Users/helmutfieres/bin/avr-gcc-ar-9"
-      - "/usr/local/bin/avr-gcc-ar-9"
-      - "/System/Cryptexes/App/usr/bin/avr-gcc-ar-9"
-      - "/usr/bin/avr-gcc-ar-9"
-      - "/bin/avr-gcc-ar-9"
-      - "/usr/sbin/avr-gcc-ar-9"
-      - "/sbin/avr-gcc-ar-9"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/avr-gcc-ar-9"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/avr-gcc-ar-9"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/avr-gcc-ar-9"
-      - "/pkg/env/global/bin/avr-gcc-ar-9"
-      - "/Library/Apple/usr/bin/avr-gcc-ar-9"
-      - "/Library/TeX/texbin/avr-gcc-ar-9"
-      - "/opt/homebrew/bin/avr-gcc-ar9"
-      - "/opt/homebrew/sbin/avr-gcc-ar9"
-      - "/opt/local/bin/avr-gcc-ar9"
-      - "/opt/local/sbin/avr-gcc-ar9"
-      - "/opt/anaconda3/bin/avr-gcc-ar9"
-      - "/opt/anaconda3/condabin/avr-gcc-ar9"
-      - "/Users/helmutfieres/bin/avr-gcc-ar9"
-      - "/usr/local/bin/avr-gcc-ar9"
-      - "/System/Cryptexes/App/usr/bin/avr-gcc-ar9"
-      - "/usr/bin/avr-gcc-ar9"
-      - "/bin/avr-gcc-ar9"
-      - "/usr/sbin/avr-gcc-ar9"
-      - "/sbin/avr-gcc-ar9"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/avr-gcc-ar9"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/avr-gcc-ar9"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/avr-gcc-ar9"
-      - "/pkg/env/global/bin/avr-gcc-ar9"
-      - "/Library/Apple/usr/bin/avr-gcc-ar9"
-      - "/Library/TeX/texbin/avr-gcc-ar9"
-    found: "/opt/homebrew/bin/avr-gcc-ar"
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc-ar-7.3"
+      - "/opt/homebrew/bin/avr-gcc-ar-7.3"
+      - "/opt/homebrew/sbin/avr-gcc-ar-7.3"
+      - "/opt/local/bin/avr-gcc-ar-7.3"
+      - "/opt/local/sbin/avr-gcc-ar-7.3"
+      - "/opt/anaconda3/bin/avr-gcc-ar-7.3"
+      - "/opt/anaconda3/condabin/avr-gcc-ar-7.3"
+      - "/Users/helmutfieres/bin/avr-gcc-ar-7.3"
+      - "/usr/local/bin/avr-gcc-ar-7.3"
+      - "/System/Cryptexes/App/usr/bin/avr-gcc-ar-7.3"
+      - "/usr/bin/avr-gcc-ar-7.3"
+      - "/bin/avr-gcc-ar-7.3"
+      - "/usr/sbin/avr-gcc-ar-7.3"
+      - "/sbin/avr-gcc-ar-7.3"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/avr-gcc-ar-7.3"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/avr-gcc-ar-7.3"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/avr-gcc-ar-7.3"
+      - "/pkg/env/global/bin/avr-gcc-ar-7.3"
+      - "/Library/Apple/usr/bin/avr-gcc-ar-7.3"
+      - "/Library/TeX/texbin/avr-gcc-ar-7.3"
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc-ar-7"
+      - "/opt/homebrew/bin/avr-gcc-ar-7"
+      - "/opt/homebrew/sbin/avr-gcc-ar-7"
+      - "/opt/local/bin/avr-gcc-ar-7"
+      - "/opt/local/sbin/avr-gcc-ar-7"
+      - "/opt/anaconda3/bin/avr-gcc-ar-7"
+      - "/opt/anaconda3/condabin/avr-gcc-ar-7"
+      - "/Users/helmutfieres/bin/avr-gcc-ar-7"
+      - "/usr/local/bin/avr-gcc-ar-7"
+      - "/System/Cryptexes/App/usr/bin/avr-gcc-ar-7"
+      - "/usr/bin/avr-gcc-ar-7"
+      - "/bin/avr-gcc-ar-7"
+      - "/usr/sbin/avr-gcc-ar-7"
+      - "/sbin/avr-gcc-ar-7"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/avr-gcc-ar-7"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/avr-gcc-ar-7"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/avr-gcc-ar-7"
+      - "/pkg/env/global/bin/avr-gcc-ar-7"
+      - "/Library/Apple/usr/bin/avr-gcc-ar-7"
+      - "/Library/TeX/texbin/avr-gcc-ar-7"
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc-ar7"
+      - "/opt/homebrew/bin/avr-gcc-ar7"
+      - "/opt/homebrew/sbin/avr-gcc-ar7"
+      - "/opt/local/bin/avr-gcc-ar7"
+      - "/opt/local/sbin/avr-gcc-ar7"
+      - "/opt/anaconda3/bin/avr-gcc-ar7"
+      - "/opt/anaconda3/condabin/avr-gcc-ar7"
+      - "/Users/helmutfieres/bin/avr-gcc-ar7"
+      - "/usr/local/bin/avr-gcc-ar7"
+      - "/System/Cryptexes/App/usr/bin/avr-gcc-ar7"
+      - "/usr/bin/avr-gcc-ar7"
+      - "/bin/avr-gcc-ar7"
+      - "/usr/sbin/avr-gcc-ar7"
+      - "/sbin/avr-gcc-ar7"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/avr-gcc-ar7"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/avr-gcc-ar7"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/avr-gcc-ar7"
+      - "/pkg/env/global/bin/avr-gcc-ar7"
+      - "/Library/Apple/usr/bin/avr-gcc-ar7"
+      - "/Library/TeX/texbin/avr-gcc-ar7"
+    found: "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc-ar"
     search_context:
       ENV{PATH}:
         - "/opt/homebrew/bin"
@@ -1097,7 +1054,7 @@ events:
     backtrace:
       - "/opt/homebrew/share/cmake/Modules/Compiler/GNU-FindBinUtils.cmake:30 (find_program)"
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:201 (include)"
-      - "CMakeLists.txt:7 (project)"
+      - "CMakeLists.txt:12 (project)"
     mode: "program"
     variable: "CMAKE_C_COMPILER_RANLIB"
     description: "A wrapper around 'ranlib' adding the appropriate '--plugin' option for the GCC compiler"
@@ -1110,11 +1067,12 @@ events:
       CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
       CMAKE_FIND_USE_INSTALL_PREFIX: true
     names:
-      - "avr-gcc-ranlib-9.5"
-      - "avr-gcc-ranlib-9"
-      - "avr-gcc-ranlib9"
+      - "avr-gcc-ranlib-7.3"
+      - "avr-gcc-ranlib-7"
+      - "avr-gcc-ranlib7"
       - "avr-gcc-ranlib"
     candidate_directories:
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/"
       - "/opt/homebrew/bin/"
       - "/opt/homebrew/sbin/"
       - "/opt/local/bin/"
@@ -1135,125 +1093,67 @@ events:
       - "/Library/Apple/usr/bin/"
       - "/Library/TeX/texbin/"
     searched_directories:
-      - "/opt/homebrew/bin/avr-gcc-ranlib-9.5"
-      - "/opt/homebrew/sbin/avr-gcc-ranlib-9.5"
-      - "/opt/local/bin/avr-gcc-ranlib-9.5"
-      - "/opt/local/sbin/avr-gcc-ranlib-9.5"
-      - "/opt/anaconda3/bin/avr-gcc-ranlib-9.5"
-      - "/opt/anaconda3/condabin/avr-gcc-ranlib-9.5"
-      - "/Users/helmutfieres/bin/avr-gcc-ranlib-9.5"
-      - "/usr/local/bin/avr-gcc-ranlib-9.5"
-      - "/System/Cryptexes/App/usr/bin/avr-gcc-ranlib-9.5"
-      - "/usr/bin/avr-gcc-ranlib-9.5"
-      - "/bin/avr-gcc-ranlib-9.5"
-      - "/usr/sbin/avr-gcc-ranlib-9.5"
-      - "/sbin/avr-gcc-ranlib-9.5"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/avr-gcc-ranlib-9.5"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/avr-gcc-ranlib-9.5"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/avr-gcc-ranlib-9.5"
-      - "/pkg/env/global/bin/avr-gcc-ranlib-9.5"
-      - "/Library/Apple/usr/bin/avr-gcc-ranlib-9.5"
-      - "/Library/TeX/texbin/avr-gcc-ranlib-9.5"
-      - "/opt/homebrew/bin/avr-gcc-ranlib-9"
-      - "/opt/homebrew/sbin/avr-gcc-ranlib-9"
-      - "/opt/local/bin/avr-gcc-ranlib-9"
-      - "/opt/local/sbin/avr-gcc-ranlib-9"
-      - "/opt/anaconda3/bin/avr-gcc-ranlib-9"
-      - "/opt/anaconda3/condabin/avr-gcc-ranlib-9"
-      - "/Users/helmutfieres/bin/avr-gcc-ranlib-9"
-      - "/usr/local/bin/avr-gcc-ranlib-9"
-      - "/System/Cryptexes/App/usr/bin/avr-gcc-ranlib-9"
-      - "/usr/bin/avr-gcc-ranlib-9"
-      - "/bin/avr-gcc-ranlib-9"
-      - "/usr/sbin/avr-gcc-ranlib-9"
-      - "/sbin/avr-gcc-ranlib-9"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/avr-gcc-ranlib-9"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/avr-gcc-ranlib-9"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/avr-gcc-ranlib-9"
-      - "/pkg/env/global/bin/avr-gcc-ranlib-9"
-      - "/Library/Apple/usr/bin/avr-gcc-ranlib-9"
-      - "/Library/TeX/texbin/avr-gcc-ranlib-9"
-      - "/opt/homebrew/bin/avr-gcc-ranlib9"
-      - "/opt/homebrew/sbin/avr-gcc-ranlib9"
-      - "/opt/local/bin/avr-gcc-ranlib9"
-      - "/opt/local/sbin/avr-gcc-ranlib9"
-      - "/opt/anaconda3/bin/avr-gcc-ranlib9"
-      - "/opt/anaconda3/condabin/avr-gcc-ranlib9"
-      - "/Users/helmutfieres/bin/avr-gcc-ranlib9"
-      - "/usr/local/bin/avr-gcc-ranlib9"
-      - "/System/Cryptexes/App/usr/bin/avr-gcc-ranlib9"
-      - "/usr/bin/avr-gcc-ranlib9"
-      - "/bin/avr-gcc-ranlib9"
-      - "/usr/sbin/avr-gcc-ranlib9"
-      - "/sbin/avr-gcc-ranlib9"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/avr-gcc-ranlib9"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/avr-gcc-ranlib9"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/avr-gcc-ranlib9"
-      - "/pkg/env/global/bin/avr-gcc-ranlib9"
-      - "/Library/Apple/usr/bin/avr-gcc-ranlib9"
-      - "/Library/TeX/texbin/avr-gcc-ranlib9"
-    found: "/opt/homebrew/bin/avr-gcc-ranlib"
-    search_context:
-      ENV{PATH}:
-        - "/opt/homebrew/bin"
-        - "/opt/homebrew/sbin"
-        - "/opt/local/bin"
-        - "/opt/local/sbin"
-        - "/opt/anaconda3/bin"
-        - "/opt/anaconda3/condabin"
-        - "/Users/helmutfieres/bin"
-        - "/usr/local/bin"
-        - "/System/Cryptexes/App/usr/bin"
-        - "/usr/bin"
-        - "/bin"
-        - "/usr/sbin"
-        - "/sbin"
-        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin"
-        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin"
-        - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin"
-        - "/pkg/env/global/bin"
-        - "/Library/Apple/usr/bin"
-        - "/Library/TeX/texbin"
-  -
-    kind: "find-v1"
-    backtrace:
-      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompiler.cmake:115 (find_program)"
-      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:71 (_cmake_find_compiler_path)"
-      - "CMakeLists.txt:7 (project)"
-    mode: "program"
-    variable: "CMAKE_CXX_COMPILER_WITH_PATH"
-    description: "Path to a program."
-    settings:
-      SearchFramework: "FIRST"
-      SearchAppBundle: "FIRST"
-      CMAKE_FIND_USE_CMAKE_PATH: true
-      CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
-      CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
-      CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
-      CMAKE_FIND_USE_INSTALL_PREFIX: true
-    names:
-      - "avr-g++"
-    candidate_directories:
-      - "/opt/homebrew/bin/"
-      - "/opt/homebrew/sbin/"
-      - "/opt/local/bin/"
-      - "/opt/local/sbin/"
-      - "/opt/anaconda3/bin/"
-      - "/opt/anaconda3/condabin/"
-      - "/Users/helmutfieres/bin/"
-      - "/usr/local/bin/"
-      - "/System/Cryptexes/App/usr/bin/"
-      - "/usr/bin/"
-      - "/bin/"
-      - "/usr/sbin/"
-      - "/sbin/"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/"
-      - "/pkg/env/global/bin/"
-      - "/Library/Apple/usr/bin/"
-      - "/Library/TeX/texbin/"
-    found: "/opt/homebrew/bin/avr-g++"
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc-ranlib-7.3"
+      - "/opt/homebrew/bin/avr-gcc-ranlib-7.3"
+      - "/opt/homebrew/sbin/avr-gcc-ranlib-7.3"
+      - "/opt/local/bin/avr-gcc-ranlib-7.3"
+      - "/opt/local/sbin/avr-gcc-ranlib-7.3"
+      - "/opt/anaconda3/bin/avr-gcc-ranlib-7.3"
+      - "/opt/anaconda3/condabin/avr-gcc-ranlib-7.3"
+      - "/Users/helmutfieres/bin/avr-gcc-ranlib-7.3"
+      - "/usr/local/bin/avr-gcc-ranlib-7.3"
+      - "/System/Cryptexes/App/usr/bin/avr-gcc-ranlib-7.3"
+      - "/usr/bin/avr-gcc-ranlib-7.3"
+      - "/bin/avr-gcc-ranlib-7.3"
+      - "/usr/sbin/avr-gcc-ranlib-7.3"
+      - "/sbin/avr-gcc-ranlib-7.3"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/avr-gcc-ranlib-7.3"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/avr-gcc-ranlib-7.3"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/avr-gcc-ranlib-7.3"
+      - "/pkg/env/global/bin/avr-gcc-ranlib-7.3"
+      - "/Library/Apple/usr/bin/avr-gcc-ranlib-7.3"
+      - "/Library/TeX/texbin/avr-gcc-ranlib-7.3"
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc-ranlib-7"
+      - "/opt/homebrew/bin/avr-gcc-ranlib-7"
+      - "/opt/homebrew/sbin/avr-gcc-ranlib-7"
+      - "/opt/local/bin/avr-gcc-ranlib-7"
+      - "/opt/local/sbin/avr-gcc-ranlib-7"
+      - "/opt/anaconda3/bin/avr-gcc-ranlib-7"
+      - "/opt/anaconda3/condabin/avr-gcc-ranlib-7"
+      - "/Users/helmutfieres/bin/avr-gcc-ranlib-7"
+      - "/usr/local/bin/avr-gcc-ranlib-7"
+      - "/System/Cryptexes/App/usr/bin/avr-gcc-ranlib-7"
+      - "/usr/bin/avr-gcc-ranlib-7"
+      - "/bin/avr-gcc-ranlib-7"
+      - "/usr/sbin/avr-gcc-ranlib-7"
+      - "/sbin/avr-gcc-ranlib-7"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/avr-gcc-ranlib-7"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/avr-gcc-ranlib-7"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/avr-gcc-ranlib-7"
+      - "/pkg/env/global/bin/avr-gcc-ranlib-7"
+      - "/Library/Apple/usr/bin/avr-gcc-ranlib-7"
+      - "/Library/TeX/texbin/avr-gcc-ranlib-7"
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc-ranlib7"
+      - "/opt/homebrew/bin/avr-gcc-ranlib7"
+      - "/opt/homebrew/sbin/avr-gcc-ranlib7"
+      - "/opt/local/bin/avr-gcc-ranlib7"
+      - "/opt/local/sbin/avr-gcc-ranlib7"
+      - "/opt/anaconda3/bin/avr-gcc-ranlib7"
+      - "/opt/anaconda3/condabin/avr-gcc-ranlib7"
+      - "/Users/helmutfieres/bin/avr-gcc-ranlib7"
+      - "/usr/local/bin/avr-gcc-ranlib7"
+      - "/System/Cryptexes/App/usr/bin/avr-gcc-ranlib7"
+      - "/usr/bin/avr-gcc-ranlib7"
+      - "/bin/avr-gcc-ranlib7"
+      - "/usr/sbin/avr-gcc-ranlib7"
+      - "/sbin/avr-gcc-ranlib7"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/avr-gcc-ranlib7"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/avr-gcc-ranlib7"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/avr-gcc-ranlib7"
+      - "/pkg/env/global/bin/avr-gcc-ranlib7"
+      - "/Library/Apple/usr/bin/avr-gcc-ranlib7"
+      - "/Library/TeX/texbin/avr-gcc-ranlib7"
+    found: "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc-ranlib"
     search_context:
       ENV{PATH}:
         - "/opt/homebrew/bin"
@@ -1283,7 +1183,7 @@ events:
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:8 (CMAKE_DETERMINE_COMPILER_ID_BUILD)"
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:125 (CMAKE_DETERMINE_COMPILER_ID)"
-      - "CMakeLists.txt:7 (project)"
+      - "CMakeLists.txt:12 (project)"
     mode: "file"
     variable: "src_in"
     description: "Path to a file."
@@ -1327,10 +1227,10 @@ events:
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:125 (CMAKE_DETERMINE_COMPILER_ID)"
-      - "CMakeLists.txt:7 (project)"
+      - "CMakeLists.txt:12 (project)"
     message: |
       Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
-      Compiler: /opt/homebrew/bin/avr-g++ 
+      Compiler: /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-g++ 
       Build flags: 
       Id flags:  
       
@@ -1348,7 +1248,7 @@ events:
     backtrace:
       - "/opt/homebrew/share/cmake/Modules/Compiler/GNU-FindBinUtils.cmake:18 (find_program)"
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:207 (include)"
-      - "CMakeLists.txt:7 (project)"
+      - "CMakeLists.txt:12 (project)"
     mode: "program"
     variable: "CMAKE_CXX_COMPILER_AR"
     description: "A wrapper around 'ar' adding the appropriate '--plugin' option for the GCC compiler"
@@ -1361,11 +1261,12 @@ events:
       CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
       CMAKE_FIND_USE_INSTALL_PREFIX: true
     names:
-      - "avr-gcc-ar-9.5"
-      - "avr-gcc-ar-9"
-      - "avr-gcc-ar9"
+      - "avr-gcc-ar-7.3"
+      - "avr-gcc-ar-7"
+      - "avr-gcc-ar7"
       - "avr-gcc-ar"
     candidate_directories:
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/"
       - "/opt/homebrew/bin/"
       - "/opt/homebrew/sbin/"
       - "/opt/local/bin/"
@@ -1386,64 +1287,67 @@ events:
       - "/Library/Apple/usr/bin/"
       - "/Library/TeX/texbin/"
     searched_directories:
-      - "/opt/homebrew/bin/avr-gcc-ar-9.5"
-      - "/opt/homebrew/sbin/avr-gcc-ar-9.5"
-      - "/opt/local/bin/avr-gcc-ar-9.5"
-      - "/opt/local/sbin/avr-gcc-ar-9.5"
-      - "/opt/anaconda3/bin/avr-gcc-ar-9.5"
-      - "/opt/anaconda3/condabin/avr-gcc-ar-9.5"
-      - "/Users/helmutfieres/bin/avr-gcc-ar-9.5"
-      - "/usr/local/bin/avr-gcc-ar-9.5"
-      - "/System/Cryptexes/App/usr/bin/avr-gcc-ar-9.5"
-      - "/usr/bin/avr-gcc-ar-9.5"
-      - "/bin/avr-gcc-ar-9.5"
-      - "/usr/sbin/avr-gcc-ar-9.5"
-      - "/sbin/avr-gcc-ar-9.5"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/avr-gcc-ar-9.5"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/avr-gcc-ar-9.5"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/avr-gcc-ar-9.5"
-      - "/pkg/env/global/bin/avr-gcc-ar-9.5"
-      - "/Library/Apple/usr/bin/avr-gcc-ar-9.5"
-      - "/Library/TeX/texbin/avr-gcc-ar-9.5"
-      - "/opt/homebrew/bin/avr-gcc-ar-9"
-      - "/opt/homebrew/sbin/avr-gcc-ar-9"
-      - "/opt/local/bin/avr-gcc-ar-9"
-      - "/opt/local/sbin/avr-gcc-ar-9"
-      - "/opt/anaconda3/bin/avr-gcc-ar-9"
-      - "/opt/anaconda3/condabin/avr-gcc-ar-9"
-      - "/Users/helmutfieres/bin/avr-gcc-ar-9"
-      - "/usr/local/bin/avr-gcc-ar-9"
-      - "/System/Cryptexes/App/usr/bin/avr-gcc-ar-9"
-      - "/usr/bin/avr-gcc-ar-9"
-      - "/bin/avr-gcc-ar-9"
-      - "/usr/sbin/avr-gcc-ar-9"
-      - "/sbin/avr-gcc-ar-9"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/avr-gcc-ar-9"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/avr-gcc-ar-9"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/avr-gcc-ar-9"
-      - "/pkg/env/global/bin/avr-gcc-ar-9"
-      - "/Library/Apple/usr/bin/avr-gcc-ar-9"
-      - "/Library/TeX/texbin/avr-gcc-ar-9"
-      - "/opt/homebrew/bin/avr-gcc-ar9"
-      - "/opt/homebrew/sbin/avr-gcc-ar9"
-      - "/opt/local/bin/avr-gcc-ar9"
-      - "/opt/local/sbin/avr-gcc-ar9"
-      - "/opt/anaconda3/bin/avr-gcc-ar9"
-      - "/opt/anaconda3/condabin/avr-gcc-ar9"
-      - "/Users/helmutfieres/bin/avr-gcc-ar9"
-      - "/usr/local/bin/avr-gcc-ar9"
-      - "/System/Cryptexes/App/usr/bin/avr-gcc-ar9"
-      - "/usr/bin/avr-gcc-ar9"
-      - "/bin/avr-gcc-ar9"
-      - "/usr/sbin/avr-gcc-ar9"
-      - "/sbin/avr-gcc-ar9"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/avr-gcc-ar9"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/avr-gcc-ar9"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/avr-gcc-ar9"
-      - "/pkg/env/global/bin/avr-gcc-ar9"
-      - "/Library/Apple/usr/bin/avr-gcc-ar9"
-      - "/Library/TeX/texbin/avr-gcc-ar9"
-    found: "/opt/homebrew/bin/avr-gcc-ar"
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc-ar-7.3"
+      - "/opt/homebrew/bin/avr-gcc-ar-7.3"
+      - "/opt/homebrew/sbin/avr-gcc-ar-7.3"
+      - "/opt/local/bin/avr-gcc-ar-7.3"
+      - "/opt/local/sbin/avr-gcc-ar-7.3"
+      - "/opt/anaconda3/bin/avr-gcc-ar-7.3"
+      - "/opt/anaconda3/condabin/avr-gcc-ar-7.3"
+      - "/Users/helmutfieres/bin/avr-gcc-ar-7.3"
+      - "/usr/local/bin/avr-gcc-ar-7.3"
+      - "/System/Cryptexes/App/usr/bin/avr-gcc-ar-7.3"
+      - "/usr/bin/avr-gcc-ar-7.3"
+      - "/bin/avr-gcc-ar-7.3"
+      - "/usr/sbin/avr-gcc-ar-7.3"
+      - "/sbin/avr-gcc-ar-7.3"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/avr-gcc-ar-7.3"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/avr-gcc-ar-7.3"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/avr-gcc-ar-7.3"
+      - "/pkg/env/global/bin/avr-gcc-ar-7.3"
+      - "/Library/Apple/usr/bin/avr-gcc-ar-7.3"
+      - "/Library/TeX/texbin/avr-gcc-ar-7.3"
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc-ar-7"
+      - "/opt/homebrew/bin/avr-gcc-ar-7"
+      - "/opt/homebrew/sbin/avr-gcc-ar-7"
+      - "/opt/local/bin/avr-gcc-ar-7"
+      - "/opt/local/sbin/avr-gcc-ar-7"
+      - "/opt/anaconda3/bin/avr-gcc-ar-7"
+      - "/opt/anaconda3/condabin/avr-gcc-ar-7"
+      - "/Users/helmutfieres/bin/avr-gcc-ar-7"
+      - "/usr/local/bin/avr-gcc-ar-7"
+      - "/System/Cryptexes/App/usr/bin/avr-gcc-ar-7"
+      - "/usr/bin/avr-gcc-ar-7"
+      - "/bin/avr-gcc-ar-7"
+      - "/usr/sbin/avr-gcc-ar-7"
+      - "/sbin/avr-gcc-ar-7"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/avr-gcc-ar-7"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/avr-gcc-ar-7"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/avr-gcc-ar-7"
+      - "/pkg/env/global/bin/avr-gcc-ar-7"
+      - "/Library/Apple/usr/bin/avr-gcc-ar-7"
+      - "/Library/TeX/texbin/avr-gcc-ar-7"
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc-ar7"
+      - "/opt/homebrew/bin/avr-gcc-ar7"
+      - "/opt/homebrew/sbin/avr-gcc-ar7"
+      - "/opt/local/bin/avr-gcc-ar7"
+      - "/opt/local/sbin/avr-gcc-ar7"
+      - "/opt/anaconda3/bin/avr-gcc-ar7"
+      - "/opt/anaconda3/condabin/avr-gcc-ar7"
+      - "/Users/helmutfieres/bin/avr-gcc-ar7"
+      - "/usr/local/bin/avr-gcc-ar7"
+      - "/System/Cryptexes/App/usr/bin/avr-gcc-ar7"
+      - "/usr/bin/avr-gcc-ar7"
+      - "/bin/avr-gcc-ar7"
+      - "/usr/sbin/avr-gcc-ar7"
+      - "/sbin/avr-gcc-ar7"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/avr-gcc-ar7"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/avr-gcc-ar7"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/avr-gcc-ar7"
+      - "/pkg/env/global/bin/avr-gcc-ar7"
+      - "/Library/Apple/usr/bin/avr-gcc-ar7"
+      - "/Library/TeX/texbin/avr-gcc-ar7"
+    found: "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc-ar"
     search_context:
       ENV{PATH}:
         - "/opt/homebrew/bin"
@@ -1470,7 +1374,7 @@ events:
     backtrace:
       - "/opt/homebrew/share/cmake/Modules/Compiler/GNU-FindBinUtils.cmake:30 (find_program)"
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:207 (include)"
-      - "CMakeLists.txt:7 (project)"
+      - "CMakeLists.txt:12 (project)"
     mode: "program"
     variable: "CMAKE_CXX_COMPILER_RANLIB"
     description: "A wrapper around 'ranlib' adding the appropriate '--plugin' option for the GCC compiler"
@@ -1483,11 +1387,12 @@ events:
       CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
       CMAKE_FIND_USE_INSTALL_PREFIX: true
     names:
-      - "avr-gcc-ranlib-9.5"
-      - "avr-gcc-ranlib-9"
-      - "avr-gcc-ranlib9"
+      - "avr-gcc-ranlib-7.3"
+      - "avr-gcc-ranlib-7"
+      - "avr-gcc-ranlib7"
       - "avr-gcc-ranlib"
     candidate_directories:
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/"
       - "/opt/homebrew/bin/"
       - "/opt/homebrew/sbin/"
       - "/opt/local/bin/"
@@ -1508,64 +1413,67 @@ events:
       - "/Library/Apple/usr/bin/"
       - "/Library/TeX/texbin/"
     searched_directories:
-      - "/opt/homebrew/bin/avr-gcc-ranlib-9.5"
-      - "/opt/homebrew/sbin/avr-gcc-ranlib-9.5"
-      - "/opt/local/bin/avr-gcc-ranlib-9.5"
-      - "/opt/local/sbin/avr-gcc-ranlib-9.5"
-      - "/opt/anaconda3/bin/avr-gcc-ranlib-9.5"
-      - "/opt/anaconda3/condabin/avr-gcc-ranlib-9.5"
-      - "/Users/helmutfieres/bin/avr-gcc-ranlib-9.5"
-      - "/usr/local/bin/avr-gcc-ranlib-9.5"
-      - "/System/Cryptexes/App/usr/bin/avr-gcc-ranlib-9.5"
-      - "/usr/bin/avr-gcc-ranlib-9.5"
-      - "/bin/avr-gcc-ranlib-9.5"
-      - "/usr/sbin/avr-gcc-ranlib-9.5"
-      - "/sbin/avr-gcc-ranlib-9.5"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/avr-gcc-ranlib-9.5"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/avr-gcc-ranlib-9.5"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/avr-gcc-ranlib-9.5"
-      - "/pkg/env/global/bin/avr-gcc-ranlib-9.5"
-      - "/Library/Apple/usr/bin/avr-gcc-ranlib-9.5"
-      - "/Library/TeX/texbin/avr-gcc-ranlib-9.5"
-      - "/opt/homebrew/bin/avr-gcc-ranlib-9"
-      - "/opt/homebrew/sbin/avr-gcc-ranlib-9"
-      - "/opt/local/bin/avr-gcc-ranlib-9"
-      - "/opt/local/sbin/avr-gcc-ranlib-9"
-      - "/opt/anaconda3/bin/avr-gcc-ranlib-9"
-      - "/opt/anaconda3/condabin/avr-gcc-ranlib-9"
-      - "/Users/helmutfieres/bin/avr-gcc-ranlib-9"
-      - "/usr/local/bin/avr-gcc-ranlib-9"
-      - "/System/Cryptexes/App/usr/bin/avr-gcc-ranlib-9"
-      - "/usr/bin/avr-gcc-ranlib-9"
-      - "/bin/avr-gcc-ranlib-9"
-      - "/usr/sbin/avr-gcc-ranlib-9"
-      - "/sbin/avr-gcc-ranlib-9"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/avr-gcc-ranlib-9"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/avr-gcc-ranlib-9"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/avr-gcc-ranlib-9"
-      - "/pkg/env/global/bin/avr-gcc-ranlib-9"
-      - "/Library/Apple/usr/bin/avr-gcc-ranlib-9"
-      - "/Library/TeX/texbin/avr-gcc-ranlib-9"
-      - "/opt/homebrew/bin/avr-gcc-ranlib9"
-      - "/opt/homebrew/sbin/avr-gcc-ranlib9"
-      - "/opt/local/bin/avr-gcc-ranlib9"
-      - "/opt/local/sbin/avr-gcc-ranlib9"
-      - "/opt/anaconda3/bin/avr-gcc-ranlib9"
-      - "/opt/anaconda3/condabin/avr-gcc-ranlib9"
-      - "/Users/helmutfieres/bin/avr-gcc-ranlib9"
-      - "/usr/local/bin/avr-gcc-ranlib9"
-      - "/System/Cryptexes/App/usr/bin/avr-gcc-ranlib9"
-      - "/usr/bin/avr-gcc-ranlib9"
-      - "/bin/avr-gcc-ranlib9"
-      - "/usr/sbin/avr-gcc-ranlib9"
-      - "/sbin/avr-gcc-ranlib9"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/avr-gcc-ranlib9"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/avr-gcc-ranlib9"
-      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/avr-gcc-ranlib9"
-      - "/pkg/env/global/bin/avr-gcc-ranlib9"
-      - "/Library/Apple/usr/bin/avr-gcc-ranlib9"
-      - "/Library/TeX/texbin/avr-gcc-ranlib9"
-    found: "/opt/homebrew/bin/avr-gcc-ranlib"
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc-ranlib-7.3"
+      - "/opt/homebrew/bin/avr-gcc-ranlib-7.3"
+      - "/opt/homebrew/sbin/avr-gcc-ranlib-7.3"
+      - "/opt/local/bin/avr-gcc-ranlib-7.3"
+      - "/opt/local/sbin/avr-gcc-ranlib-7.3"
+      - "/opt/anaconda3/bin/avr-gcc-ranlib-7.3"
+      - "/opt/anaconda3/condabin/avr-gcc-ranlib-7.3"
+      - "/Users/helmutfieres/bin/avr-gcc-ranlib-7.3"
+      - "/usr/local/bin/avr-gcc-ranlib-7.3"
+      - "/System/Cryptexes/App/usr/bin/avr-gcc-ranlib-7.3"
+      - "/usr/bin/avr-gcc-ranlib-7.3"
+      - "/bin/avr-gcc-ranlib-7.3"
+      - "/usr/sbin/avr-gcc-ranlib-7.3"
+      - "/sbin/avr-gcc-ranlib-7.3"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/avr-gcc-ranlib-7.3"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/avr-gcc-ranlib-7.3"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/avr-gcc-ranlib-7.3"
+      - "/pkg/env/global/bin/avr-gcc-ranlib-7.3"
+      - "/Library/Apple/usr/bin/avr-gcc-ranlib-7.3"
+      - "/Library/TeX/texbin/avr-gcc-ranlib-7.3"
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc-ranlib-7"
+      - "/opt/homebrew/bin/avr-gcc-ranlib-7"
+      - "/opt/homebrew/sbin/avr-gcc-ranlib-7"
+      - "/opt/local/bin/avr-gcc-ranlib-7"
+      - "/opt/local/sbin/avr-gcc-ranlib-7"
+      - "/opt/anaconda3/bin/avr-gcc-ranlib-7"
+      - "/opt/anaconda3/condabin/avr-gcc-ranlib-7"
+      - "/Users/helmutfieres/bin/avr-gcc-ranlib-7"
+      - "/usr/local/bin/avr-gcc-ranlib-7"
+      - "/System/Cryptexes/App/usr/bin/avr-gcc-ranlib-7"
+      - "/usr/bin/avr-gcc-ranlib-7"
+      - "/bin/avr-gcc-ranlib-7"
+      - "/usr/sbin/avr-gcc-ranlib-7"
+      - "/sbin/avr-gcc-ranlib-7"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/avr-gcc-ranlib-7"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/avr-gcc-ranlib-7"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/avr-gcc-ranlib-7"
+      - "/pkg/env/global/bin/avr-gcc-ranlib-7"
+      - "/Library/Apple/usr/bin/avr-gcc-ranlib-7"
+      - "/Library/TeX/texbin/avr-gcc-ranlib-7"
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc-ranlib7"
+      - "/opt/homebrew/bin/avr-gcc-ranlib7"
+      - "/opt/homebrew/sbin/avr-gcc-ranlib7"
+      - "/opt/local/bin/avr-gcc-ranlib7"
+      - "/opt/local/sbin/avr-gcc-ranlib7"
+      - "/opt/anaconda3/bin/avr-gcc-ranlib7"
+      - "/opt/anaconda3/condabin/avr-gcc-ranlib7"
+      - "/Users/helmutfieres/bin/avr-gcc-ranlib7"
+      - "/usr/local/bin/avr-gcc-ranlib7"
+      - "/System/Cryptexes/App/usr/bin/avr-gcc-ranlib7"
+      - "/usr/bin/avr-gcc-ranlib7"
+      - "/bin/avr-gcc-ranlib7"
+      - "/usr/sbin/avr-gcc-ranlib7"
+      - "/sbin/avr-gcc-ranlib7"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin/avr-gcc-ranlib7"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin/avr-gcc-ranlib7"
+      - "/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin/avr-gcc-ranlib7"
+      - "/pkg/env/global/bin/avr-gcc-ranlib7"
+      - "/Library/Apple/usr/bin/avr-gcc-ranlib7"
+      - "/Library/TeX/texbin/avr-gcc-ranlib7"
+    found: "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc-ranlib"
     search_context:
       ENV{PATH}:
         - "/opt/homebrew/bin"
@@ -1592,12 +1500,12 @@ events:
     backtrace:
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:83 (try_compile)"
       - "/opt/homebrew/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
-      - "CMakeLists.txt:7 (project)"
+      - "CMakeLists.txt:12 (project)"
     checks:
       - "Detecting C compiler ABI info"
     directories:
-      source: "/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-1P3JHF"
-      binary: "/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-1P3JHF"
+      source: "/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-OEuL08"
+      binary: "/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-OEuL08"
     cmakeVariables:
       CMAKE_C_FLAGS: ""
       CMAKE_C_FLAGS_DEBUG: "-g"
@@ -1607,44 +1515,43 @@ events:
       variable: "CMAKE_C_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: '/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-1P3JHF'
+        Change Dir: '/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-OEuL08'
         
-        Run Build Command(s): /opt/homebrew/bin/ninja -v cmTC_ed1b4
-        [1/2] /opt/homebrew/bin/avr-gcc   -v -o CMakeFiles/cmTC_ed1b4.dir/CMakeCCompilerABI.c.obj -c /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c
+        Run Build Command(s): /opt/homebrew/bin/ninja -v cmTC_c0deb
+        [1/2] /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc   -v -o CMakeFiles/cmTC_c0deb.dir/CMakeCCompilerABI.c.obj -c /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c
         Using built-in specs.
-        Reading specs from /opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/device-specs/specs-avr2
-        COLLECT_GCC=/opt/homebrew/bin/avr-gcc
+        Reading specs from /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/device-specs/specs-avr2
+        COLLECT_GCC=/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc
         Target: avr
-        Configured with: ../configure --target=avr --prefix=/opt/homebrew/Cellar/avr-gcc@9/9.5.0 --libdir=/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9 --enable-languages=c,c++ --with-ld=/opt/homebrew/opt/avr-binutils/bin/avr-ld --with-as=/opt/homebrew/opt/avr-binutils/bin/avr-as --disable-nls --disable-libssp --disable-shared --disable-threads --disable-libgomp --with-dwarf2 --with-avrlibc --with-system-zlib --with-pkgversion='Homebrew AVR GCC 9.5.0' --with-bugurl=https://github.com/osx-cross/homebrew-avr/issues SED=/usr/bin/sed
+        Configured with: ../gcc/configure --enable-fixed-point --enable-languages=c,c++ --prefix=/Users/jenkins/jenkins/workspace/avr-gcc-staging/label/mac-mini/objdir --disable-nls --disable-libssp --disable-libada --disable-shared --with-avrlibc=yes --with-dwarf2 --disable-doc --target=avr
         Thread model: single
-        gcc version 9.5.0 (Homebrew AVR GCC 9.5.0) 
-        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_ed1b4.dir/CMakeCCompilerABI.c.obj' '-c' '-specs=device-specs/specs-avr2'
-         /opt/homebrew/Cellar/avr-gcc@9/9.5.0/libexec/gcc/avr/9.5.0/cc1 -quiet -v /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c -mn-flash=6 -mskip-bug -quiet -dumpbase CMakeCCompilerABI.c -auxbase-strip CMakeFiles/cmTC_ed1b4.dir/CMakeCCompilerABI.c.obj -version -o /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//ccsmhDLW.s
-        GNU C17 (Homebrew AVR GCC 9.5.0) version 9.5.0 (avr)
-        	compiled by GNU C version Apple LLVM 17.0.0 (clang-1700.3.19.1), GMP version 6.3.0, MPFR version 4.2.2, MPC version 1.3.1, isl version isl-0.27-GMP
-        
-        warning: MPC header version 1.3.1 differs from library version 1.4.0.
+        gcc version 7.3.0 (GCC) 
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_c0deb.dir/CMakeCCompilerABI.c.obj' '-c' '-specs=device-specs/specs-avr2'
+         /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../libexec/gcc/avr/7.3.0/cc1 -quiet -v -iprefix /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/ /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c -mn-flash=6 -mskip-bug -quiet -dumpbase CMakeCCompilerABI.c -auxbase-strip CMakeFiles/cmTC_c0deb.dir/CMakeCCompilerABI.c.obj -version -o /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//cc3OFXBz.s
+        GNU C11 (GCC) version 7.3.0 (avr)
+        	compiled by GNU C version 4.2.1 Compatible Apple LLVM 8.1.0 (clang-802.0.38), GMP version 5.0.2, MPFR version 3.1.0, MPC version 0.9, isl version none
         GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
-        ignoring nonexistent directory "/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/../../../../../../avr/sys-include"
+        ignoring nonexistent directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/sys-include"
+        ignoring duplicate directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/../../lib/gcc/avr/7.3.0/include"
+        ignoring duplicate directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/../../lib/gcc/avr/7.3.0/include-fixed"
+        ignoring nonexistent directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/../../lib/gcc/avr/7.3.0/../../../../avr/sys-include"
+        ignoring duplicate directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/../../lib/gcc/avr/7.3.0/../../../../avr/include"
         #include "..." search starts here:
         #include <...> search starts here:
-         /opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/include
-         /opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/include-fixed
-         /opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/../../../../../../avr/include
+         /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/include
+         /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/include-fixed
+         /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/include
         End of search list.
-        GNU C17 (Homebrew AVR GCC 9.5.0) version 9.5.0 (avr)
-        	compiled by GNU C version Apple LLVM 17.0.0 (clang-1700.3.19.1), GMP version 6.3.0, MPFR version 4.2.2, MPC version 1.3.1, isl version isl-0.27-GMP
-        
-        warning: MPC header version 1.3.1 differs from library version 1.4.0.
+        GNU C11 (GCC) version 7.3.0 (avr)
+        	compiled by GNU C version 4.2.1 Compatible Apple LLVM 8.1.0 (clang-802.0.38), GMP version 5.0.2, MPFR version 3.1.0, MPC version 0.9, isl version none
         GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
-        Compiler executable checksum: 9b9837579f3958276face1bec03b6c42
-        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_ed1b4.dir/CMakeCCompilerABI.c.obj' '-c' '-specs=device-specs/specs-avr2'
-         /opt/homebrew/opt/avr-binutils/bin/avr-as -v -mmcu=avr2 -mgcc-isr -o CMakeFiles/cmTC_ed1b4.dir/CMakeCCompilerABI.c.obj /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//ccsmhDLW.s
-        GNU assembler version 2.45.1 (avr) using BFD version (GNU Binutils) 2.45.1
-        COMPILER_PATH=/opt/homebrew/Cellar/avr-gcc@9/9.5.0/libexec/gcc/avr/9.5.0/:/opt/homebrew/Cellar/avr-gcc@9/9.5.0/libexec/gcc/avr/9.5.0/:/opt/homebrew/Cellar/avr-gcc@9/9.5.0/libexec/gcc/avr/:/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/:/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/
-        LIBRARY_PATH=/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/:/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/../../../../../../avr/lib/
-        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_ed1b4.dir/CMakeCCompilerABI.c.obj' '-c' '-specs=device-specs/specs-avr2'
-        [2/2] : && /opt/homebrew/bin/cmake -E rm -f libcmTC_ed1b4.a && /opt/homebrew/bin/avr-ar qc libcmTC_ed1b4.a  CMakeFiles/cmTC_ed1b4.dir/CMakeCCompilerABI.c.obj && /opt/homebrew/bin/avr-ranlib libcmTC_ed1b4.a && /opt/homebrew/bin/cmake -E touch libcmTC_ed1b4.a && :
+        Compiler executable checksum: 877db8e667c28afb4384e71038db0373
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_c0deb.dir/CMakeCCompilerABI.c.obj' '-c' '-specs=device-specs/specs-avr2'
+         /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/bin/as -mmcu=avr2 -o CMakeFiles/cmTC_c0deb.dir/CMakeCCompilerABI.c.obj /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//cc3OFXBz.s
+        COMPILER_PATH=/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../libexec/gcc/avr/7.3.0/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../libexec/gcc/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/bin/
+        LIBRARY_PATH=/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_c0deb.dir/CMakeCCompilerABI.c.obj' '-c' '-specs=device-specs/specs-avr2'
+        [2/2] : && /opt/homebrew/bin/cmake -E rm -f libcmTC_c0deb.a && /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-ar qc libcmTC_c0deb.a  CMakeFiles/cmTC_c0deb.dir/CMakeCCompilerABI.c.obj && /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-ranlib libcmTC_c0deb.a && /opt/homebrew/bin/cmake -E touch libcmTC_c0deb.a && :
         
       exitCode: 0
   -
@@ -1652,19 +1559,19 @@ events:
     backtrace:
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:217 (message)"
       - "/opt/homebrew/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
-      - "CMakeLists.txt:7 (project)"
+      - "CMakeLists.txt:12 (project)"
     message: |
       Parsed C implicit include dir info: rv=done
         found start of include info
         found start of implicit include info
-          add: [/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/include]
-          add: [/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/include-fixed]
-          add: [/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/../../../../../../avr/include]
+          add: [/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/include]
+          add: [/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/include-fixed]
+          add: [/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/include]
         end of search list found
-        collapse include dir [/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/include] ==> [/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/include]
-        collapse include dir [/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/include-fixed] ==> [/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/include-fixed]
-        collapse include dir [/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/../../../../../../avr/include] ==> [/opt/homebrew/Cellar/avr-gcc@9/9.5.0/avr/include]
-        implicit include dirs: [/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/include;/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/include-fixed;/opt/homebrew/Cellar/avr-gcc@9/9.5.0/avr/include]
+        collapse include dir [/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/include] ==> [/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/lib/gcc/avr/7.3.0/include]
+        collapse include dir [/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/include-fixed] ==> [/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/lib/gcc/avr/7.3.0/include-fixed]
+        collapse include dir [/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/include] ==> [/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/avr/include]
+        implicit include dirs: [/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/lib/gcc/avr/7.3.0/include;/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/lib/gcc/avr/7.3.0/include-fixed;/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/avr/include]
       
       
   -
@@ -1672,49 +1579,48 @@ events:
     backtrace:
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:253 (message)"
       - "/opt/homebrew/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
-      - "CMakeLists.txt:7 (project)"
+      - "CMakeLists.txt:12 (project)"
     message: |
       Parsed C implicit link information:
         link line regex: [^( *|.*[/\\])(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
         linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)))("|,| |$)]
-        ignore line: [Change Dir: '/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-1P3JHF']
+        ignore line: [Change Dir: '/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-OEuL08']
         ignore line: []
-        ignore line: [Run Build Command(s): /opt/homebrew/bin/ninja -v cmTC_ed1b4]
-        ignore line: [[1/2] /opt/homebrew/bin/avr-gcc   -v -o CMakeFiles/cmTC_ed1b4.dir/CMakeCCompilerABI.c.obj -c /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c]
+        ignore line: [Run Build Command(s): /opt/homebrew/bin/ninja -v cmTC_c0deb]
+        ignore line: [[1/2] /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc   -v -o CMakeFiles/cmTC_c0deb.dir/CMakeCCompilerABI.c.obj -c /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c]
         ignore line: [Using built-in specs.]
-        ignore line: [Reading specs from /opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/device-specs/specs-avr2]
-        ignore line: [COLLECT_GCC=/opt/homebrew/bin/avr-gcc]
+        ignore line: [Reading specs from /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/device-specs/specs-avr2]
+        ignore line: [COLLECT_GCC=/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc]
         ignore line: [Target: avr]
-        ignore line: [Configured with: ../configure --target=avr --prefix=/opt/homebrew/Cellar/avr-gcc@9/9.5.0 --libdir=/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9 --enable-languages=c,c++ --with-ld=/opt/homebrew/opt/avr-binutils/bin/avr-ld --with-as=/opt/homebrew/opt/avr-binutils/bin/avr-as --disable-nls --disable-libssp --disable-shared --disable-threads --disable-libgomp --with-dwarf2 --with-avrlibc --with-system-zlib --with-pkgversion='Homebrew AVR GCC 9.5.0' --with-bugurl=https://github.com/osx-cross/homebrew-avr/issues SED=/usr/bin/sed]
+        ignore line: [Configured with: ../gcc/configure --enable-fixed-point --enable-languages=c c++ --prefix=/Users/jenkins/jenkins/workspace/avr-gcc-staging/label/mac-mini/objdir --disable-nls --disable-libssp --disable-libada --disable-shared --with-avrlibc=yes --with-dwarf2 --disable-doc --target=avr]
         ignore line: [Thread model: single]
-        ignore line: [gcc version 9.5.0 (Homebrew AVR GCC 9.5.0) ]
-        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_ed1b4.dir/CMakeCCompilerABI.c.obj' '-c' '-specs=device-specs/specs-avr2']
-        ignore line: [ /opt/homebrew/Cellar/avr-gcc@9/9.5.0/libexec/gcc/avr/9.5.0/cc1 -quiet -v /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c -mn-flash=6 -mskip-bug -quiet -dumpbase CMakeCCompilerABI.c -auxbase-strip CMakeFiles/cmTC_ed1b4.dir/CMakeCCompilerABI.c.obj -version -o /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//ccsmhDLW.s]
-        ignore line: [GNU C17 (Homebrew AVR GCC 9.5.0) version 9.5.0 (avr)]
-        ignore line: [	compiled by GNU C version Apple LLVM 17.0.0 (clang-1700.3.19.1)  GMP version 6.3.0  MPFR version 4.2.2  MPC version 1.3.1  isl version isl-0.27-GMP]
-        ignore line: []
-        ignore line: [warning: MPC header version 1.3.1 differs from library version 1.4.0.]
+        ignore line: [gcc version 7.3.0 (GCC) ]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_c0deb.dir/CMakeCCompilerABI.c.obj' '-c' '-specs=device-specs/specs-avr2']
+        ignore line: [ /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../libexec/gcc/avr/7.3.0/cc1 -quiet -v -iprefix /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/ /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c -mn-flash=6 -mskip-bug -quiet -dumpbase CMakeCCompilerABI.c -auxbase-strip CMakeFiles/cmTC_c0deb.dir/CMakeCCompilerABI.c.obj -version -o /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//cc3OFXBz.s]
+        ignore line: [GNU C11 (GCC) version 7.3.0 (avr)]
+        ignore line: [	compiled by GNU C version 4.2.1 Compatible Apple LLVM 8.1.0 (clang-802.0.38)  GMP version 5.0.2  MPFR version 3.1.0  MPC version 0.9  isl version none]
         ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
-        ignore line: [ignoring nonexistent directory "/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/../../../../../../avr/sys-include"]
+        ignore line: [ignoring nonexistent directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/sys-include"]
+        ignore line: [ignoring duplicate directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/../../lib/gcc/avr/7.3.0/include"]
+        ignore line: [ignoring duplicate directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/../../lib/gcc/avr/7.3.0/include-fixed"]
+        ignore line: [ignoring nonexistent directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/../../lib/gcc/avr/7.3.0/../../../../avr/sys-include"]
+        ignore line: [ignoring duplicate directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/../../lib/gcc/avr/7.3.0/../../../../avr/include"]
         ignore line: [#include "..." search starts here:]
         ignore line: [#include <...> search starts here:]
-        ignore line: [ /opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/include]
-        ignore line: [ /opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/include-fixed]
-        ignore line: [ /opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/../../../../../../avr/include]
+        ignore line: [ /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/include]
+        ignore line: [ /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/include-fixed]
+        ignore line: [ /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/include]
         ignore line: [End of search list.]
-        ignore line: [GNU C17 (Homebrew AVR GCC 9.5.0) version 9.5.0 (avr)]
-        ignore line: [	compiled by GNU C version Apple LLVM 17.0.0 (clang-1700.3.19.1)  GMP version 6.3.0  MPFR version 4.2.2  MPC version 1.3.1  isl version isl-0.27-GMP]
-        ignore line: []
-        ignore line: [warning: MPC header version 1.3.1 differs from library version 1.4.0.]
+        ignore line: [GNU C11 (GCC) version 7.3.0 (avr)]
+        ignore line: [	compiled by GNU C version 4.2.1 Compatible Apple LLVM 8.1.0 (clang-802.0.38)  GMP version 5.0.2  MPFR version 3.1.0  MPC version 0.9  isl version none]
         ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
-        ignore line: [Compiler executable checksum: 9b9837579f3958276face1bec03b6c42]
-        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_ed1b4.dir/CMakeCCompilerABI.c.obj' '-c' '-specs=device-specs/specs-avr2']
-        ignore line: [ /opt/homebrew/opt/avr-binutils/bin/avr-as -v -mmcu=avr2 -mgcc-isr -o CMakeFiles/cmTC_ed1b4.dir/CMakeCCompilerABI.c.obj /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//ccsmhDLW.s]
-        ignore line: [GNU assembler version 2.45.1 (avr) using BFD version (GNU Binutils) 2.45.1]
-        ignore line: [COMPILER_PATH=/opt/homebrew/Cellar/avr-gcc@9/9.5.0/libexec/gcc/avr/9.5.0/:/opt/homebrew/Cellar/avr-gcc@9/9.5.0/libexec/gcc/avr/9.5.0/:/opt/homebrew/Cellar/avr-gcc@9/9.5.0/libexec/gcc/avr/:/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/:/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/]
-        ignore line: [LIBRARY_PATH=/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/:/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/../../../../../../avr/lib/]
-        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_ed1b4.dir/CMakeCCompilerABI.c.obj' '-c' '-specs=device-specs/specs-avr2']
-        ignore line: [[2/2] : && /opt/homebrew/bin/cmake -E rm -f libcmTC_ed1b4.a && /opt/homebrew/bin/avr-ar qc libcmTC_ed1b4.a  CMakeFiles/cmTC_ed1b4.dir/CMakeCCompilerABI.c.obj && /opt/homebrew/bin/avr-ranlib libcmTC_ed1b4.a && /opt/homebrew/bin/cmake -E touch libcmTC_ed1b4.a && :]
+        ignore line: [Compiler executable checksum: 877db8e667c28afb4384e71038db0373]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_c0deb.dir/CMakeCCompilerABI.c.obj' '-c' '-specs=device-specs/specs-avr2']
+        ignore line: [ /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/bin/as -mmcu=avr2 -o CMakeFiles/cmTC_c0deb.dir/CMakeCCompilerABI.c.obj /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//cc3OFXBz.s]
+        ignore line: [COMPILER_PATH=/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../libexec/gcc/avr/7.3.0/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../libexec/gcc/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/bin/]
+        ignore line: [LIBRARY_PATH=/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_c0deb.dir/CMakeCCompilerABI.c.obj' '-c' '-specs=device-specs/specs-avr2']
+        ignore line: [[2/2] : && /opt/homebrew/bin/cmake -E rm -f libcmTC_c0deb.a && /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-ar qc libcmTC_c0deb.a  CMakeFiles/cmTC_c0deb.dir/CMakeCCompilerABI.c.obj && /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-ranlib libcmTC_c0deb.a && /opt/homebrew/bin/cmake -E touch libcmTC_c0deb.a && :]
         ignore line: []
         ignore line: []
         implicit libs: []
@@ -1728,12 +1634,12 @@ events:
     backtrace:
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:83 (try_compile)"
       - "/opt/homebrew/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
-      - "CMakeLists.txt:7 (project)"
+      - "CMakeLists.txt:12 (project)"
     checks:
       - "Detecting CXX compiler ABI info"
     directories:
-      source: "/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-uD2eho"
-      binary: "/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-uD2eho"
+      source: "/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-LRTFdJ"
+      binary: "/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-LRTFdJ"
     cmakeVariables:
       CMAKE_CXX_FLAGS: ""
       CMAKE_CXX_FLAGS_DEBUG: "-g"
@@ -1744,47 +1650,49 @@ events:
       variable: "CMAKE_CXX_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: '/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-uD2eho'
+        Change Dir: '/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-LRTFdJ'
         
-        Run Build Command(s): /opt/homebrew/bin/ninja -v cmTC_716a8
-        [1/2] /opt/homebrew/bin/avr-g++   -v -o CMakeFiles/cmTC_716a8.dir/CMakeCXXCompilerABI.cpp.obj -c /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp
+        Run Build Command(s): /opt/homebrew/bin/ninja -v cmTC_3e7dc
+        [1/2] /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-g++   -v -o CMakeFiles/cmTC_3e7dc.dir/CMakeCXXCompilerABI.cpp.obj -c /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp
         Using built-in specs.
-        Reading specs from /opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/device-specs/specs-avr2
-        COLLECT_GCC=/opt/homebrew/bin/avr-g++
+        Reading specs from /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/device-specs/specs-avr2
+        COLLECT_GCC=/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-g++
         Target: avr
-        Configured with: ../configure --target=avr --prefix=/opt/homebrew/Cellar/avr-gcc@9/9.5.0 --libdir=/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9 --enable-languages=c,c++ --with-ld=/opt/homebrew/opt/avr-binutils/bin/avr-ld --with-as=/opt/homebrew/opt/avr-binutils/bin/avr-as --disable-nls --disable-libssp --disable-shared --disable-threads --disable-libgomp --with-dwarf2 --with-avrlibc --with-system-zlib --with-pkgversion='Homebrew AVR GCC 9.5.0' --with-bugurl=https://github.com/osx-cross/homebrew-avr/issues SED=/usr/bin/sed
+        Configured with: ../gcc/configure --enable-fixed-point --enable-languages=c,c++ --prefix=/Users/jenkins/jenkins/workspace/avr-gcc-staging/label/mac-mini/objdir --disable-nls --disable-libssp --disable-libada --disable-shared --with-avrlibc=yes --with-dwarf2 --disable-doc --target=avr
         Thread model: single
-        gcc version 9.5.0 (Homebrew AVR GCC 9.5.0) 
-        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_716a8.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-specs=device-specs/specs-avr2'
-         /opt/homebrew/Cellar/avr-gcc@9/9.5.0/libexec/gcc/avr/9.5.0/cc1plus -quiet -v /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp -mn-flash=6 -mskip-bug -quiet -dumpbase CMakeCXXCompilerABI.cpp -auxbase-strip CMakeFiles/cmTC_716a8.dir/CMakeCXXCompilerABI.cpp.obj -version -mn-flash=6 -mskip-bug -fno-rtti -fno-enforce-eh-specs -fno-exceptions -o /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//ccHzNhWh.s
-        GNU C++14 (Homebrew AVR GCC 9.5.0) version 9.5.0 (avr)
-        	compiled by GNU C version Apple LLVM 17.0.0 (clang-1700.3.19.1), GMP version 6.3.0, MPFR version 4.2.2, MPC version 1.3.1, isl version isl-0.27-GMP
-        
-        warning: MPC header version 1.3.1 differs from library version 1.4.0.
+        gcc version 7.3.0 (GCC) 
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_3e7dc.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-specs=device-specs/specs-avr2'
+         /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../libexec/gcc/avr/7.3.0/cc1plus -quiet -v -iprefix /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/ /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp -mn-flash=6 -mskip-bug -quiet -dumpbase CMakeCXXCompilerABI.cpp -auxbase-strip CMakeFiles/cmTC_3e7dc.dir/CMakeCXXCompilerABI.cpp.obj -version -mn-flash=6 -mskip-bug -fno-rtti -fno-enforce-eh-specs -fno-exceptions -o /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//cc12txcx.s
+        GNU C++14 (GCC) version 7.3.0 (avr)
+        	compiled by GNU C version 4.2.1 Compatible Apple LLVM 8.1.0 (clang-802.0.38), GMP version 5.0.2, MPFR version 3.1.0, MPC version 0.9, isl version none
         GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
-        ignoring nonexistent directory "/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/../../../../../../avr/include/c++/9.5.0"
-        ignoring nonexistent directory "/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/../../../../../../avr/include/c++/9.5.0/avr"
-        ignoring nonexistent directory "/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/../../../../../../avr/include/c++/9.5.0/backward"
-        ignoring nonexistent directory "/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/../../../../../../avr/sys-include"
+        ignoring nonexistent directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/include/c++/7.3.0"
+        ignoring nonexistent directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/include/c++/7.3.0/avr"
+        ignoring nonexistent directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/include/c++/7.3.0/backward"
+        ignoring nonexistent directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/sys-include"
+        ignoring nonexistent directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/../../lib/gcc/avr/7.3.0/../../../../avr/include/c++/7.3.0"
+        ignoring nonexistent directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/../../lib/gcc/avr/7.3.0/../../../../avr/include/c++/7.3.0/avr"
+        ignoring nonexistent directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/../../lib/gcc/avr/7.3.0/../../../../avr/include/c++/7.3.0/backward"
+        ignoring duplicate directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/../../lib/gcc/avr/7.3.0/include"
+        ignoring duplicate directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/../../lib/gcc/avr/7.3.0/include-fixed"
+        ignoring nonexistent directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/../../lib/gcc/avr/7.3.0/../../../../avr/sys-include"
+        ignoring duplicate directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/../../lib/gcc/avr/7.3.0/../../../../avr/include"
         #include "..." search starts here:
         #include <...> search starts here:
-         /opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/include
-         /opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/include-fixed
-         /opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/../../../../../../avr/include
+         /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/include
+         /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/include-fixed
+         /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/include
         End of search list.
-        GNU C++14 (Homebrew AVR GCC 9.5.0) version 9.5.0 (avr)
-        	compiled by GNU C version Apple LLVM 17.0.0 (clang-1700.3.19.1), GMP version 6.3.0, MPFR version 4.2.2, MPC version 1.3.1, isl version isl-0.27-GMP
-        
-        warning: MPC header version 1.3.1 differs from library version 1.4.0.
+        GNU C++14 (GCC) version 7.3.0 (avr)
+        	compiled by GNU C version 4.2.1 Compatible Apple LLVM 8.1.0 (clang-802.0.38), GMP version 5.0.2, MPFR version 3.1.0, MPC version 0.9, isl version none
         GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
-        Compiler executable checksum: cf33c23d2cab1b3f2a2fee57727f0223
-        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_716a8.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-specs=device-specs/specs-avr2'
-         /opt/homebrew/opt/avr-binutils/bin/avr-as -v -mmcu=avr2 -mgcc-isr -o CMakeFiles/cmTC_716a8.dir/CMakeCXXCompilerABI.cpp.obj /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//ccHzNhWh.s
-        GNU assembler version 2.45.1 (avr) using BFD version (GNU Binutils) 2.45.1
-        COMPILER_PATH=/opt/homebrew/Cellar/avr-gcc@9/9.5.0/libexec/gcc/avr/9.5.0/:/opt/homebrew/Cellar/avr-gcc@9/9.5.0/libexec/gcc/avr/9.5.0/:/opt/homebrew/Cellar/avr-gcc@9/9.5.0/libexec/gcc/avr/:/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/:/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/
-        LIBRARY_PATH=/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/:/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/../../../../../../avr/lib/
-        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_716a8.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-specs=device-specs/specs-avr2'
-        [2/2] : && /opt/homebrew/bin/cmake -E rm -f libcmTC_716a8.a && /opt/homebrew/bin/avr-ar qc libcmTC_716a8.a  CMakeFiles/cmTC_716a8.dir/CMakeCXXCompilerABI.cpp.obj && /opt/homebrew/bin/avr-ranlib libcmTC_716a8.a && /opt/homebrew/bin/cmake -E touch libcmTC_716a8.a && :
+        Compiler executable checksum: d29517aadee47ae2ad83928b972d8dfb
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_3e7dc.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-specs=device-specs/specs-avr2'
+         /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/bin/as -mmcu=avr2 -o CMakeFiles/cmTC_3e7dc.dir/CMakeCXXCompilerABI.cpp.obj /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//cc12txcx.s
+        COMPILER_PATH=/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../libexec/gcc/avr/7.3.0/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../libexec/gcc/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/bin/
+        LIBRARY_PATH=/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_3e7dc.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-specs=device-specs/specs-avr2'
+        [2/2] : && /opt/homebrew/bin/cmake -E rm -f libcmTC_3e7dc.a && /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-ar qc libcmTC_3e7dc.a  CMakeFiles/cmTC_3e7dc.dir/CMakeCXXCompilerABI.cpp.obj && /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-ranlib libcmTC_3e7dc.a && /opt/homebrew/bin/cmake -E touch libcmTC_3e7dc.a && :
         
       exitCode: 0
   -
@@ -1792,19 +1700,19 @@ events:
     backtrace:
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:217 (message)"
       - "/opt/homebrew/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
-      - "CMakeLists.txt:7 (project)"
+      - "CMakeLists.txt:12 (project)"
     message: |
       Parsed CXX implicit include dir info: rv=done
         found start of include info
         found start of implicit include info
-          add: [/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/include]
-          add: [/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/include-fixed]
-          add: [/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/../../../../../../avr/include]
+          add: [/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/include]
+          add: [/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/include-fixed]
+          add: [/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/include]
         end of search list found
-        collapse include dir [/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/include] ==> [/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/include]
-        collapse include dir [/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/include-fixed] ==> [/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/include-fixed]
-        collapse include dir [/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/../../../../../../avr/include] ==> [/opt/homebrew/Cellar/avr-gcc@9/9.5.0/avr/include]
-        implicit include dirs: [/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/include;/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/include-fixed;/opt/homebrew/Cellar/avr-gcc@9/9.5.0/avr/include]
+        collapse include dir [/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/include] ==> [/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/lib/gcc/avr/7.3.0/include]
+        collapse include dir [/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/include-fixed] ==> [/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/lib/gcc/avr/7.3.0/include-fixed]
+        collapse include dir [/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/include] ==> [/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/avr/include]
+        implicit include dirs: [/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/lib/gcc/avr/7.3.0/include;/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/lib/gcc/avr/7.3.0/include-fixed;/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/avr/include]
       
       
   -
@@ -1812,52 +1720,54 @@ events:
     backtrace:
       - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:253 (message)"
       - "/opt/homebrew/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
-      - "CMakeLists.txt:7 (project)"
+      - "CMakeLists.txt:12 (project)"
     message: |
       Parsed CXX implicit link information:
         link line regex: [^( *|.*[/\\])(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
         linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)))("|,| |$)]
-        ignore line: [Change Dir: '/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-uD2eho']
+        ignore line: [Change Dir: '/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-LRTFdJ']
         ignore line: []
-        ignore line: [Run Build Command(s): /opt/homebrew/bin/ninja -v cmTC_716a8]
-        ignore line: [[1/2] /opt/homebrew/bin/avr-g++   -v -o CMakeFiles/cmTC_716a8.dir/CMakeCXXCompilerABI.cpp.obj -c /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp]
+        ignore line: [Run Build Command(s): /opt/homebrew/bin/ninja -v cmTC_3e7dc]
+        ignore line: [[1/2] /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-g++   -v -o CMakeFiles/cmTC_3e7dc.dir/CMakeCXXCompilerABI.cpp.obj -c /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp]
         ignore line: [Using built-in specs.]
-        ignore line: [Reading specs from /opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/device-specs/specs-avr2]
-        ignore line: [COLLECT_GCC=/opt/homebrew/bin/avr-g++]
+        ignore line: [Reading specs from /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/device-specs/specs-avr2]
+        ignore line: [COLLECT_GCC=/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-g++]
         ignore line: [Target: avr]
-        ignore line: [Configured with: ../configure --target=avr --prefix=/opt/homebrew/Cellar/avr-gcc@9/9.5.0 --libdir=/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9 --enable-languages=c,c++ --with-ld=/opt/homebrew/opt/avr-binutils/bin/avr-ld --with-as=/opt/homebrew/opt/avr-binutils/bin/avr-as --disable-nls --disable-libssp --disable-shared --disable-threads --disable-libgomp --with-dwarf2 --with-avrlibc --with-system-zlib --with-pkgversion='Homebrew AVR GCC 9.5.0' --with-bugurl=https://github.com/osx-cross/homebrew-avr/issues SED=/usr/bin/sed]
+        ignore line: [Configured with: ../gcc/configure --enable-fixed-point --enable-languages=c c++ --prefix=/Users/jenkins/jenkins/workspace/avr-gcc-staging/label/mac-mini/objdir --disable-nls --disable-libssp --disable-libada --disable-shared --with-avrlibc=yes --with-dwarf2 --disable-doc --target=avr]
         ignore line: [Thread model: single]
-        ignore line: [gcc version 9.5.0 (Homebrew AVR GCC 9.5.0) ]
-        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_716a8.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-specs=device-specs/specs-avr2']
-        ignore line: [ /opt/homebrew/Cellar/avr-gcc@9/9.5.0/libexec/gcc/avr/9.5.0/cc1plus -quiet -v /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp -mn-flash=6 -mskip-bug -quiet -dumpbase CMakeCXXCompilerABI.cpp -auxbase-strip CMakeFiles/cmTC_716a8.dir/CMakeCXXCompilerABI.cpp.obj -version -mn-flash=6 -mskip-bug -fno-rtti -fno-enforce-eh-specs -fno-exceptions -o /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//ccHzNhWh.s]
-        ignore line: [GNU C++14 (Homebrew AVR GCC 9.5.0) version 9.5.0 (avr)]
-        ignore line: [	compiled by GNU C version Apple LLVM 17.0.0 (clang-1700.3.19.1)  GMP version 6.3.0  MPFR version 4.2.2  MPC version 1.3.1  isl version isl-0.27-GMP]
-        ignore line: []
-        ignore line: [warning: MPC header version 1.3.1 differs from library version 1.4.0.]
+        ignore line: [gcc version 7.3.0 (GCC) ]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_3e7dc.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-specs=device-specs/specs-avr2']
+        ignore line: [ /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../libexec/gcc/avr/7.3.0/cc1plus -quiet -v -iprefix /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/ /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp -mn-flash=6 -mskip-bug -quiet -dumpbase CMakeCXXCompilerABI.cpp -auxbase-strip CMakeFiles/cmTC_3e7dc.dir/CMakeCXXCompilerABI.cpp.obj -version -mn-flash=6 -mskip-bug -fno-rtti -fno-enforce-eh-specs -fno-exceptions -o /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//cc12txcx.s]
+        ignore line: [GNU C++14 (GCC) version 7.3.0 (avr)]
+        ignore line: [	compiled by GNU C version 4.2.1 Compatible Apple LLVM 8.1.0 (clang-802.0.38)  GMP version 5.0.2  MPFR version 3.1.0  MPC version 0.9  isl version none]
         ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
-        ignore line: [ignoring nonexistent directory "/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/../../../../../../avr/include/c++/9.5.0"]
-        ignore line: [ignoring nonexistent directory "/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/../../../../../../avr/include/c++/9.5.0/avr"]
-        ignore line: [ignoring nonexistent directory "/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/../../../../../../avr/include/c++/9.5.0/backward"]
-        ignore line: [ignoring nonexistent directory "/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/../../../../../../avr/sys-include"]
+        ignore line: [ignoring nonexistent directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/include/c++/7.3.0"]
+        ignore line: [ignoring nonexistent directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/include/c++/7.3.0/avr"]
+        ignore line: [ignoring nonexistent directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/include/c++/7.3.0/backward"]
+        ignore line: [ignoring nonexistent directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/sys-include"]
+        ignore line: [ignoring nonexistent directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/../../lib/gcc/avr/7.3.0/../../../../avr/include/c++/7.3.0"]
+        ignore line: [ignoring nonexistent directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/../../lib/gcc/avr/7.3.0/../../../../avr/include/c++/7.3.0/avr"]
+        ignore line: [ignoring nonexistent directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/../../lib/gcc/avr/7.3.0/../../../../avr/include/c++/7.3.0/backward"]
+        ignore line: [ignoring duplicate directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/../../lib/gcc/avr/7.3.0/include"]
+        ignore line: [ignoring duplicate directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/../../lib/gcc/avr/7.3.0/include-fixed"]
+        ignore line: [ignoring nonexistent directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/../../lib/gcc/avr/7.3.0/../../../../avr/sys-include"]
+        ignore line: [ignoring duplicate directory "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/../../lib/gcc/avr/7.3.0/../../../../avr/include"]
         ignore line: [#include "..." search starts here:]
         ignore line: [#include <...> search starts here:]
-        ignore line: [ /opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/include]
-        ignore line: [ /opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/include-fixed]
-        ignore line: [ /opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/../../../../../../avr/include]
+        ignore line: [ /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/include]
+        ignore line: [ /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/include-fixed]
+        ignore line: [ /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/include]
         ignore line: [End of search list.]
-        ignore line: [GNU C++14 (Homebrew AVR GCC 9.5.0) version 9.5.0 (avr)]
-        ignore line: [	compiled by GNU C version Apple LLVM 17.0.0 (clang-1700.3.19.1)  GMP version 6.3.0  MPFR version 4.2.2  MPC version 1.3.1  isl version isl-0.27-GMP]
-        ignore line: []
-        ignore line: [warning: MPC header version 1.3.1 differs from library version 1.4.0.]
+        ignore line: [GNU C++14 (GCC) version 7.3.0 (avr)]
+        ignore line: [	compiled by GNU C version 4.2.1 Compatible Apple LLVM 8.1.0 (clang-802.0.38)  GMP version 5.0.2  MPFR version 3.1.0  MPC version 0.9  isl version none]
         ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
-        ignore line: [Compiler executable checksum: cf33c23d2cab1b3f2a2fee57727f0223]
-        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_716a8.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-specs=device-specs/specs-avr2']
-        ignore line: [ /opt/homebrew/opt/avr-binutils/bin/avr-as -v -mmcu=avr2 -mgcc-isr -o CMakeFiles/cmTC_716a8.dir/CMakeCXXCompilerABI.cpp.obj /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//ccHzNhWh.s]
-        ignore line: [GNU assembler version 2.45.1 (avr) using BFD version (GNU Binutils) 2.45.1]
-        ignore line: [COMPILER_PATH=/opt/homebrew/Cellar/avr-gcc@9/9.5.0/libexec/gcc/avr/9.5.0/:/opt/homebrew/Cellar/avr-gcc@9/9.5.0/libexec/gcc/avr/9.5.0/:/opt/homebrew/Cellar/avr-gcc@9/9.5.0/libexec/gcc/avr/:/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/:/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/]
-        ignore line: [LIBRARY_PATH=/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/:/opt/homebrew/Cellar/avr-gcc@9/9.5.0/lib/avr-gcc/9/gcc/avr/9.5.0/../../../../../../avr/lib/]
-        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_716a8.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-specs=device-specs/specs-avr2']
-        ignore line: [[2/2] : && /opt/homebrew/bin/cmake -E rm -f libcmTC_716a8.a && /opt/homebrew/bin/avr-ar qc libcmTC_716a8.a  CMakeFiles/cmTC_716a8.dir/CMakeCXXCompilerABI.cpp.obj && /opt/homebrew/bin/avr-ranlib libcmTC_716a8.a && /opt/homebrew/bin/cmake -E touch libcmTC_716a8.a && :]
+        ignore line: [Compiler executable checksum: d29517aadee47ae2ad83928b972d8dfb]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_3e7dc.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-specs=device-specs/specs-avr2']
+        ignore line: [ /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/bin/as -mmcu=avr2 -o CMakeFiles/cmTC_3e7dc.dir/CMakeCXXCompilerABI.cpp.obj /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//cc12txcx.s]
+        ignore line: [COMPILER_PATH=/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../libexec/gcc/avr/7.3.0/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../libexec/gcc/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/bin/]
+        ignore line: [LIBRARY_PATH=/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_3e7dc.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-specs=device-specs/specs-avr2']
+        ignore line: [[2/2] : && /opt/homebrew/bin/cmake -E rm -f libcmTC_3e7dc.a && /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-ar qc libcmTC_3e7dc.a  CMakeFiles/cmTC_3e7dc.dir/CMakeCXXCompilerABI.cpp.obj && /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-ranlib libcmTC_3e7dc.a && /opt/homebrew/bin/cmake -E touch libcmTC_3e7dc.a && :]
         ignore line: []
         ignore line: []
         implicit libs: []
@@ -1884,10 +1794,10 @@ events:
       CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
       CMAKE_FIND_USE_INSTALL_PREFIX: true
     names:
-      - "/opt/homebrew/bin/avr-gcc"
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc"
     candidate_directories:
-      - "/opt/homebrew/bin/"
-    found: "/opt/homebrew/bin/avr-gcc"
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/"
+    found: "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc"
     search_context:
       ENV{PATH}:
         - "/opt/homebrew/bin"
@@ -1920,8 +1830,8 @@ events:
       - "libraries/LcsDrvAvrLib/CMakeLists.txt:5 (project)"
     message: |
       Checking whether the ASM compiler is GNU using "--version" matched "(GNU assembler)|(GCC)|(Free Software Foundation)":
-      avr-gcc (Homebrew AVR GCC 9.5.0) 9.5.0
-      Copyright (C) 2019 Free Software Foundation, Inc.
+      avr-gcc (GCC) 7.3.0
+      Copyright (C) 2017 Free Software Foundation, Inc.
       This is free software; see the source for copying conditions.  There is NO
       warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
       
@@ -1948,6 +1858,7 @@ events:
       - "avr-gcc-ar"
       - "avr-gcc-ar"
     candidate_directories:
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/"
       - "/opt/homebrew/bin/"
       - "/opt/homebrew/sbin/"
       - "/opt/local/bin/"
@@ -1968,6 +1879,7 @@ events:
       - "/Library/Apple/usr/bin/"
       - "/Library/TeX/texbin/"
     searched_directories:
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc-ar-"
       - "/opt/homebrew/bin/avr-gcc-ar-"
       - "/opt/homebrew/sbin/avr-gcc-ar-"
       - "/opt/local/bin/avr-gcc-ar-"
@@ -1987,6 +1899,7 @@ events:
       - "/pkg/env/global/bin/avr-gcc-ar-"
       - "/Library/Apple/usr/bin/avr-gcc-ar-"
       - "/Library/TeX/texbin/avr-gcc-ar-"
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc-ar-"
       - "/opt/homebrew/bin/avr-gcc-ar-"
       - "/opt/homebrew/sbin/avr-gcc-ar-"
       - "/opt/local/bin/avr-gcc-ar-"
@@ -2006,7 +1919,7 @@ events:
       - "/pkg/env/global/bin/avr-gcc-ar-"
       - "/Library/Apple/usr/bin/avr-gcc-ar-"
       - "/Library/TeX/texbin/avr-gcc-ar-"
-    found: "/opt/homebrew/bin/avr-gcc-ar"
+    found: "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc-ar"
     search_context:
       ENV{PATH}:
         - "/opt/homebrew/bin"
@@ -2054,6 +1967,7 @@ events:
       - "avr-gcc-ranlib"
       - "avr-gcc-ranlib"
     candidate_directories:
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/"
       - "/opt/homebrew/bin/"
       - "/opt/homebrew/sbin/"
       - "/opt/local/bin/"
@@ -2074,6 +1988,7 @@ events:
       - "/Library/Apple/usr/bin/"
       - "/Library/TeX/texbin/"
     searched_directories:
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc-ranlib-"
       - "/opt/homebrew/bin/avr-gcc-ranlib-"
       - "/opt/homebrew/sbin/avr-gcc-ranlib-"
       - "/opt/local/bin/avr-gcc-ranlib-"
@@ -2093,6 +2008,7 @@ events:
       - "/pkg/env/global/bin/avr-gcc-ranlib-"
       - "/Library/Apple/usr/bin/avr-gcc-ranlib-"
       - "/Library/TeX/texbin/avr-gcc-ranlib-"
+      - "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc-ranlib-"
       - "/opt/homebrew/bin/avr-gcc-ranlib-"
       - "/opt/homebrew/sbin/avr-gcc-ranlib-"
       - "/opt/local/bin/avr-gcc-ranlib-"
@@ -2112,7 +2028,7 @@ events:
       - "/pkg/env/global/bin/avr-gcc-ranlib-"
       - "/Library/Apple/usr/bin/avr-gcc-ranlib-"
       - "/Library/TeX/texbin/avr-gcc-ranlib-"
-    found: "/opt/homebrew/bin/avr-gcc-ranlib"
+    found: "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc-ranlib"
     search_context:
       ENV{PATH}:
         - "/opt/homebrew/bin"

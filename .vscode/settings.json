@@ -2,6 +2,7 @@
     "spellright.language": [
         "en"
     ],
+
     "spellright.documentTypes": [
         "markdown",
         "latex",
@@ -12,9 +13,11 @@
     "cmake.configureSettings": {
 
         "CMAKE_TOOLCHAIN_FILE": "${workspaceFolder}/cmake/toolchain-avr.cmake"
-
     },
 
-    "cmake.buildDirectory": "${workspaceFolder}/build"
+    "cmake.buildDirectory": "${workspaceFolder}/build",
 
+    "cmake.noCompilerEnvironmentInjection": true,
+
+    "cmake.useCMakePresets": "always"
 }

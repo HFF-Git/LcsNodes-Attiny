@@ -9,8 +9,17 @@ set(CMAKE_SYSTEM_PROCESSOR avr)
 set(CMAKE_OSX_ARCHITECTURES "")
 
 # Compilers
-set(CMAKE_C_COMPILER avr-gcc)
-set(CMAKE_CXX_COMPILER avr-g++)
+set(AVR_ROOT
+    "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1")
+
+set(CMAKE_C_COMPILER "${AVR_ROOT}/bin/avr-gcc")
+
+set(CMAKE_CXX_COMPILER "${AVR_ROOT}/bin/avr-g++")
+
+set(CMAKE_OBJCOPY "${AVR_ROOT}/bin/avr-objcopy")
+
+set(CMAKE_SIZE "${AVR_ROOT}/bin/avr-size")
+
 
 # AVR tools
 set(CMAKE_OBJCOPY avr-objcopy)

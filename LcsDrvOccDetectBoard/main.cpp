@@ -7,7 +7,7 @@
 //
 //----------------------------------------------------------------------------------------
 //
-// Layout Control System - Runtime Library internals include file
+// Layout Control System - Servo 
 // Copyright (C) 2020 - 2026 Helmut Fieres
 //
 // This program is free software: you can redistribute it and/or modify it under 
@@ -23,25 +23,18 @@
 //  GNU General Public License:  http://opensource.org/licenses/GPL-3.0
 //
 //========================================================================================
-#include "arduino.h"
-#include <stdint.h>
-#include <avr/io.h>
-#include <avr/wdt.h> 
-#include <Wire.h>
-#include <EEPROM.h>
 #include "LcsDrvAvrLib.h"
 
+const uint8_t   DRV_MAJOR_VERSION   = 1;
+const uint8_t   DRV_MINOR_VERSION   = 2;
+const uint8_t   DRV_MAJOR_TYPE      = 1;
+const uint8_t   DRV_MINOR_TYPE      = 2;
 
-//=======================================================================================
-//
-//
-//
-//=======================================================================================
-#include "arduino.h"
-#include <stdint.h>
-#include <avr/io.h>
-#include <util/delay.h>
-#include "LcsDrvAvrLib.h"
+const uint16_t  DRV_VERSION         = ( DRV_MAJOR_VERSION << 8 ) | DRV_MINOR_VERSION;
+const uint16_t  DRV_TYPE            = ( DRV_MAJOR_TYPE << 8 ) | DRV_MINOR_TYPE;
+
+using namespace LCSDRV;
+
 
 //=======================================================================================
 // 4x4 matrix scan
@@ -90,7 +83,8 @@ static uint16_t matrix_scan_raw(void) {
 
     for (uint8_t row = 0; row < 4; row++) {
         select_row(row);
-        _delay_us(10);   // settle time
+
+        drvDelay( 10 );   // settle time
 
         // Read all columns at once
         uint8_t cols = ( ~ drvPortRead( &PORTA )) & COL_MASK;
@@ -127,19 +121,69 @@ static void debounce_update(uint16_t raw) {
     }
 }
 
-//---------------------------------------------------------------------------------------
-// Arduino entry points
-//---------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
+//
+//
+//
+//----------------------------------------------------------------------------------------
+void taskFunction( uint32_t *nextInterval ) {
 
-void setup() {
-    rows_init();
-    cols_init();
-    stable_state = 0;
-}
-
-void loop() {
     raw_state = matrix_scan_raw();
     debounce_update(raw_state);
 
-    _delay_ms(10);
+    *nextInterval = 10;  // in ms
+}
+
+//----------------------------------------------------------------------------------------
+//
+//
+//
+//----------------------------------------------------------------------------------------
+uint8_t requestFunction( uint8_t cmd, uint16_t *arg0, uint16_t *arg1 ) {
+
+    switch ( cmd ) {
+
+        case 64: { 
+
+            return( 0 );
+        
+        } break;
+
+        case 65: {
+
+            *arg0 ^= 1;
+            *arg1 ^= 1;
+            return( 0 );
+              
+        } break;
+
+        case 66: {
+
+            return( 1 );
+        }
+
+        default: {
+
+            return( 2 );
+        }
+    }
+}
+
+//----------------------------------------------------------------------------------------
+//
+//
+//
+//----------------------------------------------------------------------------------------
+int main( int argc, char *argv[] ) {
+
+  
+    uint8_t rStat = drvInitRuntime( DRV_TYPE, DRV_VERSION, 0 );
+    if ( rStat != 0 ) drvFatalError( 8 );
+
+    rows_init();
+    cols_init();
+    stable_state = 0;
+
+    
+    drvStartRuntime( taskFunction, requestFunction );
 }

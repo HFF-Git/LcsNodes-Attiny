@@ -1,0 +1,13 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/cmake_install.cmake",
+		"/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/libraries/LcsDrvAvrLib/cmake_install.cmake",
+		"/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/LcsDrvAvrLib-Test/cmake_install.cmake",
+		"/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/LcsDrvTurnoutBoard/cmake_install.cmake",
+		"/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/LcsDrvServoBoard/cmake_install.cmake",
+		"/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/LcsDrvSignalBoard/cmake_install.cmake",
+		"/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/LcsDrvOccDetectBoard/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

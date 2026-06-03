@@ -43,16 +43,11 @@
 //
 //========================================================================================
 
+// ??? will go out when it all works without Arduino Libs.
+#define ARDUINO_MILLIS   0
+#define ARDUINO_I2C     0
+#define ARDUINO_EEPROM  0
 
-#define ARDUINO_I2C     1
-#define ARDUINO_EEPROM  1
-
-
-#include "arduino.h"
-#include <stdint.h>
-#include <avr/io.h>
-#include <avr/wdt.h> 
-#include <avr/interrupt.h>
 
 #if ARDUINO_I2C == 1
 #include <Wire.h>
@@ -1018,7 +1013,7 @@ void drvFatalError( int n ) {
 //----------------------------------------------------------------------------------------
 uint32_t drvMillis( ) {
 
-    #if 1
+    #if ARDUINO_MILLIS == 1
     return( millis( ));
     #else
     uint32_t m;
@@ -1032,17 +1027,17 @@ uint32_t drvMillis( ) {
 
 void drvDelay( uint32_t val ) {
 
-    #if 1
+    #if ARDUINO_MILLIS == 1
     delay( val );
     #else 
     uint32_t start = drvMillis( );
-    while (( drvMillislis( ) - start ) < val );
+    while (( drvMillis( ) - start ) < val );
     #endif   
 }
 
 uint32_t  drvCpuFrequency( ) {
 
-    retrurn ( cpuFrequency );
+    return ( cpuFrequency );
 }
 
 //========================================================================================
@@ -1337,7 +1332,7 @@ void saveAttr( uint8_t item ) {
 // is a function that the START routine will call periodically.
 //
 //----------------------------------------------------------------------------------------
-uint8_t initDrvRuntime( uint16_t boardType, 
+uint8_t drvInitRuntime( uint16_t boardType, 
                         uint16_t boardVersion,
                         uint16_t firmwareOptions ) {
 
@@ -1369,7 +1364,7 @@ uint8_t initDrvRuntime( uint16_t boardType,
 // when a callback is simply not registered.
 //
 //----------------------------------------------------------------------------------------
-void startDrvRuntime( DrvTaskFunction tFunc, DrvRequestFunction rFunc ) {
+void drvStartRuntime( DrvTaskFunction tFunc, DrvRequestFunction rFunc ) {
 
     drvTaskFunc = tFunc;
     drvReqFunc  = rFunc; 

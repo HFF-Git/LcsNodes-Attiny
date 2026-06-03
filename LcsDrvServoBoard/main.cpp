@@ -7,7 +7,7 @@
 //
 //----------------------------------------------------------------------------------------
 //
-// Layout Control System - Runtime Library internals include file
+// Layout Control System - Servo 
 // Copyright (C) 2020 - 2026 Helmut Fieres
 //
 // This program is free software: you can redistribute it and/or modify it under 
@@ -23,7 +23,6 @@
 //  GNU General Public License:  http://opensource.org/licenses/GPL-3.0
 //
 //========================================================================================
-#include "arduino.h"
 #include "LcsDrvAvrLib.h"
 
 const uint8_t   DRV_MAJOR_VERSION   = 1;
@@ -88,16 +87,12 @@ uint8_t requestFunction( uint8_t cmd, uint16_t *arg0, uint16_t *arg1 ) {
 //
 //
 //----------------------------------------------------------------------------------------
-void setup( ) {
+int main( int argc, char *argv[] ) {
 
   
-    uint8_t rStat = initDrvRuntime( DRV_TYPE, DRV_VERSION, 0 );
+    uint8_t rStat = drvInitRuntime( DRV_TYPE, DRV_VERSION, 0 );
     if ( rStat != 0 ) drvFatalError( 8 );
 
     
-    startDrvRuntime( taskFunction, requestFunction );
-}
-
-void loop( ) {
-
+    drvStartRuntime( taskFunction, requestFunction );
 }

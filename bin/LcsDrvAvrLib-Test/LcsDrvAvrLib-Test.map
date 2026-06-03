@@ -1,0 +1,696 @@
+Archive member included to satisfy reference by file (symbol)
+
+libraries/LcsDrvAvrLib/libLcsDrvAvrLib.a(LcsDrvAvrLib.cpp.obj)
+                              LcsDrvAvrLib-Test/CMakeFiles/LcsDrvAvrLib-Test.dir/main.cpp.obj (_ZN6LCSDRV13drvFatalErrorEi)
+/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_udivmodsi4.o)
+                              libraries/LcsDrvAvrLib/libLcsDrvAvrLib.a(LcsDrvAvrLib.cpp.obj) (__udivmodsi4)
+/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_exit.o)
+                              /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/avrxmega3/crtattiny1616.o (exit)
+/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_clear_bss.o)
+                              libraries/LcsDrvAvrLib/libLcsDrvAvrLib.a(LcsDrvAvrLib.cpp.obj) (__do_clear_bss)
+/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ctors.o)
+                              libraries/LcsDrvAvrLib/libLcsDrvAvrLib.a(LcsDrvAvrLib.cpp.obj) (__do_global_ctors)
+/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muluhisi3.o)
+                              libraries/LcsDrvAvrLib/libLcsDrvAvrLib.a(LcsDrvAvrLib.cpp.obj) (__muluhisi3)
+/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3.o)
+                              libraries/LcsDrvAvrLib/libLcsDrvAvrLib.a(LcsDrvAvrLib.cpp.obj) (__muldi3)
+/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3_6.o)
+                              /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3.o) (__muldi3_6)
+/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ashrdi3.o)
+                              libraries/LcsDrvAvrLib/libLcsDrvAvrLib.a(LcsDrvAvrLib.cpp.obj) (__lshrdi3)
+/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_tablejump2.o)
+                              /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ctors.o) (__tablejump2__)
+/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_umulhisi3.o)
+                              /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muluhisi3.o) (__umulhisi3)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+text             0x0000000000000000 0x0000000000004000 xr
+data             0x0000000000803800 0x0000000000000800 rw !x
+eeprom           0x0000000000810000 0x0000000000000100 rw !x
+fuse             0x0000000000820000 0x000000000000000a rw !x
+lock             0x0000000000830000 0x0000000000000400 rw !x
+signature        0x0000000000840000 0x0000000000000400 rw !x
+user_signatures  0x0000000000850000 0x0000000000000400 rw !x
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+Address of section .data set to 0x803800
+LOAD /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/avrxmega3/crtattiny1616.o
+LOAD LcsDrvAvrLib-Test/CMakeFiles/LcsDrvAvrLib-Test.dir/main.cpp.obj
+LOAD libraries/LcsDrvAvrLib/libLcsDrvAvrLib.a
+LOAD /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a
+LOAD /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/avrxmega3/libm.a
+START GROUP
+LOAD /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a
+LOAD /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/avrxmega3/libm.a
+LOAD /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/avrxmega3/libc.a
+LOAD /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/avrxmega3/libattiny1616.a
+END GROUP
+                [0x0000000000004000]                __TEXT_REGION_LENGTH__ = DEFINED (__TEXT_REGION_LENGTH__)?__TEXT_REGION_LENGTH__:0x100000
+                [0x0000000000000800]                __DATA_REGION_LENGTH__ = DEFINED (__DATA_REGION_LENGTH__)?__DATA_REGION_LENGTH__:0xffa0
+                [0x0000000000000100]                __EEPROM_REGION_LENGTH__ = DEFINED (__EEPROM_REGION_LENGTH__)?__EEPROM_REGION_LENGTH__:0x10000
+                [0x000000000000000a]                __FUSE_REGION_LENGTH__ = DEFINED (__FUSE_REGION_LENGTH__)?__FUSE_REGION_LENGTH__:0x400
+                0x0000000000000400                __LOCK_REGION_LENGTH__ = DEFINED (__LOCK_REGION_LENGTH__)?__LOCK_REGION_LENGTH__:0x400
+                0x0000000000000400                __SIGNATURE_REGION_LENGTH__ = DEFINED (__SIGNATURE_REGION_LENGTH__)?__SIGNATURE_REGION_LENGTH__:0x400
+                0x0000000000000400                __USER_SIGNATURE_REGION_LENGTH__ = DEFINED (__USER_SIGNATURE_REGION_LENGTH__)?__USER_SIGNATURE_REGION_LENGTH__:0x400
+                0x0000000000008000                __RODATA_PM_OFFSET__ = DEFINED (__RODATA_PM_OFFSET__)?__RODATA_PM_OFFSET__:0x8000
+                [0x0000000000803800]                __DATA_REGION_ORIGIN__ = DEFINED (__DATA_REGION_ORIGIN__)?__DATA_REGION_ORIGIN__:0x802000
+
+.hash
+ *(.hash)
+
+.dynsym
+ *(.dynsym)
+
+.dynstr
+ *(.dynstr)
+
+.gnu.version
+ *(.gnu.version)
+
+.gnu.version_d
+ *(.gnu.version_d)
+
+.gnu.version_r
+ *(.gnu.version_r)
+
+.rel.init
+ *(.rel.init)
+
+.rela.init
+ *(.rela.init)
+
+.rel.text
+ *(.rel.text)
+ *(.rel.text.*)
+ *(.rel.gnu.linkonce.t*)
+
+.rela.text
+ *(.rela.text)
+ *(.rela.text.*)
+ *(.rela.gnu.linkonce.t*)
+
+.rel.fini
+ *(.rel.fini)
+
+.rela.fini
+ *(.rela.fini)
+
+.rel.rodata
+ *(.rel.rodata)
+ *(.rel.rodata.*)
+ *(.rel.gnu.linkonce.r*)
+
+.rela.rodata
+ *(.rela.rodata)
+ *(.rela.rodata.*)
+ *(.rela.gnu.linkonce.r*)
+
+.rel.data
+ *(.rel.data)
+ *(.rel.data.*)
+ *(.rel.gnu.linkonce.d*)
+
+.rela.data
+ *(.rela.data)
+ *(.rela.data.*)
+ *(.rela.gnu.linkonce.d*)
+
+.rel.ctors
+ *(.rel.ctors)
+
+.rela.ctors
+ *(.rela.ctors)
+
+.rel.dtors
+ *(.rel.dtors)
+
+.rela.dtors
+ *(.rela.dtors)
+
+.rel.got
+ *(.rel.got)
+
+.rela.got
+ *(.rela.got)
+
+.rel.bss
+ *(.rel.bss)
+
+.rela.bss
+ *(.rela.bss)
+
+.rel.plt
+ *(.rel.plt)
+
+.rela.plt
+ *(.rela.plt)
+
+.text           0x0000000000000000      0xd76
+ *(.vectors)
+ .vectors       0x0000000000000000       0x7c /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/avrxmega3/crtattiny1616.o
+                0x0000000000000000                __vectors
+                0x0000000000000000                __vector_default
+ *(.vectors)
+ *(.progmem.gcc*)
+                0x000000000000007c                . = ALIGN (0x2)
+                0x000000000000007c                __trampolines_start = .
+ *(.trampolines)
+ .trampolines   0x000000000000007c        0x0 linker stubs
+ *(.trampolines*)
+                0x000000000000007c                __trampolines_end = .
+ *libprintf_flt.a:*(.progmem.data)
+ *libc.a:*(.progmem.data)
+ *(.progmem*)
+                0x000000000000007c                . = ALIGN (0x2)
+ *(.jumptables)
+ *(.jumptables*)
+ *(.lowtext)
+ *(.lowtext*)
+                0x000000000000007c                __ctors_start = .
+ *(.ctors)
+ .ctors         0x000000000000007c        0x2 libraries/LcsDrvAvrLib/libLcsDrvAvrLib.a(LcsDrvAvrLib.cpp.obj)
+                0x000000000000007e                __ctors_end = .
+                0x000000000000007e                __dtors_start = .
+ *(.dtors)
+                0x000000000000007e                __dtors_end = .
+ SORT(*)(.ctors)
+ SORT(*)(.dtors)
+ *(.init0)
+ .init0         0x000000000000007e        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/avrxmega3/crtattiny1616.o
+                0x000000000000007e                __init
+ *(.init0)
+ *(.init1)
+ *(.init1)
+ *(.init2)
+ .init2         0x000000000000007e        0xc /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/avrxmega3/crtattiny1616.o
+ *(.init2)
+ *(.init3)
+ *(.init3)
+ *(.init4)
+ .init4         0x000000000000008a       0x10 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_clear_bss.o)
+                0x000000000000008a                __do_clear_bss
+ *(.init4)
+ *(.init5)
+ *(.init5)
+ *(.init6)
+ .init6         0x000000000000009a       0x16 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ctors.o)
+                0x000000000000009a                __do_global_ctors
+ *(.init6)
+ *(.init7)
+ *(.init7)
+ *(.init8)
+ *(.init8)
+ *(.init9)
+ .init9         0x00000000000000b0        0x8 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/avrxmega3/crtattiny1616.o
+ *(.init9)
+ *(.text)
+ .text          0x00000000000000b8        0x4 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/avrxmega3/crtattiny1616.o
+                0x00000000000000b8                __vector_20
+                0x00000000000000b8                __vector_28
+                0x00000000000000b8                __vector_1
+                0x00000000000000b8                __vector_12
+                0x00000000000000b8                __bad_interrupt
+                0x00000000000000b8                __vector_6
+                0x00000000000000b8                __vector_3
+                0x00000000000000b8                __vector_23
+                0x00000000000000b8                __vector_30
+                0x00000000000000b8                __vector_25
+                0x00000000000000b8                __vector_11
+                0x00000000000000b8                __vector_13
+                0x00000000000000b8                __vector_17
+                0x00000000000000b8                __vector_19
+                0x00000000000000b8                __vector_7
+                0x00000000000000b8                __vector_27
+                0x00000000000000b8                __vector_5
+                0x00000000000000b8                __vector_4
+                0x00000000000000b8                __vector_9
+                0x00000000000000b8                __vector_2
+                0x00000000000000b8                __vector_21
+                0x00000000000000b8                __vector_15
+                0x00000000000000b8                __vector_29
+                0x00000000000000b8                __vector_26
+                0x00000000000000b8                __vector_14
+                0x00000000000000b8                __vector_10
+                0x00000000000000b8                __vector_16
+                0x00000000000000b8                __vector_18
+                0x00000000000000b8                __vector_22
+ .text          0x00000000000000bc       0x4e LcsDrvAvrLib-Test/CMakeFiles/LcsDrvAvrLib-Test.dir/main.cpp.obj
+                0x00000000000000bc                _Z12taskFunctionPm
+                0x00000000000000d0                _Z15requestFunctionhPjS_
+ .text          0x000000000000010a      0xac6 libraries/LcsDrvAvrLib/libLcsDrvAvrLib.a(LcsDrvAvrLib.cpp.obj)
+                0x000000000000016e                __vector_8
+                0x00000000000001b8                __vector_24
+                0x0000000000000330                _ZN6LCSDRV11drvSetLedOnEv
+                0x0000000000000334                _ZN6LCSDRV12drvSetLedOffEv
+                0x0000000000000338                _ZN6LCSDRV11drvBlinkLedEi
+                0x0000000000000372                _ZN6LCSDRV13drvFatalErrorEi
+                0x0000000000000466                _ZN6LCSDRV9drvMillisEv
+                0x000000000000047e                _ZN6LCSDRV8drvDelayEm
+                0x00000000000004c2                _ZN6LCSDRV15drvCpuFrequencyEv
+                0x00000000000004d4                _ZN6LCSDRV12drvPinOutputEP11PORT_structh
+                0x00000000000004da                _ZN6LCSDRV11drvPinInputEP11PORT_structh
+                0x00000000000004e0                _ZN6LCSDRV12drvPinPullupEP11PORT_structh
+                0x0000000000000510                _ZN6LCSDRV11drvPinWriteEP11PORT_structhh
+                0x000000000000051e                _ZN6LCSDRV10drvPinReadEP11PORT_structh
+                0x0000000000000526                _ZN6LCSDRV11drvPortReadEP11PORT_struct
+                0x000000000000052c                _ZN6LCSDRV10drvPinHighEP11PORT_structh
+                0x0000000000000532                _ZN6LCSDRV9drvPinLowEP11PORT_structh
+                0x0000000000000538                _ZN6LCSDRV12drvPinToggleEP11PORT_structh
+                0x000000000000053e                _ZN6LCSDRV10drvAdcInitEv
+                0x000000000000057e                _ZN6LCSDRV14drvAdcPinSetupEP11PORT_structh
+                0x00000000000005d4                _ZN6LCSDRV13drvAnalogReadEh
+                0x00000000000005f6                _ZN6LCSDRV15adcToMilliVoltsEjm
+                0x0000000000000612                _ZN6LCSDRV13i2cGetRequestEPhPjS1_
+                0x0000000000000656                _ZN6LCSDRV14i2cSetResponseEhjj
+                0x0000000000000678                _ZN6LCSDRV7getAttrEh
+                0x000000000000069a                _ZN6LCSDRV7setAttrEhj
+                0x00000000000006ba                _ZN6LCSDRV11refreshAttrEh
+                0x00000000000006e4                _ZN6LCSDRV8saveAttrEh
+                0x0000000000000738                _ZN6LCSDRV14drvInitRuntimeEjjj
+                0x0000000000000aee                _ZN6LCSDRV15drvStartRuntimeEPFvPmEPFhhPjS3_E
+ .text          0x0000000000000bd0        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_udivmodsi4.o)
+ .text          0x0000000000000bd0        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_exit.o)
+ .text          0x0000000000000bd0        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_clear_bss.o)
+ .text          0x0000000000000bd0        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ctors.o)
+ .text          0x0000000000000bd0        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muluhisi3.o)
+ .text          0x0000000000000bd0        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3.o)
+ .text          0x0000000000000bd0        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3_6.o)
+ .text          0x0000000000000bd0        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ashrdi3.o)
+ .text          0x0000000000000bd0        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_tablejump2.o)
+ .text          0x0000000000000bd0        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_umulhisi3.o)
+                0x0000000000000bd0                . = ALIGN (0x2)
+ *(.text.*)
+ .text.startup  0x0000000000000bd0       0x2e LcsDrvAvrLib-Test/CMakeFiles/LcsDrvAvrLib-Test.dir/main.cpp.obj
+                0x0000000000000bd0                main
+ .text.startup  0x0000000000000bfe        0x6 libraries/LcsDrvAvrLib/libLcsDrvAvrLib.a(LcsDrvAvrLib.cpp.obj)
+ .text.libgcc.mul
+                0x0000000000000c04        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_udivmodsi4.o)
+ .text.libgcc.div
+                0x0000000000000c04       0x44 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_udivmodsi4.o)
+                0x0000000000000c04                __udivmodsi4
+ .text.libgcc   0x0000000000000c48        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_udivmodsi4.o)
+ .text.libgcc.prologue
+                0x0000000000000c48        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_udivmodsi4.o)
+ .text.libgcc.builtins
+                0x0000000000000c48        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_udivmodsi4.o)
+ .text.libgcc.fmul
+                0x0000000000000c48        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_udivmodsi4.o)
+ .text.libgcc.fixed
+                0x0000000000000c48        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_udivmodsi4.o)
+ .text.libgcc.mul
+                0x0000000000000c48        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_exit.o)
+ .text.libgcc.div
+                0x0000000000000c48        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_exit.o)
+ .text.libgcc   0x0000000000000c48        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_exit.o)
+ .text.libgcc.prologue
+                0x0000000000000c48        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_exit.o)
+ .text.libgcc.builtins
+                0x0000000000000c48        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_exit.o)
+ .text.libgcc.fmul
+                0x0000000000000c48        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_exit.o)
+ .text.libgcc.fixed
+                0x0000000000000c48        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_exit.o)
+ .text.libgcc.mul
+                0x0000000000000c48        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_clear_bss.o)
+ .text.libgcc.div
+                0x0000000000000c48        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_clear_bss.o)
+ .text.libgcc   0x0000000000000c48        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_clear_bss.o)
+ .text.libgcc.prologue
+                0x0000000000000c48        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_clear_bss.o)
+ .text.libgcc.builtins
+                0x0000000000000c48        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_clear_bss.o)
+ .text.libgcc.fmul
+                0x0000000000000c48        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_clear_bss.o)
+ .text.libgcc.fixed
+                0x0000000000000c48        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_clear_bss.o)
+ .text.libgcc.mul
+                0x0000000000000c48        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ctors.o)
+ .text.libgcc.div
+                0x0000000000000c48        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ctors.o)
+ .text.libgcc   0x0000000000000c48        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ctors.o)
+ .text.libgcc.prologue
+                0x0000000000000c48        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ctors.o)
+ .text.libgcc.builtins
+                0x0000000000000c48        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ctors.o)
+ .text.libgcc.fmul
+                0x0000000000000c48        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ctors.o)
+ .text.libgcc.fixed
+                0x0000000000000c48        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ctors.o)
+ .text.libgcc.mul
+                0x0000000000000c48       0x16 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muluhisi3.o)
+                0x0000000000000c48                __muluhisi3
+ .text.libgcc.div
+                0x0000000000000c5e        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muluhisi3.o)
+ .text.libgcc   0x0000000000000c5e        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muluhisi3.o)
+ .text.libgcc.prologue
+                0x0000000000000c5e        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muluhisi3.o)
+ .text.libgcc.builtins
+                0x0000000000000c5e        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muluhisi3.o)
+ .text.libgcc.fmul
+                0x0000000000000c5e        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muluhisi3.o)
+ .text.libgcc.fixed
+                0x0000000000000c5e        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muluhisi3.o)
+ .text.libgcc.mul
+                0x0000000000000c5e       0x9e /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3.o)
+                0x0000000000000c5e                __muldi3
+ .text.libgcc.div
+                0x0000000000000cfc        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3.o)
+ .text.libgcc   0x0000000000000cfc        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3.o)
+ .text.libgcc.prologue
+                0x0000000000000cfc        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3.o)
+ .text.libgcc.builtins
+                0x0000000000000cfc        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3.o)
+ .text.libgcc.fmul
+                0x0000000000000cfc        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3.o)
+ .text.libgcc.fixed
+                0x0000000000000cfc        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3.o)
+ .text.libgcc.mul
+                0x0000000000000cfc       0x12 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3_6.o)
+                0x0000000000000cfc                __muldi3_6
+ .text.libgcc.div
+                0x0000000000000d0e        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3_6.o)
+ .text.libgcc   0x0000000000000d0e        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3_6.o)
+ .text.libgcc.prologue
+                0x0000000000000d0e        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3_6.o)
+ .text.libgcc.builtins
+                0x0000000000000d0e        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3_6.o)
+ .text.libgcc.fmul
+                0x0000000000000d0e        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3_6.o)
+ .text.libgcc.fixed
+                0x0000000000000d0e        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3_6.o)
+ .text.libgcc.mul
+                0x0000000000000d0e        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ashrdi3.o)
+ .text.libgcc.div
+                0x0000000000000d0e        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ashrdi3.o)
+ .text.libgcc   0x0000000000000d0e        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ashrdi3.o)
+ .text.libgcc.prologue
+                0x0000000000000d0e        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ashrdi3.o)
+ .text.libgcc.builtins
+                0x0000000000000d0e       0x3a /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ashrdi3.o)
+                0x0000000000000d0e                __ashrdi3
+                0x0000000000000d12                __lshrdi3
+ .text.libgcc.fmul
+                0x0000000000000d48        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ashrdi3.o)
+ .text.libgcc.fixed
+                0x0000000000000d48        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ashrdi3.o)
+ .text.libgcc.mul
+                0x0000000000000d48        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_tablejump2.o)
+ .text.libgcc.div
+                0x0000000000000d48        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_tablejump2.o)
+ .text.libgcc   0x0000000000000d48        0xc /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_tablejump2.o)
+                0x0000000000000d48                __tablejump2__
+ .text.libgcc.prologue
+                0x0000000000000d54        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_tablejump2.o)
+ .text.libgcc.builtins
+                0x0000000000000d54        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_tablejump2.o)
+ .text.libgcc.fmul
+                0x0000000000000d54        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_tablejump2.o)
+ .text.libgcc.fixed
+                0x0000000000000d54        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_tablejump2.o)
+ .text.libgcc.mul
+                0x0000000000000d54       0x1e /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_umulhisi3.o)
+                0x0000000000000d54                __umulhisi3
+ .text.libgcc.div
+                0x0000000000000d72        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_umulhisi3.o)
+ .text.libgcc   0x0000000000000d72        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_umulhisi3.o)
+ .text.libgcc.prologue
+                0x0000000000000d72        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_umulhisi3.o)
+ .text.libgcc.builtins
+                0x0000000000000d72        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_umulhisi3.o)
+ .text.libgcc.fmul
+                0x0000000000000d72        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_umulhisi3.o)
+ .text.libgcc.fixed
+                0x0000000000000d72        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_umulhisi3.o)
+                0x0000000000000d72                . = ALIGN (0x2)
+ *(.fini9)
+ .fini9         0x0000000000000d72        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_exit.o)
+                0x0000000000000d72                exit
+                0x0000000000000d72                _exit
+ *(.fini9)
+ *(.fini8)
+ *(.fini8)
+ *(.fini7)
+ *(.fini7)
+ *(.fini6)
+ *(.fini6)
+ *(.fini5)
+ *(.fini5)
+ *(.fini4)
+ *(.fini4)
+ *(.fini3)
+ *(.fini3)
+ *(.fini2)
+ *(.fini2)
+ *(.fini1)
+ *(.fini1)
+ *(.fini0)
+ .fini0         0x0000000000000d72        0x4 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_exit.o)
+ *(.fini0)
+                0x0000000000000d76                _etext = .
+
+.rodata
+ *(.rodata)
+ *(.rodata*)
+ *(.gnu.linkonce.r*)
+
+.data           0x0000000000803800        0x0 load address 0x0000000000000d76
+                [!provide]                        PROVIDE (__data_start, .)
+ *(.data)
+ .data          0x0000000000803800        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/avrxmega3/crtattiny1616.o
+ .data          0x0000000000803800        0x0 LcsDrvAvrLib-Test/CMakeFiles/LcsDrvAvrLib-Test.dir/main.cpp.obj
+ .data          0x0000000000803800        0x0 libraries/LcsDrvAvrLib/libLcsDrvAvrLib.a(LcsDrvAvrLib.cpp.obj)
+ .data          0x0000000000803800        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_udivmodsi4.o)
+ .data          0x0000000000803800        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_exit.o)
+ .data          0x0000000000803800        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_clear_bss.o)
+ .data          0x0000000000803800        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ctors.o)
+ .data          0x0000000000803800        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muluhisi3.o)
+ .data          0x0000000000803800        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3.o)
+ .data          0x0000000000803800        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3_6.o)
+ .data          0x0000000000803800        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ashrdi3.o)
+ .data          0x0000000000803800        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_tablejump2.o)
+ .data          0x0000000000803800        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_umulhisi3.o)
+ *(.data*)
+ *(.gnu.linkonce.d*)
+                0x0000000000803800                . = ALIGN (0x2)
+                0x0000000000803800                _edata = .
+                [!provide]                        PROVIDE (__data_end, .)
+
+.bss            0x0000000000803800       0xd1
+                0x0000000000803800                PROVIDE (__bss_start, .)
+ *(.bss)
+ .bss           0x0000000000803800        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/avrxmega3/crtattiny1616.o
+ .bss           0x0000000000803800        0x0 LcsDrvAvrLib-Test/CMakeFiles/LcsDrvAvrLib-Test.dir/main.cpp.obj
+ .bss           0x0000000000803800       0xd1 libraries/LcsDrvAvrLib/libLcsDrvAvrLib.a(LcsDrvAvrLib.cpp.obj)
+ .bss           0x00000000008038d1        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_udivmodsi4.o)
+ .bss           0x00000000008038d1        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_exit.o)
+ .bss           0x00000000008038d1        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_clear_bss.o)
+ .bss           0x00000000008038d1        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ctors.o)
+ .bss           0x00000000008038d1        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muluhisi3.o)
+ .bss           0x00000000008038d1        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3.o)
+ .bss           0x00000000008038d1        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3_6.o)
+ .bss           0x00000000008038d1        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ashrdi3.o)
+ .bss           0x00000000008038d1        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_tablejump2.o)
+ .bss           0x00000000008038d1        0x0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_umulhisi3.o)
+ *(.bss*)
+ *(COMMON)
+                0x00000000008038d1                PROVIDE (__bss_end, .)
+                0x0000000000000d76                __data_load_start = LOADADDR (.data)
+                0x0000000000000d76                __data_load_end = (__data_load_start + SIZEOF (.data))
+
+.noinit         0x00000000008038d1        0x0
+                [!provide]                        PROVIDE (__noinit_start, .)
+ *(.noinit*)
+                [!provide]                        PROVIDE (__noinit_end, .)
+                0x00000000008038d1                _end = .
+                [!provide]                        PROVIDE (__heap_start, .)
+
+.eeprom         0x0000000000810000        0x0
+ *(.eeprom*)
+                0x0000000000810000                __eeprom_end = .
+
+.fuse
+ *(.fuse)
+ *(.lfuse)
+ *(.hfuse)
+ *(.efuse)
+
+.lock
+ *(.lock*)
+
+.signature
+ *(.signature*)
+
+.user_signatures
+ *(.user_signatures*)
+
+.stab
+ *(.stab)
+
+.stabstr
+ *(.stabstr)
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment        0x0000000000000000       0x11
+ *(.comment)
+ .comment       0x0000000000000000       0x11 LcsDrvAvrLib-Test/CMakeFiles/LcsDrvAvrLib-Test.dir/main.cpp.obj
+                                         0x12 (size before relaxing)
+ .comment       0x0000000000000011       0x12 libraries/LcsDrvAvrLib/libLcsDrvAvrLib.a(LcsDrvAvrLib.cpp.obj)
+
+.note.gnu.avr.deviceinfo
+                0x0000000000000000       0x40
+ .note.gnu.avr.deviceinfo
+                0x0000000000000000       0x40 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/avrxmega3/crtattiny1616.o
+
+.note.gnu.build-id
+ *(.note.gnu.build-id)
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges  0x0000000000000000      0x190
+ *(.debug_aranges)
+ .debug_aranges
+                0x0000000000000000       0x28 LcsDrvAvrLib-Test/CMakeFiles/LcsDrvAvrLib-Test.dir/main.cpp.obj
+ .debug_aranges
+                0x0000000000000028       0x28 libraries/LcsDrvAvrLib/libLcsDrvAvrLib.a(LcsDrvAvrLib.cpp.obj)
+ .debug_aranges
+                0x0000000000000050       0x20 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_udivmodsi4.o)
+ .debug_aranges
+                0x0000000000000070       0x20 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_exit.o)
+ .debug_aranges
+                0x0000000000000090       0x20 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_clear_bss.o)
+ .debug_aranges
+                0x00000000000000b0       0x20 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ctors.o)
+ .debug_aranges
+                0x00000000000000d0       0x20 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muluhisi3.o)
+ .debug_aranges
+                0x00000000000000f0       0x20 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3.o)
+ .debug_aranges
+                0x0000000000000110       0x20 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3_6.o)
+ .debug_aranges
+                0x0000000000000130       0x20 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ashrdi3.o)
+ .debug_aranges
+                0x0000000000000150       0x20 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_tablejump2.o)
+ .debug_aranges
+                0x0000000000000170       0x20 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_umulhisi3.o)
+
+.debug_pubnames
+ *(.debug_pubnames)
+
+.debug_info     0x0000000000000000     0x51df
+ *(.debug_info .gnu.linkonce.wi.*)
+ .debug_info    0x0000000000000000     0x1cf8 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/avrxmega3/crtattiny1616.o
+ .debug_info    0x0000000000001cf8      0x307 LcsDrvAvrLib-Test/CMakeFiles/LcsDrvAvrLib-Test.dir/main.cpp.obj
+ .debug_info    0x0000000000001fff     0x2b78 libraries/LcsDrvAvrLib/libLcsDrvAvrLib.a(LcsDrvAvrLib.cpp.obj)
+ .debug_info    0x0000000000004b77       0xa4 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_udivmodsi4.o)
+ .debug_info    0x0000000000004c1b       0xa4 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_exit.o)
+ .debug_info    0x0000000000004cbf       0xa4 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_clear_bss.o)
+ .debug_info    0x0000000000004d63       0xa4 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ctors.o)
+ .debug_info    0x0000000000004e07       0xa4 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muluhisi3.o)
+ .debug_info    0x0000000000004eab       0xa4 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3.o)
+ .debug_info    0x0000000000004f4f       0xa4 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3_6.o)
+ .debug_info    0x0000000000004ff3       0xa4 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ashrdi3.o)
+ .debug_info    0x0000000000005097       0xa4 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_tablejump2.o)
+ .debug_info    0x000000000000513b       0xa4 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_umulhisi3.o)
+
+.debug_abbrev   0x0000000000000000     0x2434
+ *(.debug_abbrev)
+ .debug_abbrev  0x0000000000000000     0x1b6a /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/avrxmega3/crtattiny1616.o
+ .debug_abbrev  0x0000000000001b6a      0x1aa LcsDrvAvrLib-Test/CMakeFiles/LcsDrvAvrLib-Test.dir/main.cpp.obj
+ .debug_abbrev  0x0000000000001d14      0x658 libraries/LcsDrvAvrLib/libLcsDrvAvrLib.a(LcsDrvAvrLib.cpp.obj)
+ .debug_abbrev  0x000000000000236c       0x14 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_udivmodsi4.o)
+ .debug_abbrev  0x0000000000002380       0x14 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_exit.o)
+ .debug_abbrev  0x0000000000002394       0x14 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_clear_bss.o)
+ .debug_abbrev  0x00000000000023a8       0x14 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ctors.o)
+ .debug_abbrev  0x00000000000023bc       0x14 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muluhisi3.o)
+ .debug_abbrev  0x00000000000023d0       0x14 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3.o)
+ .debug_abbrev  0x00000000000023e4       0x14 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3_6.o)
+ .debug_abbrev  0x00000000000023f8       0x14 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ashrdi3.o)
+ .debug_abbrev  0x000000000000240c       0x14 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_tablejump2.o)
+ .debug_abbrev  0x0000000000002420       0x14 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_umulhisi3.o)
+
+.debug_line     0x0000000000000000     0x149c
+ *(.debug_line .debug_line.* .debug_line_end)
+ .debug_line    0x0000000000000000      0x151 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/avrxmega3/crtattiny1616.o
+ .debug_line    0x0000000000000151      0x242 LcsDrvAvrLib-Test/CMakeFiles/LcsDrvAvrLib-Test.dir/main.cpp.obj
+ .debug_line    0x0000000000000393      0x9b7 libraries/LcsDrvAvrLib/libLcsDrvAvrLib.a(LcsDrvAvrLib.cpp.obj)
+ .debug_line    0x0000000000000d4a      0x122 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_udivmodsi4.o)
+ .debug_line    0x0000000000000e6c       0x62 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_exit.o)
+ .debug_line    0x0000000000000ece       0x86 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_clear_bss.o)
+ .debug_line    0x0000000000000f54       0x92 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ctors.o)
+ .debug_line    0x0000000000000fe6       0x92 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muluhisi3.o)
+ .debug_line    0x0000000000001078      0x170 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3.o)
+ .debug_line    0x00000000000011e8       0x86 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_muldi3_6.o)
+ .debug_line    0x000000000000126e      0x104 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_ashrdi3.o)
+ .debug_line    0x0000000000001372       0x7a /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_tablejump2.o)
+ .debug_line    0x00000000000013ec       0xb0 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/avrxmega3/libgcc.a(_umulhisi3.o)
+
+.debug_frame    0x0000000000000000      0x39c
+ *(.debug_frame)
+ .debug_frame   0x0000000000000000       0x44 LcsDrvAvrLib-Test/CMakeFiles/LcsDrvAvrLib-Test.dir/main.cpp.obj
+ .debug_frame   0x0000000000000044      0x358 libraries/LcsDrvAvrLib/libLcsDrvAvrLib.a(LcsDrvAvrLib.cpp.obj)
+
+.debug_str      0x0000000000000000     0x227b
+ *(.debug_str)
+ .debug_str     0x0000000000000000      0xbe1 /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/avrxmega3/crtattiny1616.o
+ .debug_str     0x0000000000000be1      0x324 LcsDrvAvrLib-Test/CMakeFiles/LcsDrvAvrLib-Test.dir/main.cpp.obj
+                                        0x35d (size before relaxing)
+ .debug_str     0x0000000000000f05     0x1376 libraries/LcsDrvAvrLib/libLcsDrvAvrLib.a(LcsDrvAvrLib.cpp.obj)
+                                       0x164e (size before relaxing)
+
+.debug_loc      0x0000000000000000      0xecd
+ *(.debug_loc)
+ .debug_loc     0x0000000000000000      0x110 LcsDrvAvrLib-Test/CMakeFiles/LcsDrvAvrLib-Test.dir/main.cpp.obj
+ .debug_loc     0x0000000000000110      0xdbd libraries/LcsDrvAvrLib/libLcsDrvAvrLib.a(LcsDrvAvrLib.cpp.obj)
+
+.debug_macinfo
+ *(.debug_macinfo)
+
+.debug_weaknames
+ *(.debug_weaknames)
+
+.debug_funcnames
+ *(.debug_funcnames)
+
+.debug_typenames
+ *(.debug_typenames)
+
+.debug_varnames
+ *(.debug_varnames)
+
+.debug_pubtypes
+ *(.debug_pubtypes)
+
+.debug_ranges   0x0000000000000000       0xd8
+ *(.debug_ranges)
+ .debug_ranges  0x0000000000000000       0x18 LcsDrvAvrLib-Test/CMakeFiles/LcsDrvAvrLib-Test.dir/main.cpp.obj
+ .debug_ranges  0x0000000000000018       0xc0 libraries/LcsDrvAvrLib/libLcsDrvAvrLib.a(LcsDrvAvrLib.cpp.obj)
+
+.debug_macro
+ *(.debug_macro)
+OUTPUT(/Users/helmutfieres/GitHub/LcsNodes-Attiny/bin/LcsDrvAvrLib-Test/LcsDrvAvrLib-Test.elf elf32-avr)
+LOAD linker stubs
