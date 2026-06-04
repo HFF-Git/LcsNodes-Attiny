@@ -35,7 +35,6 @@ const uint16_t  DRV_TYPE            = ( DRV_MAJOR_TYPE << 8 ) | DRV_MINOR_TYPE;
 
 using namespace LCSDRV;
 
-
 //----------------------------------------------------------------------------------------
 //
 //
@@ -89,7 +88,6 @@ uint8_t requestFunction( uint8_t cmd, uint16_t *arg0, uint16_t *arg1 ) {
 //----------------------------------------------------------------------------------------
 int main( int argc, char *argv[] ) {
 
-  
     uint8_t rStat = drvInitRuntime( DRV_TYPE, DRV_VERSION, 0 );
     if ( rStat != 0 ) drvFatalError( 8 );
 
