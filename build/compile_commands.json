@@ -3,36 +3,36 @@
   "directory": "/Users/helmutfieres/GitHub/LcsNodes-Attiny/build",
   "command": "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-g++ -I/Users/helmutfieres/GitHub/LcsNodes-Attiny/libraries/LcsDrvAvrLib -g -std=gnu++1z -mmcu=attiny1616 -DF_CPU=20000000UL -Os -o libraries/LcsDrvAvrLib/CMakeFiles/LcsDrvAvrLib.dir/LcsDrvAvrLib.cpp.obj -c /Users/helmutfieres/GitHub/LcsNodes-Attiny/libraries/LcsDrvAvrLib/LcsDrvAvrLib.cpp",
   "file": "/Users/helmutfieres/GitHub/LcsNodes-Attiny/libraries/LcsDrvAvrLib/LcsDrvAvrLib.cpp",
-  "output": "/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/libraries/LcsDrvAvrLib/CMakeFiles/LcsDrvAvrLib.dir/LcsDrvAvrLib.cpp.obj"
+  "output": "libraries/LcsDrvAvrLib/CMakeFiles/LcsDrvAvrLib.dir/LcsDrvAvrLib.cpp.obj"
 },
 {
   "directory": "/Users/helmutfieres/GitHub/LcsNodes-Attiny/build",
   "command": "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-g++ -I/Users/helmutfieres/GitHub/LcsNodes-Attiny/libraries/LcsDrvAvrLib -g -std=gnu++1z -mmcu=attiny1616 -DF_CPU=20000000UL -Os -o LcsDrvAvrLib-Test/CMakeFiles/LcsDrvAvrLib-Test.dir/main.cpp.obj -c /Users/helmutfieres/GitHub/LcsNodes-Attiny/LcsDrvAvrLib-Test/main.cpp",
   "file": "/Users/helmutfieres/GitHub/LcsNodes-Attiny/LcsDrvAvrLib-Test/main.cpp",
-  "output": "/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/LcsDrvAvrLib-Test/CMakeFiles/LcsDrvAvrLib-Test.dir/main.cpp.obj"
+  "output": "LcsDrvAvrLib-Test/CMakeFiles/LcsDrvAvrLib-Test.dir/main.cpp.obj"
 },
 {
   "directory": "/Users/helmutfieres/GitHub/LcsNodes-Attiny/build",
   "command": "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-g++ -I/Users/helmutfieres/GitHub/LcsNodes-Attiny/libraries/LcsDrvAvrLib -g -std=gnu++1z -mmcu=attiny1616 -DF_CPU=20000000UL -Os -o LcsDrvTurnoutBoard/CMakeFiles/LcsDrvTurnoutBoard.dir/main.cpp.obj -c /Users/helmutfieres/GitHub/LcsNodes-Attiny/LcsDrvTurnoutBoard/main.cpp",
   "file": "/Users/helmutfieres/GitHub/LcsNodes-Attiny/LcsDrvTurnoutBoard/main.cpp",
-  "output": "/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/LcsDrvTurnoutBoard/CMakeFiles/LcsDrvTurnoutBoard.dir/main.cpp.obj"
+  "output": "LcsDrvTurnoutBoard/CMakeFiles/LcsDrvTurnoutBoard.dir/main.cpp.obj"
 },
 {
   "directory": "/Users/helmutfieres/GitHub/LcsNodes-Attiny/build",
   "command": "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-g++ -I/Users/helmutfieres/GitHub/LcsNodes-Attiny/libraries/LcsDrvAvrLib -g -std=gnu++1z -mmcu=attiny1616 -DF_CPU=20000000UL -Os -o LcsDrvServoBoard/CMakeFiles/LcsDrvServoBoard.dir/main.cpp.obj -c /Users/helmutfieres/GitHub/LcsNodes-Attiny/LcsDrvServoBoard/main.cpp",
   "file": "/Users/helmutfieres/GitHub/LcsNodes-Attiny/LcsDrvServoBoard/main.cpp",
-  "output": "/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/LcsDrvServoBoard/CMakeFiles/LcsDrvServoBoard.dir/main.cpp.obj"
+  "output": "LcsDrvServoBoard/CMakeFiles/LcsDrvServoBoard.dir/main.cpp.obj"
 },
 {
   "directory": "/Users/helmutfieres/GitHub/LcsNodes-Attiny/build",
   "command": "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-g++ -I/Users/helmutfieres/GitHub/LcsNodes-Attiny/libraries/LcsDrvAvrLib -g -std=gnu++1z -mmcu=attiny1616 -DF_CPU=20000000UL -Os -o LcsDrvSignalBoard/CMakeFiles/LcsDrvSignalBoard.dir/main.cpp.obj -c /Users/helmutfieres/GitHub/LcsNodes-Attiny/LcsDrvSignalBoard/main.cpp",
   "file": "/Users/helmutfieres/GitHub/LcsNodes-Attiny/LcsDrvSignalBoard/main.cpp",
-  "output": "/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/LcsDrvSignalBoard/CMakeFiles/LcsDrvSignalBoard.dir/main.cpp.obj"
+  "output": "LcsDrvSignalBoard/CMakeFiles/LcsDrvSignalBoard.dir/main.cpp.obj"
 },
 {
   "directory": "/Users/helmutfieres/GitHub/LcsNodes-Attiny/build",
   "command": "/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-g++ -I/Users/helmutfieres/GitHub/LcsNodes-Attiny/libraries/LcsDrvAvrLib -g -std=gnu++1z -mmcu=attiny1616 -DF_CPU=20000000UL -Os -o LcsDrvOccDetectBoard/CMakeFiles/LcsDrvOccDetectBoard.dir/main.cpp.obj -c /Users/helmutfieres/GitHub/LcsNodes-Attiny/LcsDrvOccDetectBoard/main.cpp",
   "file": "/Users/helmutfieres/GitHub/LcsNodes-Attiny/LcsDrvOccDetectBoard/main.cpp",
-  "output": "/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/LcsDrvOccDetectBoard/CMakeFiles/LcsDrvOccDetectBoard.dir/main.cpp.obj"
+  "output": "LcsDrvOccDetectBoard/CMakeFiles/LcsDrvOccDetectBoard.dir/main.cpp.obj"
 }
 ]

@@ -2,7 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "/Users/helmutfieres/GitHub/LcsNodes-Attiny/bin/LcsDrvOccDetectBoard/LcsDrvOccDetectBoard.elf"
+			"path" : "/Users/helmutfieres/GitHub/LcsNodes-Attiny/bin/LcsDrvSignalBoard/LcsDrvSignalBoard.elf"
 		}
 	],
 	"backtrace" : 1,
@@ -18,7 +18,7 @@
 		],
 		"files" : 
 		[
-			"LcsDrvOccDetectBoard/CMakeLists.txt",
+			"LcsDrvSignalBoard/CMakeLists.txt",
 			"CMakeLists.txt"
 		],
 		"nodes" : 
@@ -108,7 +108,7 @@
 			"id" : "LcsDrvAvrLib::@372c9e7813a330480d4e"
 		}
 	],
-	"id" : "LcsDrvOccDetectBoard::@8d6b6ddf87e457cd6c42",
+	"id" : "LcsDrvSignalBoard::@4ec30b945c78665255ed",
 	"link" : 
 	{
 		"commandFragments" : 
@@ -118,13 +118,17 @@
 				"role" : "flags"
 			},
 			{
+				"fragment" : "",
+				"role" : "flags"
+			},
+			{
 				"backtrace" : 3,
 				"fragment" : "-mmcu=attiny1616",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 3,
-				"fragment" : "-Wl,-Map=/Users/helmutfieres/GitHub/LcsNodes-Attiny/bin/LcsDrvOccDetectBoard/LcsDrvOccDetectBoard.map",
+				"fragment" : "-Wl,-Map=/Users/helmutfieres/GitHub/LcsNodes-Attiny/bin/LcsDrvSignalBoard/LcsDrvSignalBoard.map",
 				"role" : "flags"
 			},
 			{
@@ -135,12 +139,12 @@
 		],
 		"language" : "CXX"
 	},
-	"name" : "LcsDrvOccDetectBoard",
-	"nameOnDisk" : "LcsDrvOccDetectBoard.elf",
+	"name" : "LcsDrvSignalBoard",
+	"nameOnDisk" : "LcsDrvSignalBoard.elf",
 	"paths" : 
 	{
-		"build" : "LcsDrvOccDetectBoard",
-		"source" : "LcsDrvOccDetectBoard"
+		"build" : "LcsDrvSignalBoard",
+		"source" : "LcsDrvSignalBoard"
 	},
 	"sourceGroups" : 
 	[
@@ -157,7 +161,7 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "LcsDrvOccDetectBoard/main.cpp",
+			"path" : "LcsDrvSignalBoard/main.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],

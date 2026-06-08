@@ -2,7 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "/Users/helmutfieres/GitHub/LcsNodes-Attiny/bin/LcsDrvSignalBoard/LcsDrvSignalBoard.elf"
+			"path" : "/Users/helmutfieres/GitHub/LcsNodes-Attiny/bin/LcsDrvTurnoutBoard/LcsDrvTurnoutBoard.elf"
 		}
 	],
 	"backtrace" : 1,
@@ -18,7 +18,7 @@
 		],
 		"files" : 
 		[
-			"LcsDrvSignalBoard/CMakeLists.txt",
+			"LcsDrvTurnoutBoard/CMakeLists.txt",
 			"CMakeLists.txt"
 		],
 		"nodes" : 
@@ -108,7 +108,7 @@
 			"id" : "LcsDrvAvrLib::@372c9e7813a330480d4e"
 		}
 	],
-	"id" : "LcsDrvSignalBoard::@4ec30b945c78665255ed",
+	"id" : "LcsDrvTurnoutBoard::@7389f5bf74f15ac3dd99",
 	"link" : 
 	{
 		"commandFragments" : 
@@ -118,13 +118,17 @@
 				"role" : "flags"
 			},
 			{
+				"fragment" : "",
+				"role" : "flags"
+			},
+			{
 				"backtrace" : 3,
 				"fragment" : "-mmcu=attiny1616",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 3,
-				"fragment" : "-Wl,-Map=/Users/helmutfieres/GitHub/LcsNodes-Attiny/bin/LcsDrvSignalBoard/LcsDrvSignalBoard.map",
+				"fragment" : "-Wl,-Map=/Users/helmutfieres/GitHub/LcsNodes-Attiny/bin/LcsDrvTurnoutBoard/LcsDrvTurnoutBoard.map",
 				"role" : "flags"
 			},
 			{
@@ -135,12 +139,12 @@
 		],
 		"language" : "CXX"
 	},
-	"name" : "LcsDrvSignalBoard",
-	"nameOnDisk" : "LcsDrvSignalBoard.elf",
+	"name" : "LcsDrvTurnoutBoard",
+	"nameOnDisk" : "LcsDrvTurnoutBoard.elf",
 	"paths" : 
 	{
-		"build" : "LcsDrvSignalBoard",
-		"source" : "LcsDrvSignalBoard"
+		"build" : "LcsDrvTurnoutBoard",
+		"source" : "LcsDrvTurnoutBoard"
 	},
 	"sourceGroups" : 
 	[
@@ -157,7 +161,7 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "LcsDrvSignalBoard/main.cpp",
+			"path" : "LcsDrvTurnoutBoard/main.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],

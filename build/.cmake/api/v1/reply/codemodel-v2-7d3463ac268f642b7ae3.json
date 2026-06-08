@@ -176,7 +176,7 @@
 				{
 					"directoryIndex" : 2,
 					"id" : "LcsDrvAvrLib-Test::@559b31b7e6ed870ee933",
-					"jsonFile" : "target-LcsDrvAvrLib-Test-Debug-8041e5c73107bb2af8bd.json",
+					"jsonFile" : "target-LcsDrvAvrLib-Test-Debug-0c7ab9f2cf97a4a0661d.json",
 					"name" : "LcsDrvAvrLib-Test",
 					"projectIndex" : 0
 				},
@@ -190,7 +190,7 @@
 				{
 					"directoryIndex" : 6,
 					"id" : "LcsDrvOccDetectBoard::@8d6b6ddf87e457cd6c42",
-					"jsonFile" : "target-LcsDrvOccDetectBoard-Debug-901f33a07b6ea986a0ba.json",
+					"jsonFile" : "target-LcsDrvOccDetectBoard-Debug-5e3e4be265228f4290ba.json",
 					"name" : "LcsDrvOccDetectBoard",
 					"projectIndex" : 0
 				},
@@ -204,7 +204,7 @@
 				{
 					"directoryIndex" : 4,
 					"id" : "LcsDrvServoBoard::@86c64a25be751a2f6787",
-					"jsonFile" : "target-LcsDrvServoBoard-Debug-2618d02f5f4a80e2374b.json",
+					"jsonFile" : "target-LcsDrvServoBoard-Debug-1d26554d38f6883f5eb5.json",
 					"name" : "LcsDrvServoBoard",
 					"projectIndex" : 0
 				},
@@ -218,7 +218,7 @@
 				{
 					"directoryIndex" : 5,
 					"id" : "LcsDrvSignalBoard::@4ec30b945c78665255ed",
-					"jsonFile" : "target-LcsDrvSignalBoard-Debug-6c69214f2bb896afa2ed.json",
+					"jsonFile" : "target-LcsDrvSignalBoard-Debug-79900fb8e7d20b14f2f8.json",
 					"name" : "LcsDrvSignalBoard",
 					"projectIndex" : 0
 				},
@@ -232,7 +232,7 @@
 				{
 					"directoryIndex" : 3,
 					"id" : "LcsDrvTurnoutBoard::@7389f5bf74f15ac3dd99",
-					"jsonFile" : "target-LcsDrvTurnoutBoard-Debug-4b84644c387bfacf90e2.json",
+					"jsonFile" : "target-LcsDrvTurnoutBoard-Debug-2dce3861cf04a9d9b9d4.json",
 					"name" : "LcsDrvTurnoutBoard",
 					"projectIndex" : 0
 				},
@@ -255,6 +255,6 @@
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 8
+		"minor" : 7
 	}
 }
