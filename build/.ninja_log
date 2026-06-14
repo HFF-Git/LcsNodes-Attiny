@@ -1,13 +1,13 @@
-# ninja log v6
-1	145	1780859142546341569	LcsDrvAvrLib-Test/CMakeFiles/LcsDrvAvrLib-Test.dir/main.cpp.obj	95ddd8a5d713387c
-2	146	1780859142547578837	LcsDrvSignalBoard/CMakeFiles/LcsDrvSignalBoard.dir/main.cpp.obj	417eb4b710ada52a
-2	146	1780859142547186886	LcsDrvServoBoard/CMakeFiles/LcsDrvServoBoard.dir/main.cpp.obj	75fa29529eba4ff9
-2	149	1780859142546881225	LcsDrvTurnoutBoard/CMakeFiles/LcsDrvTurnoutBoard.dir/main.cpp.obj	56b78ae11072dfd5
-3	164	1780859142547894623	LcsDrvOccDetectBoard/CMakeFiles/LcsDrvOccDetectBoard.dir/main.cpp.obj	5d7c57834da3b759
-1	239	1780859142545880494	libraries/LcsDrvAvrLib/CMakeFiles/LcsDrvAvrLib.dir/LcsDrvAvrLib.cpp.obj	a0d1de2dcb115c91
-239	275	1780859142783938756	libraries/LcsDrvAvrLib/libLcsDrvAvrLib.a	e9f6293e719b5ac3
-275	1358	1780859142820001666	/Users/helmutfieres/GitHub/LcsNodes-Attiny/bin/LcsDrvTurnoutBoard/LcsDrvTurnoutBoard.elf	f81d05497655ea19
-275	1358	1780859142819776587	/Users/helmutfieres/GitHub/LcsNodes-Attiny/bin/LcsDrvAvrLib-Test/LcsDrvAvrLib-Test.elf	807e476e17547970
-275	1359	1780859142820583322	/Users/helmutfieres/GitHub/LcsNodes-Attiny/bin/LcsDrvOccDetectBoard/LcsDrvOccDetectBoard.elf	f577da0fe756bcd
-275	1359	1780859142820386450	/Users/helmutfieres/GitHub/LcsNodes-Attiny/bin/LcsDrvSignalBoard/LcsDrvSignalBoard.elf	7a731e1afa7c45f9
-275	1359	1780859142820141955	/Users/helmutfieres/GitHub/LcsNodes-Attiny/bin/LcsDrvServoBoard/LcsDrvServoBoard.elf	5791773468b2b783
+# ninja log v7
+1	144	1781426920672046841	LcsDrvServoBoard/CMakeFiles/LcsDrvServoBoard.dir/main.cpp.obj	ce4629408fe2ba7c
+1	144	1781426920672166088	LcsDrvSignalBoard/CMakeFiles/LcsDrvSignalBoard.dir/main.cpp.obj	9db31596c1c3059a
+1	145	1781426920671924927	LcsDrvTurnoutBoard/CMakeFiles/LcsDrvTurnoutBoard.dir/main.cpp.obj	1da543aa1a38855e
+1	150	1781426920671789847	LcsDrvAvrLib-Test/CMakeFiles/LcsDrvAvrLib-Test.dir/main.cpp.obj	c2aa104a10dad411
+2	173	1781426920672298960	LcsDrvOccDetectBoard/CMakeFiles/LcsDrvOccDetectBoard.dir/main.cpp.obj	fc89726aa537a8b6
+1	243	1781426920671514770	libraries/LcsDrvAvrLib/CMakeFiles/LcsDrvAvrLib.dir/LcsDrvAvrLib.cpp.obj	95bcb588b45533f2
+243	314	1781426920913994695	libraries/LcsDrvAvrLib/libLcsDrvAvrLib.a	710e2109b003646f
+314	391	1781426920985173140	/Users/helmutfieres/GitHub/LcsNodes-Attiny/bin/LcsDrvAvrLib-Test/LcsDrvAvrLib-Test.elf	c6115c8c0c06acf0
+315	391	1781426920985453633	/Users/helmutfieres/GitHub/LcsNodes-Attiny/bin/LcsDrvTurnoutBoard/LcsDrvTurnoutBoard.elf	e398b1e13e1c764f
+315	391	1781426920986158116	/Users/helmutfieres/GitHub/LcsNodes-Attiny/bin/LcsDrvOccDetectBoard/LcsDrvOccDetectBoard.elf	2c80dcaf651de3ba
+315	391	1781426920985947955	/Users/helmutfieres/GitHub/LcsNodes-Attiny/bin/LcsDrvSignalBoard/LcsDrvSignalBoard.elf	89150e3c72811c90
+315	392	1781426920985770667	/Users/helmutfieres/GitHub/LcsNodes-Attiny/bin/LcsDrvServoBoard/LcsDrvServoBoard.elf	64784abd5512a9c3
