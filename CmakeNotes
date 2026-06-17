@@ -8,7 +8,7 @@
 
 2.) Use the C++14 language standard version.
 
-3.) For fashing to Attiny: 
+3.) For flashing to Attiny: 
 
 pymcuprog write -t uart -u /dev/cu.usbserial-0001 -d attiny1614 -f LcsDrvAvrLib-Test.hex
 
@@ -23,4 +23,8 @@ HEX=$(ls bin/*/*.hex | tail -n 1)
 pymcuprog write -t uart -u $PORT -d $MCU -f "$HEX"
 
 4.) watch out for 1616 / 1614 differences. 
+
+5.) alternative: 
+
+avrdude -p attiny1614 -c serialupdi -P /dev/tty.usbserial-0001 -b 115200 -U flash:w:firmware.hex:i
 

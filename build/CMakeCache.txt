@@ -244,8 +244,7 @@ CMAKE_STRIP:FILEPATH=/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools
 //Path to a program.
 CMAKE_TAPI:FILEPATH=CMAKE_TAPI-NOTFOUND
 
-//The CMake toolchain file
-CMAKE_TOOLCHAIN_FILE:FILEPATH=/Users/helmutfieres/GitHub/LcsNodes-Attiny/cmake/toolchain-avr.cmake
+CMAKE_TOOLCHAIN_FILE:STRING=/Users/helmutfieres/GitHub/LcsNodes-Attiny/cmake/toolchain-avr.cmake
 
 //If this value is on, makefiles will be generated without the
 // .SILENT directive, and all commands will be echoed to the console
