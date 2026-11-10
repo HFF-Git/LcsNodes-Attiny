@@ -78,7 +78,7 @@ events:
       - "CMakeLists.txt:12 (project)"
     message: |
       The target system is: Generic -  - avr
-      The host system is: Darwin - 25.5.0 - arm64
+      The host system is: Darwin - 25.6.0 - arm64
   -
     kind: "find-v1"
     backtrace:
@@ -1504,8 +1504,8 @@ events:
     checks:
       - "Detecting C compiler ABI info"
     directories:
-      source: "/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-LwlBCk"
-      binary: "/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-LwlBCk"
+      source: "/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-XcFjlJ"
+      binary: "/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-XcFjlJ"
     cmakeVariables:
       CMAKE_C_FLAGS: ""
       CMAKE_C_FLAGS_DEBUG: "-g"
@@ -1515,10 +1515,10 @@ events:
       variable: "CMAKE_C_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: '/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-LwlBCk'
+        Change Dir: '/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-XcFjlJ'
         
-        Run Build Command(s): /opt/homebrew/bin/ninja -v cmTC_1a580
-        [1/2] /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc   -v -o CMakeFiles/cmTC_1a580.dir/CMakeCCompilerABI.c.obj -c /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c
+        Run Build Command(s): /opt/homebrew/bin/ninja -v cmTC_10088
+        [1/2] /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc   -v -o CMakeFiles/cmTC_10088.dir/CMakeCCompilerABI.c.obj -c /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c
         Using built-in specs.
         Reading specs from /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/device-specs/specs-avr2
         COLLECT_GCC=/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc
@@ -1526,8 +1526,8 @@ events:
         Configured with: ../gcc/configure --enable-fixed-point --enable-languages=c,c++ --prefix=/Users/jenkins/jenkins/workspace/avr-gcc-staging/label/mac-mini/objdir --disable-nls --disable-libssp --disable-libada --disable-shared --with-avrlibc=yes --with-dwarf2 --disable-doc --target=avr
         Thread model: single
         gcc version 7.3.0 (GCC) 
-        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_1a580.dir/CMakeCCompilerABI.c.obj' '-c' '-specs=device-specs/specs-avr2'
-         /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../libexec/gcc/avr/7.3.0/cc1 -quiet -v -iprefix /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/ /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c -mn-flash=6 -mskip-bug -quiet -dumpbase CMakeCCompilerABI.c -auxbase-strip CMakeFiles/cmTC_1a580.dir/CMakeCCompilerABI.c.obj -version -o /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//ccZzmdOV.s
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_10088.dir/CMakeCCompilerABI.c.obj' '-c' '-specs=device-specs/specs-avr2'
+         /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../libexec/gcc/avr/7.3.0/cc1 -quiet -v -iprefix /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/ /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c -mn-flash=6 -mskip-bug -quiet -dumpbase CMakeCCompilerABI.c -auxbase-strip CMakeFiles/cmTC_10088.dir/CMakeCCompilerABI.c.obj -version -o /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//cct0gSPN.s
         GNU C11 (GCC) version 7.3.0 (avr)
         	compiled by GNU C version 4.2.1 Compatible Apple LLVM 8.1.0 (clang-802.0.38), GMP version 5.0.2, MPFR version 3.1.0, MPC version 0.9, isl version none
         GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
@@ -1546,12 +1546,12 @@ events:
         	compiled by GNU C version 4.2.1 Compatible Apple LLVM 8.1.0 (clang-802.0.38), GMP version 5.0.2, MPFR version 3.1.0, MPC version 0.9, isl version none
         GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
         Compiler executable checksum: 877db8e667c28afb4384e71038db0373
-        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_1a580.dir/CMakeCCompilerABI.c.obj' '-c' '-specs=device-specs/specs-avr2'
-         /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/bin/as -mmcu=avr2 -o CMakeFiles/cmTC_1a580.dir/CMakeCCompilerABI.c.obj /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//ccZzmdOV.s
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_10088.dir/CMakeCCompilerABI.c.obj' '-c' '-specs=device-specs/specs-avr2'
+         /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/bin/as -mmcu=avr2 -o CMakeFiles/cmTC_10088.dir/CMakeCCompilerABI.c.obj /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//cct0gSPN.s
         COMPILER_PATH=/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../libexec/gcc/avr/7.3.0/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../libexec/gcc/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/bin/
         LIBRARY_PATH=/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/
-        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_1a580.dir/CMakeCCompilerABI.c.obj' '-c' '-specs=device-specs/specs-avr2'
-        [2/2] : && /opt/homebrew/bin/cmake -E rm -f libcmTC_1a580.a && /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-ar qc libcmTC_1a580.a  CMakeFiles/cmTC_1a580.dir/CMakeCCompilerABI.c.obj && /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-ranlib libcmTC_1a580.a && /opt/homebrew/bin/cmake -E touch libcmTC_1a580.a && :
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_10088.dir/CMakeCCompilerABI.c.obj' '-c' '-specs=device-specs/specs-avr2'
+        [2/2] : && /opt/homebrew/bin/cmake -E rm -f libcmTC_10088.a && /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-ar qc libcmTC_10088.a  CMakeFiles/cmTC_10088.dir/CMakeCCompilerABI.c.obj && /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-ranlib libcmTC_10088.a && /opt/homebrew/bin/cmake -E touch libcmTC_10088.a && :
         
       exitCode: 0
   -
@@ -1584,10 +1584,10 @@ events:
       Parsed C implicit link information:
         link line regex: [^( *|.*[/\\])(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
         linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)))("|,| |$)]
-        ignore line: [Change Dir: '/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-LwlBCk']
+        ignore line: [Change Dir: '/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-XcFjlJ']
         ignore line: []
-        ignore line: [Run Build Command(s): /opt/homebrew/bin/ninja -v cmTC_1a580]
-        ignore line: [[1/2] /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc   -v -o CMakeFiles/cmTC_1a580.dir/CMakeCCompilerABI.c.obj -c /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c]
+        ignore line: [Run Build Command(s): /opt/homebrew/bin/ninja -v cmTC_10088]
+        ignore line: [[1/2] /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc   -v -o CMakeFiles/cmTC_10088.dir/CMakeCCompilerABI.c.obj -c /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c]
         ignore line: [Using built-in specs.]
         ignore line: [Reading specs from /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/device-specs/specs-avr2]
         ignore line: [COLLECT_GCC=/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-gcc]
@@ -1595,8 +1595,8 @@ events:
         ignore line: [Configured with: ../gcc/configure --enable-fixed-point --enable-languages=c c++ --prefix=/Users/jenkins/jenkins/workspace/avr-gcc-staging/label/mac-mini/objdir --disable-nls --disable-libssp --disable-libada --disable-shared --with-avrlibc=yes --with-dwarf2 --disable-doc --target=avr]
         ignore line: [Thread model: single]
         ignore line: [gcc version 7.3.0 (GCC) ]
-        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_1a580.dir/CMakeCCompilerABI.c.obj' '-c' '-specs=device-specs/specs-avr2']
-        ignore line: [ /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../libexec/gcc/avr/7.3.0/cc1 -quiet -v -iprefix /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/ /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c -mn-flash=6 -mskip-bug -quiet -dumpbase CMakeCCompilerABI.c -auxbase-strip CMakeFiles/cmTC_1a580.dir/CMakeCCompilerABI.c.obj -version -o /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//ccZzmdOV.s]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_10088.dir/CMakeCCompilerABI.c.obj' '-c' '-specs=device-specs/specs-avr2']
+        ignore line: [ /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../libexec/gcc/avr/7.3.0/cc1 -quiet -v -iprefix /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/ /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c -mn-flash=6 -mskip-bug -quiet -dumpbase CMakeCCompilerABI.c -auxbase-strip CMakeFiles/cmTC_10088.dir/CMakeCCompilerABI.c.obj -version -o /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//cct0gSPN.s]
         ignore line: [GNU C11 (GCC) version 7.3.0 (avr)]
         ignore line: [	compiled by GNU C version 4.2.1 Compatible Apple LLVM 8.1.0 (clang-802.0.38)  GMP version 5.0.2  MPFR version 3.1.0  MPC version 0.9  isl version none]
         ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
@@ -1615,12 +1615,12 @@ events:
         ignore line: [	compiled by GNU C version 4.2.1 Compatible Apple LLVM 8.1.0 (clang-802.0.38)  GMP version 5.0.2  MPFR version 3.1.0  MPC version 0.9  isl version none]
         ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
         ignore line: [Compiler executable checksum: 877db8e667c28afb4384e71038db0373]
-        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_1a580.dir/CMakeCCompilerABI.c.obj' '-c' '-specs=device-specs/specs-avr2']
-        ignore line: [ /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/bin/as -mmcu=avr2 -o CMakeFiles/cmTC_1a580.dir/CMakeCCompilerABI.c.obj /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//ccZzmdOV.s]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_10088.dir/CMakeCCompilerABI.c.obj' '-c' '-specs=device-specs/specs-avr2']
+        ignore line: [ /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/bin/as -mmcu=avr2 -o CMakeFiles/cmTC_10088.dir/CMakeCCompilerABI.c.obj /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//cct0gSPN.s]
         ignore line: [COMPILER_PATH=/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../libexec/gcc/avr/7.3.0/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../libexec/gcc/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/bin/]
         ignore line: [LIBRARY_PATH=/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/]
-        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_1a580.dir/CMakeCCompilerABI.c.obj' '-c' '-specs=device-specs/specs-avr2']
-        ignore line: [[2/2] : && /opt/homebrew/bin/cmake -E rm -f libcmTC_1a580.a && /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-ar qc libcmTC_1a580.a  CMakeFiles/cmTC_1a580.dir/CMakeCCompilerABI.c.obj && /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-ranlib libcmTC_1a580.a && /opt/homebrew/bin/cmake -E touch libcmTC_1a580.a && :]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_10088.dir/CMakeCCompilerABI.c.obj' '-c' '-specs=device-specs/specs-avr2']
+        ignore line: [[2/2] : && /opt/homebrew/bin/cmake -E rm -f libcmTC_10088.a && /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-ar qc libcmTC_10088.a  CMakeFiles/cmTC_10088.dir/CMakeCCompilerABI.c.obj && /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-ranlib libcmTC_10088.a && /opt/homebrew/bin/cmake -E touch libcmTC_10088.a && :]
         ignore line: []
         ignore line: []
         implicit libs: []
@@ -1638,8 +1638,8 @@ events:
     checks:
       - "Detecting CXX compiler ABI info"
     directories:
-      source: "/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-Q552fU"
-      binary: "/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-Q552fU"
+      source: "/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-toAHhs"
+      binary: "/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-toAHhs"
     cmakeVariables:
       CMAKE_CXX_FLAGS: ""
       CMAKE_CXX_FLAGS_DEBUG: "-g"
@@ -1650,10 +1650,10 @@ events:
       variable: "CMAKE_CXX_ABI_COMPILED"
       cached: true
       stdout: |
-        Change Dir: '/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-Q552fU'
+        Change Dir: '/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-toAHhs'
         
-        Run Build Command(s): /opt/homebrew/bin/ninja -v cmTC_b2583
-        [1/2] /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-g++   -v -o CMakeFiles/cmTC_b2583.dir/CMakeCXXCompilerABI.cpp.obj -c /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp
+        Run Build Command(s): /opt/homebrew/bin/ninja -v cmTC_6e032
+        [1/2] /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-g++   -v -o CMakeFiles/cmTC_6e032.dir/CMakeCXXCompilerABI.cpp.obj -c /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp
         Using built-in specs.
         Reading specs from /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/device-specs/specs-avr2
         COLLECT_GCC=/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-g++
@@ -1661,8 +1661,8 @@ events:
         Configured with: ../gcc/configure --enable-fixed-point --enable-languages=c,c++ --prefix=/Users/jenkins/jenkins/workspace/avr-gcc-staging/label/mac-mini/objdir --disable-nls --disable-libssp --disable-libada --disable-shared --with-avrlibc=yes --with-dwarf2 --disable-doc --target=avr
         Thread model: single
         gcc version 7.3.0 (GCC) 
-        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_b2583.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-specs=device-specs/specs-avr2'
-         /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../libexec/gcc/avr/7.3.0/cc1plus -quiet -v -iprefix /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/ /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp -mn-flash=6 -mskip-bug -quiet -dumpbase CMakeCXXCompilerABI.cpp -auxbase-strip CMakeFiles/cmTC_b2583.dir/CMakeCXXCompilerABI.cpp.obj -version -mn-flash=6 -mskip-bug -fno-rtti -fno-enforce-eh-specs -fno-exceptions -o /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//cc5CXqCn.s
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_6e032.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-specs=device-specs/specs-avr2'
+         /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../libexec/gcc/avr/7.3.0/cc1plus -quiet -v -iprefix /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/ /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp -mn-flash=6 -mskip-bug -quiet -dumpbase CMakeCXXCompilerABI.cpp -auxbase-strip CMakeFiles/cmTC_6e032.dir/CMakeCXXCompilerABI.cpp.obj -version -mn-flash=6 -mskip-bug -fno-rtti -fno-enforce-eh-specs -fno-exceptions -o /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//ccYm7cdQ.s
         GNU C++14 (GCC) version 7.3.0 (avr)
         	compiled by GNU C version 4.2.1 Compatible Apple LLVM 8.1.0 (clang-802.0.38), GMP version 5.0.2, MPFR version 3.1.0, MPC version 0.9, isl version none
         GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
@@ -1687,12 +1687,12 @@ events:
         	compiled by GNU C version 4.2.1 Compatible Apple LLVM 8.1.0 (clang-802.0.38), GMP version 5.0.2, MPFR version 3.1.0, MPC version 0.9, isl version none
         GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
         Compiler executable checksum: d29517aadee47ae2ad83928b972d8dfb
-        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_b2583.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-specs=device-specs/specs-avr2'
-         /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/bin/as -mmcu=avr2 -o CMakeFiles/cmTC_b2583.dir/CMakeCXXCompilerABI.cpp.obj /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//cc5CXqCn.s
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_6e032.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-specs=device-specs/specs-avr2'
+         /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/bin/as -mmcu=avr2 -o CMakeFiles/cmTC_6e032.dir/CMakeCXXCompilerABI.cpp.obj /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//ccYm7cdQ.s
         COMPILER_PATH=/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../libexec/gcc/avr/7.3.0/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../libexec/gcc/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/bin/
         LIBRARY_PATH=/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/
-        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_b2583.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-specs=device-specs/specs-avr2'
-        [2/2] : && /opt/homebrew/bin/cmake -E rm -f libcmTC_b2583.a && /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-ar qc libcmTC_b2583.a  CMakeFiles/cmTC_b2583.dir/CMakeCXXCompilerABI.cpp.obj && /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-ranlib libcmTC_b2583.a && /opt/homebrew/bin/cmake -E touch libcmTC_b2583.a && :
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_6e032.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-specs=device-specs/specs-avr2'
+        [2/2] : && /opt/homebrew/bin/cmake -E rm -f libcmTC_6e032.a && /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-ar qc libcmTC_6e032.a  CMakeFiles/cmTC_6e032.dir/CMakeCXXCompilerABI.cpp.obj && /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-ranlib libcmTC_6e032.a && /opt/homebrew/bin/cmake -E touch libcmTC_6e032.a && :
         
       exitCode: 0
   -
@@ -1725,10 +1725,10 @@ events:
       Parsed CXX implicit link information:
         link line regex: [^( *|.*[/\\])(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
         linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(|\\.[a-rt-z][a-z]*|\\.s[a-np-z][a-z]*|\\.so[a-z]+)))("|,| |$)]
-        ignore line: [Change Dir: '/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-Q552fU']
+        ignore line: [Change Dir: '/Users/helmutfieres/GitHub/LcsNodes-Attiny/build/CMakeFiles/CMakeScratch/TryCompile-toAHhs']
         ignore line: []
-        ignore line: [Run Build Command(s): /opt/homebrew/bin/ninja -v cmTC_b2583]
-        ignore line: [[1/2] /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-g++   -v -o CMakeFiles/cmTC_b2583.dir/CMakeCXXCompilerABI.cpp.obj -c /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp]
+        ignore line: [Run Build Command(s): /opt/homebrew/bin/ninja -v cmTC_6e032]
+        ignore line: [[1/2] /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-g++   -v -o CMakeFiles/cmTC_6e032.dir/CMakeCXXCompilerABI.cpp.obj -c /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp]
         ignore line: [Using built-in specs.]
         ignore line: [Reading specs from /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/device-specs/specs-avr2]
         ignore line: [COLLECT_GCC=/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-g++]
@@ -1736,8 +1736,8 @@ events:
         ignore line: [Configured with: ../gcc/configure --enable-fixed-point --enable-languages=c c++ --prefix=/Users/jenkins/jenkins/workspace/avr-gcc-staging/label/mac-mini/objdir --disable-nls --disable-libssp --disable-libada --disable-shared --with-avrlibc=yes --with-dwarf2 --disable-doc --target=avr]
         ignore line: [Thread model: single]
         ignore line: [gcc version 7.3.0 (GCC) ]
-        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_b2583.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-specs=device-specs/specs-avr2']
-        ignore line: [ /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../libexec/gcc/avr/7.3.0/cc1plus -quiet -v -iprefix /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/ /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp -mn-flash=6 -mskip-bug -quiet -dumpbase CMakeCXXCompilerABI.cpp -auxbase-strip CMakeFiles/cmTC_b2583.dir/CMakeCXXCompilerABI.cpp.obj -version -mn-flash=6 -mskip-bug -fno-rtti -fno-enforce-eh-specs -fno-exceptions -o /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//cc5CXqCn.s]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_6e032.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-specs=device-specs/specs-avr2']
+        ignore line: [ /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../libexec/gcc/avr/7.3.0/cc1plus -quiet -v -iprefix /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/ /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp -mn-flash=6 -mskip-bug -quiet -dumpbase CMakeCXXCompilerABI.cpp -auxbase-strip CMakeFiles/cmTC_6e032.dir/CMakeCXXCompilerABI.cpp.obj -version -mn-flash=6 -mskip-bug -fno-rtti -fno-enforce-eh-specs -fno-exceptions -o /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//ccYm7cdQ.s]
         ignore line: [GNU C++14 (GCC) version 7.3.0 (avr)]
         ignore line: [	compiled by GNU C version 4.2.1 Compatible Apple LLVM 8.1.0 (clang-802.0.38)  GMP version 5.0.2  MPFR version 3.1.0  MPC version 0.9  isl version none]
         ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
@@ -1762,12 +1762,12 @@ events:
         ignore line: [	compiled by GNU C version 4.2.1 Compatible Apple LLVM 8.1.0 (clang-802.0.38)  GMP version 5.0.2  MPFR version 3.1.0  MPC version 0.9  isl version none]
         ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
         ignore line: [Compiler executable checksum: d29517aadee47ae2ad83928b972d8dfb]
-        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_b2583.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-specs=device-specs/specs-avr2']
-        ignore line: [ /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/bin/as -mmcu=avr2 -o CMakeFiles/cmTC_b2583.dir/CMakeCXXCompilerABI.cpp.obj /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//cc5CXqCn.s]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_6e032.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-specs=device-specs/specs-avr2']
+        ignore line: [ /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/bin/as -mmcu=avr2 -o CMakeFiles/cmTC_6e032.dir/CMakeCXXCompilerABI.cpp.obj /var/folders/8x/n0s42wjj66q51x1q46lsn4x00000gn/T//ccYm7cdQ.s]
         ignore line: [COMPILER_PATH=/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../libexec/gcc/avr/7.3.0/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../libexec/gcc/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/bin/]
         ignore line: [LIBRARY_PATH=/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/:/Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/../lib/gcc/avr/7.3.0/../../../../avr/lib/]
-        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_b2583.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-specs=device-specs/specs-avr2']
-        ignore line: [[2/2] : && /opt/homebrew/bin/cmake -E rm -f libcmTC_b2583.a && /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-ar qc libcmTC_b2583.a  CMakeFiles/cmTC_b2583.dir/CMakeCXXCompilerABI.cpp.obj && /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-ranlib libcmTC_b2583.a && /opt/homebrew/bin/cmake -E touch libcmTC_b2583.a && :]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_6e032.dir/CMakeCXXCompilerABI.cpp.obj' '-c' '-specs=device-specs/specs-avr2']
+        ignore line: [[2/2] : && /opt/homebrew/bin/cmake -E rm -f libcmTC_6e032.a && /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-ar qc libcmTC_6e032.a  CMakeFiles/cmTC_6e032.dir/CMakeCXXCompilerABI.cpp.obj && /Users/helmutfieres/Library/Arduino15/packages/DxCore/tools/avr-gcc/7.3.0-atmel3.6.1-azduino7b1/bin/avr-ranlib libcmTC_6e032.a && /opt/homebrew/bin/cmake -E touch libcmTC_6e032.a && :]
         ignore line: []
         ignore line: []
         implicit libs: []
